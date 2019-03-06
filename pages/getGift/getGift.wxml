@@ -78,8 +78,8 @@
         <view class="gift-name">{{prizeObj.reward_name}}</view>
       </view>
       <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1===2}}">
-        <view>姿势不对</view>
-        <view class="gift-name">再来一次</view>
+        <view>谢谢参与</view>
+        <view class="gift-name">再接再厉</view>
       </view>
     </view>
     <view class="get-prize-cont" wx:if="{{prizeObj.is_prize*1!==2}}">

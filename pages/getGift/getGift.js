@@ -83,7 +83,7 @@ Page({
             let token = res.data.data.access_token;
             let attentionTaskApi = backApi.phoneReserveApi+token;
             let rewardDataApi = backApi.rewardDataApi+token;
-            if (gzCode) {
+            if (gzCode && gzCode*1===1035) {
               fun.taskMake(attentionTaskApi, 'POST', {activity_id: pageData.activityId, sign: 'attention', code: gzCode, scene: '1035'}, (res)=>{
                 if (res.data.status*1===200) {
                   console.log('关注成功')

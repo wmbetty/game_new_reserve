@@ -205,8 +205,8 @@ button.invite-btn{background: none}
 .pointer-btn-img{display: block;width: 100%;height: 100%;}
 .rules-cont{overflow: hidden;}
 .rule-list-cont{
-  width: 690rpx;height: 384rpx;color: #fff;font-size: 28rpx;
-  border-radius: 10rpx 10rpx 0 0;overflow: hidden;margin: 0 auto;
+  width: 690rpx;height: auto;color: #fff;font-size: 28rpx;
+  border-radius: 10rpx 10rpx 0 0;overflow: hidden;margin: 0 auto;padding-bottom: 30rpx
 }
 .rule-title{font-size: 40rpx;margin: 30rpx 0 20rpx 30rpx;}
 .rule-list{margin-left: 30rpx;margin-bottom: 24rpx}
