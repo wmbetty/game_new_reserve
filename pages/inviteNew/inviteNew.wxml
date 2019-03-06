@@ -1,0 +1,40 @@
+<!--pages/inviteNew/inviteNew.wxml 原来的邀请好友-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view style="height:{{winHeight}}px;overflow:hidden" class="page-view">
+    <!-- <image mode="widthFix" src="https://gifres.79643.com/mini_anime/2018/10/01/adeb3cb354d5657d6b6a961a193f89a3_810x1440.jpg" class="game-big-poster" /> -->
+    <!-- <image src="/images/invite_bg2.png" mode="aspectFill" class="head-bg" /> -->
+    <view class="head-bg">
+      <view class="invite-title">邀请好友</view>
+    </view>
+    <view style="margin-top: {{height>30?(height*2+60):(height*2 + 90)}}px;">
+      <view class="ivite-slogen">相约开黑 共享好礼</view>
+      <view class="card-view">
+        <view class="user-infoview">
+          <image src="{{inviteDatas.member.avatar}}" class="user-avatar" />
+          <view>
+            <view class="user-name">{{inviteDatas.member.nickname}}</view>
+            <view>我刚刚预约了一个很好玩的游戏</view>
+          </view>
+        </view>
+        <image class="card-img" src="{{inviteDatas.share_url}}" mode="aspectFill" />
+        <view class="break-view" wx:if="{{inviteDatas.friend.length}}">
+          <view class="doted-line"></view>
+          <view class="break-text">已接受邀请的好友</view>
+          <view class="doted-line"></view>
+        </view>
+        <scroll-view wx:if="{{inviteDatas.friend.length}}" scroll-x="{{true}}" class="card-scroll-view">
+          <image wx:for="{{inviteDatas.friend}}" wx:key="index" class="user-friend-avatar" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" />
+        </scroll-view>
+        <view class="left-half-circle half-circle"></view>
+        <view class="right-half-circle half-circle"></view>
+      </view>
+      <view class="btn-group">
+        <button class="invite-btn blue-btn" open-type="share">分享好友</button>
+        <view class="invite-btn orange-btn" bindtap="savePoster">保存到相册</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<dialog-wxml dialog-show="{{showDialog}}" open-type="{{openType}}" auth-info="{{authInfo}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

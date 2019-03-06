@@ -1,0 +1,8 @@
+
+@import "/wxParse/wxParse.wxss";
+.note-title{
+  color: #111;font-size: 36rpx;
+}
+.note-time{margin: 20rpx 0 30rpx;font-size: 26rpx;color: #888;}
+.note-content{color: #111;font-size: 28rpx;overflow-x: hidden;}
+.wxParse-p image{margin: 0 auto;display: block;}

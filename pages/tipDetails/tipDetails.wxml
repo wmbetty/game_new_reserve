@@ -1,0 +1,103 @@
+<!--pages/tipdetails/tipdetails.wxml-->
+<import src="/wxParse/wxParse.wxml"/>
+<view style="width:100%;overflow-x:hidden">
+  <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
+  <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
+  <view>
+    <view class="page-head" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+      <image wx:if="{{details.mid*1!==0}}" src="{{details.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar" />
+      <image wx:if="{{details.mid*1 === 0}}" src="/images/logo_avatar.png" class="user-avatar" />
+      <view wx:if="{{details.mid*1 === 0}}">
+        <view class="user-name">
+          <view>泰尼游戏</view>
+          <view class="offical-flag">官方</view>
+        </view>
+        <view class="u-time">小游戏，大快乐</view>
+      </view>
+      <view wx:if="{{details.mid*1!==0}}">
+        <view class="user-name">{{details.member.nickname}}</view>
+        <view class="u-time">「 新手上路小白白 」</view>
+      </view>
+    </view>
+    <view class="page-cont">
+      <view class="article-conts">
+        <view class="article-head">{{details.title}}</view>
+        <view class="article-time">{{details.created_time}}</view>
+        <view class="article-details" wx:if="{{!showVideo}}">
+          <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        </view>
+        <view class="article-details" wx:if="{{showVideo}}">
+          <video poster="{{details.video_cover_url}}" objectFit="cover" src="{{details.video_url}}" class="game-video"></video>
+        </view>
+        <view class="article-infos">
+          <view class="nums-cont">
+            <view>{{details.total_browse}} 浏览</view>
+            <view>{{details.total_comment}} 评论</view>
+            <view>{{details.total_praise}} 赞过</view>
+          </view>
+          <!-- is_praise -->
+          <view wx:if="{{details.is_praise*1===1}}" class="praise-btn red-btn">已赞</view>
+          <view wx:if="{{details.is_praise*1!==1}}" class="{{isRedBtn?'praise-btn red-btn':'praise-btn'}}" bindtap="goPraise">{{isRedBtn?'已赞':'赞'}}</view>
+        </view>
+      </view>
+      <view class="comment-container">
+              <view class="comment-head">
+                <view class="black-line"></view>
+                <view>精彩评论</view>
+              </view>
+              <view style="padding-bottom:30rpx;" wx:if="{{showEmpty}}">
+                <empty-wxml></empty-wxml>
+              </view>
+              <view class="comment-list-group" wx:if="{{comments.length>0}}">
+                  <view class="comment-list-item" wx:for="{{comments}}" wx:key="index">
+                      <view class="list-user">
+                          <image data-mid="{{item.member.id}}" bindtap="gotoOthers" class="comm-user-avatar" src="{{item.member.avatar || '/images/avatarDefault.png'}}"></image>
+                          <view class="comm-user-name" data-mid="{{item.member.id}}" catchtap="gotoOthers">{{item.member.nickname || '无名'}}</view>
+                      </view>
+                      <view class="list-first-comment">
+                          <view><text selectable="{{true}}">{{item.content}}</text></view>
+                      </view>
+                      <view class="list-other-comment" wx:if="{{item.parent.id}}">
+                          <view class="other-comm-item"><text style="color: #888;" decode="{{true}}">@{{item.parent.member.nickname || '无名'}} &nbsp;</text><text selectable="{{true}}">{{item.parent.content}}</text></view>
+
+                      </view>
+                      <view class="list-comment-info">
+                        <!--  -->
+                          <view class="comment-time">{{item.created_time}}</view>
+                          <view class="comment-operate">
+                              <view class="comment-icon-area" data-id="{{item.id}}" data-name="{{item.member.nickname}}" bindtap="gotoReply">
+                                  <image src="../../images/comment1.png" class="comment-icon" data-pid="{{item.id}}" data-atename="{{item.member.nickname || '无名氏'}}"></image>
+                                  <text wx:if="{{item.total_reply}}">{{item.total_reply}}</text>
+                              </view>
+                              <view class="comm-good-area" data-index="{{index}}" data-good="{{item.isGood}}" bindtap="gotoPraise">
+                                <image wx:if="{{item.is_praise*1===0}}" class="good-icon" src="{{item.isGood?'/images/good2.png':'/images/good1.png'}}"></image>
+                                <image wx:if="{{item.is_praise*1===1}}" class="good-icon" src="../../images/good2.png"></image>
+                                  <!-- <image class="{{item.isLike?'good-icon good-icon-active':'good-icon'}}" src="{{(item.isLike || item.is_praise*1===1)?'../../images/good2.png':'../../images/good1.png'}}"></image> -->
+                                  <text wx:if="{{item.total_praise}}" class="{{(item.isLike || item.is_praise*1===1)?'red-font':''}}">{{item.total_praise}}</text>
+                              </view>
+                          </view>
+                      </view>
+                  </view>
+              </view>
+          </view>
+          <view class="game-area" data-id="{{gameDetils.id}}" bindtap="gotoGame">
+            <view class="game-cont">
+              <view class="gm-infos">
+                <image class="gm-icon" src="{{gameDetils.icon_url}}" />
+                <view>
+                  <view class="gm-name">{{gameDetils.name}}</view>
+                  <view class="gm-news">{{gameDetils.strategy_count}}条 话题</view>
+                </view>
+              </view>
+              <image class="right-arrow" src="/images/right_arrow.png" />
+            </view>
+          </view>
+    </view>
+  </view>
+</view>
+<view class="fixed-botom" bindtap="gotoComment">
+  <view class="write-cont">写点评论吧</view>
+</view>
+<view class="publish-btn" bindtap="goPublish"><image src="/images/publish_btn.png" /></view>
+
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

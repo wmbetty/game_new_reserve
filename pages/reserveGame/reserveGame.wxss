@@ -1,0 +1,113 @@
+/* pages/reserveGame/reserveGame.wxss */
+/* button::after{border: none;} */
+/* page{position: relative;overflow: hidden;overflow: visible;} */
+button{padding: 0;margin: 0;}
+button::after{border: none}
+.game-big-poster{display: block;width: 100%;height: 100%;}
+.reserve-cont{
+  position: fixed;bottom: 0;left:30rpx;z-index: 1;
+  /* background: hsla(0,0%,100%,.6); */
+  background: rgba(255, 255, 255, 0.85);
+  width: 690rpx;height: 314rpx;border-radius: 30rpx 30rpx 0 0;overflow: hidden;
+  /* filter:blur(4px) */
+}
+.reserve-info{
+  font-size: 52rpx;color: #222;text-align: center;margin-top: 40rpx;
+}
+.up-arrow-cont{width: 50rpx;height: 50rpx;margin: 0 auto;display: flex;justify-content: center;align-items: center;margin: 0 auto;}
+.up-arrow{
+  display: block;width: 40rpx;height: 40rpx;
+}
+.reserve-btn{
+  background: #18A3FE;color: #fff;font-size: 36rpx;
+  width: 480rpx;height: 100rpx;margin: 0 auto;
+  display: flex;align-items: center;justify-content: center;
+  border-radius: 50rpx;
+}
+.shadow-btn{box-shadow: 1px 10px 10px rgba(24, 163, 254, 0.35);}
+.reserve-phone-cont{
+  width: 480rpx;height: 334rpx;border-top: 1rpx solid #C7C7CC;border-bottom: 1rpx solid #C7C7CC;
+  margin: 0 auto 84rpx;
+}
+.has-phone-infos{height: 916rpx;}
+.phone-tips{color: #888;font-size: 32rpx;text-align: center;margin: 60rpx 0 40rpx;}
+.phone-container{padding: 0 86rpx;}
+.phone-flex-cont{
+  display: flex;justify-content: space-between;align-items: center;
+  color: #C7C7CC;font-size: 26rpx;
+}
+.phone-icon-cont{margin-bottom: 20rpx;}
+.phone-icon{
+  width: 72rpx;height: 72rpx;
+}
+.phone-icon:first-child{margin-left: 18rpx;}
+.ios-text{margin-right: 10rpx;}
+.fade-input{background: #fff;color: #18A3FE;margin-bottom: 40rpx;}
+.phone-input{width: 315rpx;padding: 0 78rpx;}
+.code-cont{width: 532rpx;margin-left: 106rpx;display: flex;align-items: center;justify-content: space-between;}
+.code-input-cont{display: flex;align-items: center;justify-content: space-between;margin: 0}
+.code-input{margin-left: 60rpx;height: 100%;font-size: 36rpx;width: 280rpx;}
+.refresh-code{margin-right: 30rpx;width: 44rpx;height: 44rpx;background: #eee}
+.code-time{font-size: 32rpx;color: #888;margin-left: 12rpx}
+.confirm-btn{margin-top: 40rpx;}
+.reserve-success-tips{margin: 12rpx 0 0;text-align: center;color: #888;font-size: 26rpx}
+.reserve-success-cont{width: 480rpx;height: 466rpx;border-top: 1rpx solid #C7C7CC;margin: 0 auto;}
+.reserve-succ-img{display: block;width: 404rpx;height: 272rpx;margin: 60rpx auto 30rpx;}
+.chance-tip{color: #FA5961;font-size: 40rpx;text-align: center;margin-bottom: 10rpx;}
+.gift-tip{color: #666;font-size: 26rpx;text-align: center;margin-bottom: 66rpx;}
+.red-btn{background: #FA5961}
+.slide-up{
+	animation: slideup .3s linear
+}
+@keyframes slideup {
+	from {
+		transform: translateY(100%)
+	}
+
+	to {
+		transform: translateY(0)
+	}
+}
+.slide-down{
+  height: 314rpx;overflow-y: hidden;
+	animation: slidedown .3s linear
+}
+@keyframes slidedown {
+	from {
+		transform: translateY(100%)
+	}
+
+	to {
+		transform: translateY(100)
+	}
+}
+.phone-active-text{color: #222}
+
+.reserve-cont::before {
+	content: '';
+	position: absolute;
+	top: 0;left: 0;
+	filter: blur(20px);
+  width: 100%;height: 100%;background: rgba(255, 255, 255, 0.5);z-index: -1
+}
+.reserve-info-noprize{margin-top: 100rpx;}
+/* .reserve-cont-nobtn{display: flex;align-items: center;justify-content: center;} */
+
+.slide-down{
+	animation: slidedown .3s linear
+}
+@keyframes slidedown {
+	from {
+		transform: translateY(0)
+	}
+
+	to {
+		transform: translateY(100%)
+	}
+}
+.dialog-mask{position: fixed;width: 100%;height: 100%;left: 0;top:0;background: rgba(0,0,0,0.5);z-index: 2}
+.go-reward-toast{position: absolute;left: 50%;top:50%;width: 670rpx;height: 520rpx;background: rgba(255, 255, 255, 0.9);border-radius: 30rpx;margin-left: -335rpx;margin-top: -260rpx;}
+.toast-head-img{display: block;width: 100%;height: 282rpx;}
+.toast-btn{width: 480rpx;height: 100rpx;display: flex;align-items: center;justify-content: center;font-size: 36rpx;color: #fff;margin: 40rpx auto 20rpx;background: #FA5961;border-radius: 50rpx;}
+.toast-text{color: #888;font-size: 28rpx;text-align: center;}
+.close-icon{width: 54rpx;height: 54rpx;position: absolute;top:30rpx;right: 30rpx;}

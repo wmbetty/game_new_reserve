@@ -1,0 +1,167 @@
+{
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"autoAudits": false,
+		"uglifyFileName": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.4.3",
+	"appid": "wxab563a152f1d659c",
+	"projectname": "tiny_miniapp_new",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"isGameTourist": false,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 19,
+			"list": [
+				{
+					"id": -1,
+					"name": "test",
+					"pathName": "pages/test/test",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "公告通知列表",
+					"pathName": "pages/notices/notices",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "攻略",
+					"pathName": "pages/tips/tips",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "攻略图文详情",
+					"pathName": "pages/tipDetails/tipDetails",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "公告详情",
+					"pathName": "pages/notedetails/notedetails",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "游戏介绍",
+					"pathName": "pages/gmintro/gmintro",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "游戏专区",
+					"pathName": "pages/singleGame/singleGame",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "选择游戏专区",
+					"pathName": "pages/chooseGame/chooseGame",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/my/my",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "发布",
+					"pathName": "pages/publish/publish",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "wheel",
+					"pathName": "pages/wheel/wheel",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预约落地页",
+					"pathName": "pages/reserveGame/reserveGame",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "活动列表",
+					"pathName": "pages/activityList/activityList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "答题",
+					"pathName": "pages/answerQues/answerQues",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "抽奖",
+					"pathName": "pages/getPrize/getPrize",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "邀请",
+					"pathName": "pages/invitePrize/invitePrize",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "gift",
+					"pathName": "pages/getGift/getGift",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新的预约页面",
+					"pathName": "pages/reserveGames/reserveGames",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "test1",
+					"pathName": "pages/test/test",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}

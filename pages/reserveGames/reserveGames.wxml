@@ -1,0 +1,277 @@
+<!--pages/reserveGames/reserveGames.wxml-->
+<view style="background: {{elements.activity_bg_color.value}}">
+  <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
+  <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
+  <view style="height:{{winHeight}}px;position:relative">
+    <view class="game-big-poster-view" style="background:url('{{activity.bg_url}}') no-repeat center;background-size:cover;">
+      <!-- <image src="{{activity.bg_url}}" mode="widthFix" class="game-big-poster" /> -->
+    </view>
+    <view class="btn-container">
+      <image wx:if="{{showNoReserve}}" bindtap="showPhoneInfo" class="btn-img" mode="widthFix" src="{{elements.activity_booking_button.value}}" />
+      <image wx:if="{{showReserved}}" class="btn-img" mode="widthFix" bindtap="goSucc" src="{{elements.activity_booking_success_button.value}}" />
+      <image class="reserve-arrow" src="/images/arrow_up.png" />
+      <view class="reserve-text first-reserve-text" style="color:{{elements.activity_ordinary_text_color.value}}" wx:if="{{ladders.number}}">
+        <text>已有</text><text class="reserve-num-text" style="color:{{elements.activity_shine_text_color.value}}">{{ladders.number}}</text><text>人加预约</text>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{!noElements}}">
+    <view class="swiper-view" wx:if="{{swipers.length}}" style="background:{{elements.activity_game_features_bg.value}} no-repeat;background-size:cover">
+      <view class="r-reward-cont-view">
+        <swiper class="r-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}" bindchange="imageChange">
+          <block wx:for="{{swipers}}" wx:key="index">
+            <swiper-item class="r-swiper-item">
+              <image src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px {{elements.activity_progress_dark_color.value}};" />
+            </swiper-item>
+          </block>
+        </swiper>
+        <view class="swiper-line-cont">
+          <view wx:for="{{swipers}}" wx:key="index" class="{{index===swiperIdx*1?'swiper-line swiper-line-active':'swiper-line'}}"></view>
+        </view>
+        <view class="rewards-top-line"></view>
+      </view>
+    </view>
+    <!-- 预约奖励 -->
+    <view class="r-rewards" wx:if="{{ladders.data.length}}">
+      <view style="background:url('{{elements.activity_booking_reward_bg.value}}') no-repeat center;background-size:cover;">
+          <!-- <view class="rewards-top-line"></view> -->
+          <image class="r-rewards-title" mode="widthFix" src="{{elements.activity_booking_reward_title.value}}" />
+          <view class="reserve-text" style="color:{{elements.activity_ordinary_text_color.value}}">
+            <text>已预约</text><text class="reserve-num-text" style="color:{{elements.activity_shine_text_color.value}}">{{ladders.number}}</text><text>人</text>
+          </view>
+
+          <view class="reserve-progress-cont">
+            <view class="progress-bar-cont progress-bar-conts">
+              <view class="progress-bar-cont" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{index===0}}">
+                <view class="bar-circle" style="background:{{elements.activity_progress_shine_color.value}}"></view>
+                <view class="bar-line" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}}">
+                  <view wx:if="{{item.situation.status*1===2}}" class="bar-line-active" style="width:{{item.situation.progress*1}}%;background:{{elements.activity_progress_shine_color.value}}"></view>
+                </view>
+                <view class="bar-circle" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}}"></view>
+              </view>
+              <view class="progress-bar-cont"  wx:for="{{ladders.data}}" wx:key="index" wx:if="{{index===1}}">
+                <view class="bar-line" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}}">
+                  <view wx:if="{{item.situation.status*1===2}}" class="bar-line-active" style="width:{{item.situation.progress*1}}%;background:{{elements.activity_progress_shine_color.value}}"></view>
+                </view>
+                <view class="bar-circle" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}}"></view>
+              </view>
+              <view class="progress-bar-cont"  wx:for="{{ladders.data}}" wx:key="index" wx:if="{{index===2}}">
+                <view class="bar-line" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}};">
+                  <view wx:if="{{item.situation.status*1===2}}" class="bar-line-active" style="width:{{item.situation.progress*1}}%;background:{{elements.activity_progress_shine_color.value}}"></view>
+                </view>
+                <view class="bar-circle" style="background:{{item.situation.status*1===1?elements.activity_progress_shine_color.value:elements.activity_progress_dark_color.value}}"></view>
+              </view>
+            </view>
+          </view>
+
+          <view class="progress-text-cont">
+            <view class="progress-text">开启</view>
+            <view class="progress-text" wx:for="{{ladders.data}}" wx:key="index">{{item.require_format_number}}</view>
+          </view>
+          <view class="reward-list-cont" wx:if="{{ladders.data.length}}">
+              <view class="reward-list" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{item.mode.status*1===2 && !(item.mode.list)}}">
+                <image class="reward-list-bg" src="{{item.prize_img}}" />
+                <view class="reward-list-left"></view>
+                <view class="reward-list-right waiting-reward" data-item="{{item}}" bindtap="lookYourGift">
+                  <image class="get-gift-tag" src="{{elements.activity_winning_icon.value}}" mode="widthFix" />
+                </view>
+              </view>
+
+          <!-- 一个人中奖 -->
+              <view class="reward-list" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{item.mode.list.length===1 && item.mode.status*1===3}}">
+                <image class="reward-list-bg" src="{{item.prize_img}}" />
+                <view class="reward-list-left"></view>
+                <view class="reward-list-right one-per">
+                  <view class="user-cont">
+                    <image wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index" class="list-user one-user" src="{{users.member.avatar}}" />
+                  </view>
+                  <view wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index" class="red-font"><text class="user-name">{{users.member.nickname}}</text><text>获奖</text></view>
+                </view>
+              </view>
+          <!-- 两个人的情况 -->
+              <view class="reward-list" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{item.mode.list.length===2 && item.mode.status*1===3}}">
+                <image class="reward-list-bg" src="{{item.prize_img}}" />
+                <view class="reward-list-left"></view>
+                <view class="reward-list-right two-per" data-list="{{item.mode.list.length}}" bindtap="showMoreList">
+                  <view class="user-cont two-per-view">
+                    <image class="list-user" src="{{users.member.avatar}}" wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index" />
+                    <!-- <image wx:if="{{item.mode.list.length>2 && index<2}}" class="list-user" src="{{users.member.avatar}}" wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index" /> -->
+                  </view>
+                  <!-- <view class="red-font">查看获奖名单 》</view> -->
+                </view>
+              </view>
+          <!-- 多人中奖未查看 -->
+              <view class="reward-list" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{item.mode.list.length>2 && item.mode.status*1===3}}">
+                <image class="reward-list-bg" wx:if="{{!item.showMore}}" src="{{item.prize_img}}" />
+                <view class="reward-list-left" wx:if="{{!item.showMore}}"></view>
+                <view class="reward-list-right" data-list="{{item.mode.list.length}}" data-index="{{index}}" bindtap="showMoreList" wx:if="{{!item.showMore}}">
+                  <view class="user-cont">
+                    <image wx:if="{{index<2}}" class="list-user" src="{{users.member.avatar}}" wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index" />
+                  </view>
+                  <view class="red-font">查看获奖名单 》</view>
+                </view>
+                <!-- 查看多人中奖的情况 -->
+                    <view class="reward-list users-reward-list" wx:if="{{item.showMore}}">
+                      <scroll-view scroll-x="true" class="list-users-cont">
+                        <view class="user-avatar-view">
+                          <view class="list-item-view" wx:for="{{item.mode.list}}" wx:for-item="users" wx:key="index">
+                            <image class="list-user lst-user-avatar" src="{{users.member.avatar}}" />
+                            <view class="user-name">{{users.member.nickname}}</view>
+                          </view>
+                        </view>
+                      </scroll-view>
+                      <view class="reward-list-right waiting-reward"><text class="red-font" data-index="{{index}}" bindtap="hideMoreList">《 收起获奖名单</text></view>
+                    </view>
+              </view>
+              <view class="reward-list" wx:for="{{ladders.data}}" wx:key="index" wx:if="{{item.mode.status*1===1 && (index===1 || index===2 || index===0)}}">
+                <image class="reward-list-bg" src="{{item.prize_img}}" />
+                <view class="reward-list-left"></view>
+                <view class="reward-list-right waiting-reward">{{item.mode.msg}}</view>
+              </view>
+            </view>
+        <view class="rewards-botom-line"></view>
+      </view>
+    </view>
+    <view class="prize-big-bg" wx:if="{{activity.open_reward*1!==2}}">
+      <view class="prize-cont" style="background:url('{{elements.activity_lucky_draw_rule_bg.value}}') no-repeat center;background-size:cover;">
+        <!-- 预约抽奖 -->
+        <view class="get-gift-cont" wx:if="{{activity.open_reward*1!==2}}">
+          <image class="get-gift-title" mode="widthFix" src="{{elements.activity_lucky_draw_title.value}}" />
+          <!-- <view class="gift-dot-line"></view> -->
+          <!-- 没有邀请好友时 -->
+          <view class="get-gift-nums" wx:if="{{inviteDatas.friend.length===0}}">
+            <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次，邀请好友获得</text></view>
+            <image src="{{elements.activity_lottery_frequency_refresh_button.value}}" bindtap="refreshTimes" class="refresh-icon" />
+          </view>
+
+          <!-- 有邀请好友时 -->
+          <view class="invite-nums-cont" wx:if="{{inviteDatas.friend.length}}">
+            <view class="get-gift-nums no-radius">
+              <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次，邀请好友获得</text></view>
+              <image src="{{elements.activity_lottery_frequency_refresh_button.value}}" class="refresh-icon" />
+            </view>
+            <scroll-view scroll-x="true" class="invite-users-avatars">
+              <image wx:for="{{inviteDatas.friend}}" wx:key="index" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" class="invite-u-avatar" />
+            </scroll-view>
+          </view>
+          <button class="invite-btn" bindtap="gotoInvite">
+            <image src="{{elements.activity_invite_friend_button.value}}" mode="widthFix" class="invite-btn-img" />
+          </button>
+          <!-- 转盘 -->
+          <view class="plate-cont">
+            <image src="{{rewardUrl}}" animation="{{luckDrawAnimation}}" class="plate-img" mode="aspectFill" />
+            <form report-submit="{{true}}" bindsubmit="onTurnTap">
+              <button class='pointer-btn' form-type="submit" disabled='{{disabled}}'>
+                <image src="{{disabled?'/images/go_btn_active.png':'/images/go_btn.png'}}" class="pointer-btn-img" mode="aspectFit" />
+              </button>
+            </form>
+          </view>
+        </view>
+        <view class="ranks" wx:if="{{activity.open_reward*1!==2 && (prizeRecord.length || myPrizes.length)}}">
+          <view class="rank-title">获奖榜单</view>
+          <view class="rank-dot-line"></view>
+          <scroll-view scroll-y="true" class="rank-scroll-view">
+            <view class="rank-list" wx:for="{{myPrizes}}" wx:key="index">
+              <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+              <view>恭喜“</view>
+              <view class="my-name is-my-name">{{item.member.nickname || '无名氏'}}</view>
+              <view>”抽取了</view>
+              <view class="prize-text">{{item.reward_name}}</view>
+            </view>
+            <view class="rank-list" wx:for="{{prizeRecord}}" wx:key="index">
+              <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+              <view>恭喜“</view>
+              <view class="my-name">{{item.member.nickname || '无名氏'}}</view>
+              <view>”抽取了</view>
+              <view class="prize-text">{{item.reward_name}}</view>
+            </view>
+          </scroll-view>
+        </view>
+        <view class="gift-botom-line"></view>
+        <!-- 活动规则 -->
+        <view class="rules-cont" wx:if="{{activity.open_reward*1!==2 && rules.length}}">
+          <view class="rule-list-cont" style="color:{{elements.activity_ordinary_text_color.value}}">
+            <view class="rule-title">活动规则</view>
+            <view class="rule-list" wx:for="{{rules}}" wx:key="index">{{item.title}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="dialog-mask" wx:if="{{showMask}}" catchtouchmove="true">
+  <!-- 预约填手机号 -->
+  <view class="reserve-cont has-phone-infos" wx:if="{{showPhone}}" catchtouchmove="true">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hidePhone" />
+    <image src="{{elements.activity_booking_logo.value}}" class="reserve-game-logo" />
+    <view class="reserve-phone-cont" wx:if="{{showPhoneCont}}">
+      <view class="phone-tips">选择您的手机系统</view>
+      <view class="phone-container">
+        <view class="phone-flex-cont phone-icon-cont">
+          <image class="phone-icon" data-type="1" bindtap="choosePlat" mode="aspectFill" src="{{isAndrod?'/images/andr_icon.png':'/images/andr1_icon.png'}}" />
+          <image class="phone-icon" data-type="2" bindtap="choosePlat" mode="aspectFill" src="{{isAndrod?'/images/iphone1_icon.png':'/images/iphone_icon.png'}}" />
+        </view>
+        <view class="phone-flex-cont">
+          <view class="{{isAndrod?'phone-active-text':''}}" data-type="1" bindtap="choosePlat">Android</view>
+          <view class="{{!isAndrod?'ios-text phone-active-text':'ios-text'}}" data-type="1" bindtap="choosePlat">IOS</view>
+        </view>
+      </view>
+    </view>
+    <button wx:if="{{!showInput && showPhoneCont}}" class="reserve-btn fade-input" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">请输入你的手机号</button>
+    <input wx:if="{{showInput && !showConfirmBtn && showPhoneCont}}" class="reserve-btn fade-input phone-input" type="number" value="{{phone}}" placeholder="请输入手机号" bindblur="phoneBlur" />
+    <view wx:if="{{!showConfirmBtn}}" class="reserve-btn" bindtap="sendCode">立即预约</view>
+  </view>
+
+  <!-- 平台对接使用 -->
+  <view class="go-reward-toast" wx:if="{{showToast}}" catchtouchmove="true">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideMask" />
+    <image class="toast-head-img" src="/images/toast_img.png" />
+    <button class="toast-btn" open-type="getPhoneNumber" bindgetphonenumber="verifyPhone">试试手气 GO</button>
+    <view class="toast-text">验证已预约手机号</view>
+  </view>
+</view>
+
+<!-- 显示抽奖结果 -->
+<view class="gift-mask" wx:if="{{showGetPrize || showYourPrize}}" catchtouchmove="true" style="min-height:{{winHeight}}px;height: auto">
+  <view class="{{prizeObj.is_prize*1===2?'get-gift-dialog get-gift-dialog-nogift':'get-gift-dialog'}}" wx:if="{{showGetPrize}}" catchtouchmove="true">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideGetPrize" />
+    <view class="gift-tips-cont">
+      <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
+      <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1!==2}}">
+        <view>恭喜中奖</view>
+        <view class="gift-name">{{prizeObj.reward_name}}</view>
+      </view>
+      <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1===2}}">
+        <view>姿势不对</view>
+        <view class="gift-name">再来一次</view>
+      </view>
+    </view>
+    <view class="get-prize-cont" wx:if="{{prizeObj.is_prize*1!==2}}">
+      <view class="get-prize-title">领取流程</view>
+      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
+      <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
+    </view>
+    <button wx:if="{{prizeObj.is_prize*1!==2}}" open-type="contact" class="get-prize-btn" bindtap="rewardComplete">去领奖</button>
+    <button wx:if="{{prizeObj.is_prize*1===2}}" class="get-prize-btn" bindtap="rewardComplete">完成</button>
+  </view>
+  <view class="get-gift-dialog" wx:if="{{showYourPrize}}" catchtouchmove="true">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideYourPrize" />
+    <view class="gift-tips-cont">
+      <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
+      <view class="gift-text-tip">
+        <view>您的奖品为</view>
+        <view class="gift-name">{{pname}}</view>
+      </view>
+    </view>
+    <view class="get-prize-cont">
+      <view class="get-prize-title">领取流程</view>
+      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
+      <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
+    </view>
+    <button open-type="contact" class="get-prize-btn" bindtap="openContact">去领奖</button>
+  </view>
+</view>
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

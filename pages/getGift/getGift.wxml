@@ -1,0 +1,120 @@
+<view class="page-view" style="height: {{winHeight}}px;">
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <image class="prize-bg" mode="widthFix" src="/images/getprize_bg.png" />
+  <view class="page-cont">
+    <view class="chance-cont">
+      <view style="margin-left:36rpx;">[ 还有</view>
+      <view class="chance-nums">{{rewardCount}}</view>
+      <view>次抽奖机会 ]</view>
+      <image src="/images/refresh_icon.png" class="refresh-icon" bindtap="refreshTimes" />
+    </view>
+    <view class="plate-cont">
+      <!-- <image wx:if="{{showPlate5}}" src="{{rewardUrl}}" style="transform: rotate(-{{degree2}}deg);" class="{{showRotate?'plate-img plate-img-rotate':'plate-img'}}" mode="aspectFill" />
+      <image wx:if="{{showPlate6}}" src="{{rewardUrl}}" style="transform: rotate(-{{degree2}}deg)" class="{{showRotate?'plate-img plate-img-rotate rotate-slow':'plate-img'}}" mode="aspectFill" />
+      <image wx:if="{{showPlate1}}" src="{{rewardUrl}}" class="{{showRotate?'plate-img plate-img-rotate':'plate-img'}}" mode="aspectFill" />
+      <image wx:if="{{showPlate2}}" src="{{rewardUrl}}" class="{{showRotate?'plate-img plate-img-rotate rotate-slow':'plate-img'}}" mode="aspectFill" />
+      <image wx:if="{{showPlate3}}" src="{{rewardUrl}}" class="{{showRotate?'plate-img plate-img-rotate rotate-fast':'plate-img'}}" mode="aspectFill" /> -->
+      <image src="{{rewardUrl}}" animation="{{luckDrawAnimation}}" class="plate-img" mode="aspectFill" />
+      <form wx:if="{{rewardUrl}}" report-submit="{{true}}" bindsubmit="onTurnTap">
+        <button class='pointer-btn' form-type="submit" disabled='{{disabled}}'>
+          <!-- <image wx:if="{{!goActive}}" src="/images/go_btn.png" class='pointer-btn-img' mode="aspectFit" /> -->
+          <image src="{{disabled?'/images/go_btn_active.png':'/images/go_btn.png'}}" class="pointer-btn-img" mode="aspectFit" />
+        </button>
+      </form>
+    </view>
+    <view class="task-group">
+      <view class="task-list" wx:for="{{tasks}}" wx:key="index">
+        <view class="task-list-left">
+          <image src="/images/star.png" class="star-icon" />
+          <view>{{item.task.task_name}}</view>
+        </view>
+        <view wx:if="{{item.task.sign==='attention'}}" data-type="{{item.task.complete}}" bindtap="showOffical" class="{{item.task.complete*1===1?'task-btn':'task-btn blue-btn'}}">{{item.task.button_tips}}</view>
+        <view wx:if="{{item.task.sign==='booking'}}" data-type="{{item.task.complete}}" bindtap="goReserve" class="{{item.task.complete*1===1?'task-btn':'task-btn blue-btn'}}">{{item.task.button_tips}}</view>
+        <view wx:if="{{item.task.sign==='add'}}" data-type="{{item.task.complete}}" bindtap="goPinMy" class="{{item.task.complete*1===1?'task-btn':'task-btn blue-btn'}}">{{item.task.button_tips}}</view>
+        <view wx:if="{{item.task.sign==='invite'}}" data-type="{{item.task.complete}}" bindtap="goInvite" class="task-btn red-btn">邀请</view>
+        <view wx:if="{{item.task.sign==='answer'}}" data-type="{{item.task.complete}}" bindtap="goAnswer" class="{{item.task.complete*1===1?'task-btn':'task-btn red-btn'}}">{{item.task.button_tips}}</view>
+        <view wx:if="{{index<tasks.length-1}}" class="list-line"></view>
+      </view>
+    </view>
+
+    <view class="task-rules">
+      <view class="rule-title">活动规则</view>
+      <view class="rules-list" wx:for="{{rules}}" wx:key="index">{{item.title}}</view>
+    </view>
+
+    <view class="ranks" wx:if="{{prizeRecord.length || myPrizes.length}}">
+      <view class="rank-title">获奖榜单</view>
+      <view class="my-record-cont">
+        <view class="rank-list" wx:for="{{myPrizes}}" wx:key="index">
+          <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+          <view class="blue-text my-name">“{{item.member.nickname || '无名氏'}}”</view>
+          <view class="blue-text">抽取了</view>
+          <view class="prize-text red-font">{{item.reward_name}}</view>
+        </view>
+      </view>
+      <swiper class="rank-swiper" autoplay="{{autoplay}}" vertical="true" circular="true" interval="{{interval}}" duration="{{duration}}">
+        <block wx:for="{{prizeRecord}}" wx:key="index">
+          <swiper-item>
+            <view class="rank-list">
+              <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+              <view>恭喜“</view>
+              <view class="my-name">{{item.member.nickname || '无名氏'}}</view>
+              <view>”抽取了</view>
+              <view class="prize-text">{{item.reward_name}}</view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+  </view>
+</view>
+
+<view class="black-mask" wx:if="{{showMask}}" catchtouchmove="ture" bindtap="hidePinmy">
+  <view wx:if="{{showGetPrize}}">
+    <view class="gift-tips-cont">
+      <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
+      <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1!==2}}">
+        <view>恭喜中奖</view>
+        <view class="gift-name">{{prizeObj.reward_name}}</view>
+      </view>
+      <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1===2}}">
+        <view>姿势不对</view>
+        <view class="gift-name">再来一次</view>
+      </view>
+    </view>
+    <view class="get-prize-cont" wx:if="{{prizeObj.is_prize*1!==2}}">
+      <view class="get-prize-title">领取流程</view>
+      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
+      <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
+    </view>
+    <view wx:if="{{prizeObj.is_prize*1===2}}" class="get-prize-btn get-prize-btn-close" bindtap="hideMask">关闭</view>
+    <button wx:if="{{prizeObj.is_prize*1!==2}}" open-type="contact" class="get-prize-btn" bindtap="openContact">领取</button>
+  </view>
+  <view class="offical-dialog-cont" wx:if="{{showOffical}}">
+    <image class="close-icon" src="/images/close_circle.png" bindtap="hideMask" />
+    <view class="offical-dialog">
+      <view class="offical-tips-cont">
+        <view class="offical-tip-title">关注公众号</view>
+        <view class="get-prize-step">1. 点击“去关注”按钮，进入客服对话窗口。</view>
+        <view class="get-prize-step">2. 回复“{{sendNumber}}”收到自动回复的公众号“二维码” 后长按关注。</view>
+        <view class="get-prize-step">3. 关注完成后返回抽奖页即获得抽奖资格。</view>
+      </view>
+      <!-- 客服按钮 -->
+      <button open-type="contact" class="get-prize-btn start-btn" bindtap="openContact">去关注</button>
+    </view>
+  </view>
+  <view class="{{height>30?'pin-my-dialog pin-my-dialog-top':'pin-my-dialog'}}" wx:if="{{showPinmy}}">
+    <view class="pin-dialog">
+      <image class="pin-my-arrow" src="/images/pin_my_arrow.png" />
+      <view class="offical-tips-cont">
+        <view class="offical-tip-title pinmy-tip-title">添加我的小程序</view>
+        <view class="get-prize-step">1. 点击右上角“...”按钮，打开设置框</view>
+        <view class="get-prize-step">2. 点击“添加我的小程序”</view>
+        <view class="get-prize-step">3. 回到微信首页，下拉界面，从我的小程序中点击wow小蓝书进入</view>
+        <view class="get-prize-step">4. 进入wow小蓝书，领取抽奖奖励</view>
+      </view>
+    </view>
+    <view class="know-btn">知道了</view>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+<!--pages/comment/comment.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view wx:if="{{sname!==''}}" class="comment-title" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <text style="color:#888;margin-right: 24rpx;">评论</text>
+    <text>《{{sname}}》</text>
+  </view>
+  <!-- 回复某人 -->
+  <view wx:if="{{name!==''}}" class="comment-title" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <text style="color:#888;margin-right: 24rpx;">正在回复</text>
+    <text>{{name}}</text>
+  </view>
+  <view class="comment-area">
+    <textarea placeholder="友善的评论是交流的起点" focus="{{true}}"
+      placeholder-class="placeholder-text" bindconfirm="inputDone" />
+  </view>
+</view>

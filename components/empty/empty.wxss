@@ -1,0 +1,3 @@
+.empty-img{
+  display: block;width: 200rpx;height: 200rpx;margin: 0 auto 30rpx;
+}

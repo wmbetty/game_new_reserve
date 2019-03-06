@@ -1,0 +1,3 @@
+<!--components/fixedBtn/fixedBtn.wxml-->
+<view wx:if="{{!hadTab}}"  class="publish-btn" bindtap="goPublish"><image src="/images/publish_btn.png" /></view>
+<view wx:if="{{hadTab}}" class="publish-btn hadtab-publish-btn" bindtap="goPublish"><image src="/images/publish_btn.png" /></view>

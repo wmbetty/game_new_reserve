@@ -1,0 +1,60 @@
+<!--pages/answerQues/answerQues.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view style="height:{{winHeight}}px;overflow:hidden" class="page-view">
+    <view style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+      <view class="ques-outer-container">
+        <view class="ques-info-title">每日一题</view>
+        <view class="ques-times-info">游戏答题获得 1次 抽奖机会</view>
+        <view wx:if="{{istoday}}">
+          <view class="ques-cont">
+            <view wx:if="{{!noQues}}" class="ques-view"><view class="ques-text">{{todayQues.question}}</view></view>
+            <view wx:if="{{noQues}}" class="ques-view">暂时没有题目哦，看看其他任务吧</view>
+            <image src="/images/ques_bg.png" class="ques-cont-bg" />
+          </view>
+          <view wx:if="{{todayQues.question && !showResult}}">
+            <view class="answer first-answer" data-answer="answer1" bindtap="chooseAnswer">{{todayQues.answer1}}</view>
+            <view class="answer second-answer" data-answer="answer2" bindtap="chooseAnswer">{{todayQues.answer2}}</view>
+          </view>
+          <view class="answer-result-cont" wx:if="{{showResult}}">
+            <view wx:if="{{isCorrect*1===1}}">
+              <view class="answer-tips">恭喜答对了: {{choiceAnswer==='answer1'?todayQues.answer1:todayQues.answer2}}</view>
+              <view class="get-prize-btn" bindtap="goPrize">去抽奖</view>
+            </view>
+            <view wx:if="{{isCorrect*1===2}}">
+              <view class="answer-tips">抱歉答错了，下次加油哦</view>
+              <view class="correct-text">正确答案: {{choiceAnswer==='answer1'?todayQues.answer2:todayQues.answer1}}</view>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{showRecord}}">
+          <view class="ques-cont">
+            <view class="ques-view"><view class="ques-text">{{questions.question}}</view></view>
+            <image src="/images/ques_bg.png" class="ques-cont-bg" />
+          </view>
+          <view class="answer-result-cont">
+            <view wx:if="{{questions.is_correct*1===1}}">
+              <view class="answer-tips">答对了: {{questions.correct_answer*1===1?questions.answer1:questions.answer2}}</view>
+            </view>
+            <view wx:if="{{questions.is_correct*1===2}}">
+              <view class="answer-tips">抱歉答错了，下次加油哦</view>
+              <view class="correct-text">正确答案: {{questions.correct_answer*1===1?questions.answer1:questions.answer2}}</view>
+            </view>
+          </view>
+        </view>
+        <view class="record-cont">
+          <view class="break-view">
+            <view class="break-line"></view>
+            <view class="break-text">答题记录</view>
+            <view class="break-line"></view>
+          </view>
+          <scroll-view wx:if="{{record.length}}" scroll-x="{{true}}" class="ques-scroll-view">
+            <image wx:for="{{record}}" data-index="{{index}}" data-rid="{{item.id}}" bindtap="lookQues" wx:key="index" wx:if="{{item.is_correct*1===1}}" src="{{idx*1===index?'/images/o2.png':'/images/o1.png'}}" class="{{idx*1===index?'blue-circle ques-tag-active':'blue-circle'}}" />
+            <image wx:for="{{record}}" data-index="{{index}}" data-rid="{{item.id}}" bindtap="lookQues" wx:key="index" wx:if="{{item.is_correct*1===2}}" src="{{idx*1===index?'/images/x2.png':'/images/x1.png'}}" class="{{idx*1===index?'blue-circle ques-tag-active':'blue-circle'}}" />
+            <image data-today="1" bindtap="lookQues" class="{{istoday?'blue-circle ques-tag-active':'blue-circle'}}" src="{{istoday?'/images/today_ques.png':'/images/today_ques1.png'}}" />
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

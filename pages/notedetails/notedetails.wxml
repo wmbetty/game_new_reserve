@@ -1,0 +1,12 @@
+<!--pages/notedetails/notedetails.wxml-->
+<import src="/wxParse/wxParse.wxml"/>
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;padding:0 30rpx;">
+    <view class="note-title">{{details.title}}</view>
+    <view class="note-time">{{details.created_time}}</view>
+    <view class="note-content">
+      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+    </view>
+  </view>
+</view>

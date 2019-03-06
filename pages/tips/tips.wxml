@@ -1,0 +1,83 @@
+<!--logs.wxml-->
+<!-- <view class="container log-list">
+  <block wx:for="{{logs}}" wx:for-item="log">
+    <text class="log-item">{{index + 1}}. {{log}}</text>
+  </block>
+</view> -->
+
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <scroll-view scroll-x="true" class="scroll-view" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <view class="head-cont">
+      <view class="{{(games.length>5 && index===games.length-1)?'game-items game-items-margin':'game-items'}}" wx:for="{{games}}" wx:key="index" data-id="{{item.id}}" bindtap="gotoGame">
+        <image src="{{item.icon_url}}" alt="" class="game-logo" />
+        <view class="game-name">{{item.name}}</view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="article-conts">
+    <view class="cont-head">
+      <view class="black-line"></view>
+      <view>热门文章</view>
+    </view>
+    <view class="list-group">
+      <view class="list-item" wx:for="{{lists}}" wx:key="index" data-id="{{item.id}}" catchtap="goTipDetail">
+        <view class="list-title">{{item.title}}</view>
+        <image class="big-img" src="{{item.cover_url}}" wx:if="{{item.cover_count*1===1}}" mode="aspectFill" />
+        <view class="list-imgs" wx:if="{{item.cover_count*1>=2}}">
+          <view class="img-cont" wx:for="{{item.cover_url}}" wx:for-item="imgs" wx:for-index="imgIdx" wx:key="index">
+            <image src="{{imgs}}" class="tip-img" />
+            <view wx:if="{{imgIdx*1===2}}" class="img-total">{{item.cover_count}}张</view>
+          </view>
+        </view>
+        <video poster="{{item.video_cover_url}}" wx:if="{{item.video_url!==''}}" objectFit="cover" src="{{item.video_url}}" class="big-img"></video>
+        <view class="list-intros">
+          <view class="intros-cont">
+            <view class="{{item.mid*1===0?'list-tag blue-border':'list-tag'}}">{{item.member.nickname}}</view>
+            <view class="game-intros" wx:if="{{item.game_name}}">{{item.game_name}}</view>
+          </view>
+          <view class="list-date">{{item.created_time}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 游戏专区 -->
+    <view wx:for="{{gameAreas}}" wx:key="index">
+      <view class="game-area" data-id="{{item.id}}" bindtap="gotoGame" wx:if="{{item.strategy.length>0}}">
+        <view class="game-cont">
+          <view class="gm-infos">
+            <image class="gm-icon" src="{{item.icon_url}}" />
+            <view>
+              <view class="gm-name">{{item.name}}</view>
+              <view class="gm-news">{{item.strategy_count}}条更新</view>
+            </view>
+          </view>
+          <image class="right-arrow" src="/images/right_arrow.png" />
+        </view>
+      </view>
+      <view class="list-group" wx:if="{{item.strategy.length>0}}">
+        <view class="list-item" wx:for="{{item.strategy}}" wx:for-item="gamest" wx:key="index" data-id="{{gamest.id}}" catchtap="goTipDetail">
+          <view class="list-title">{{gamest.title}}</view>
+          <image class="big-img" src="{{gamest.cover_url}}" wx:if="{{gamest.cover_count*1===1}}" mode="aspectFill" />
+          <view class="list-imgs" wx:if="{{gamest.cover_count*1>=2}}">
+            <view class="img-cont" wx:for="{{gamest.cover_url}}" wx:for-item="imgs" wx:for-index="imgIdx" wx:key="index">
+              <image src="{{imgs}}" class="tip-img" />
+              <view wx:if="{{imgIdx*1===2}}" class="img-total">{{gamest.cover_count}}张</view>
+            </view>
+          </view>
+          <video poster="{{gamest.video_cover_url}}" wx:if="{{gamest.type*1===2}}" objectFit="cover" src="{{gamest.video_url}}" class="big-img"></video>
+          <view class="list-intros">
+            <view class="intros-cont">
+              <view class="{{gamest.mid*1===0?'list-tag blue-border':'list-tag'}}">{{gamest.member.nickname}}</view>
+              <view class="game-intros" wx:if="{{gamest.game_name}}">{{gamest.game_name}}</view>
+            </view>
+            <view class="list-date">{{gamest.created_time}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>
+<view class="publish-btn" bindtap="goPublish"><image src="/images/publish_btn.png" /></view>
+<!-- <publish-btn had-tab="{{true}}"></publish-btn> -->

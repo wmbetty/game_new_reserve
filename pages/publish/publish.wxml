@@ -1,0 +1,79 @@
+<!--pages/publish/publish.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view class="comment-title" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;" hidden="{{showImgOpt || showMask || showPoster || showDialog }}">
+    <view class="page-head">
+      <view class="">@{{gameName}}</view>
+      <view wx:if="{{!canPublish}}" class="publish-btn">发布</view>
+      <view wx:if="{{canPublish}}" class="publish-btn blue-btn" bindtap="goPublish">发布</view>
+    </view>
+    <view class="article-title">
+      <input class="title-put" value="{{titleVal}}" focus="{{titleFocus}}" bindblur="titleBlur" placeholder-class="holder-text" placeholder="取个有趣的标题吧" />
+    </view>
+    <view class="article-cont">
+      <view wx:for="{{contents.conts}}" wx:key="index" wx:if="{{contents.conts.length>0}}">
+        <textarea wx:if="{{item.type*1===1}}" maxlength="-1" class="text-area" bindfocus="textFocus" data-idx="{{index}}" bindblur="artTextBlur" value="{{item.text}}" />
+        <image wx:if="{{item.type*1===2}}" src="{{item.img_url}}" class="article-img" mode="widthFix" data-idx="{{index}}" bindtap="imgOperate" />
+      </view>
+      <view wx:if="{{showTextarea}}">
+        <textarea class="text-area" maxlength="-1" auto-focus="{{areaFocus}}" bindblur="textBlur" value="{{areaText}}" />
+      </view>
+      <view wx:if="{{showTips}}" bindtap="showTextarea" style="height:100px;margin-bottom: 30rpx;">
+        <view style="margin-bottom:30rpx;">点击编辑文字内容</view>
+        <view>小提示：</view>
+        <view>有段落标题和重点会更受欢迎哦～</view>
+      </view>
+      <image src="/images/add_img.png" class="add-img-icon" bindtap="chooseImg" />
+    </view>
+    <!-- <view class="article-cont" wx:if="{{contents.conts.length===0}}">
+      <view wx:if="{{showTextarea}}">
+        <textarea class="text-area" bindblur="textBlur" value="{{areaText}}" />
+      </view>
+      <view wx:if="{{!showTextarea}}" bindtap="showTextarea" style="height:150px;margin-bottom: 30rpx;">
+        <view style="margin-bottom:30rpx;">点击编辑文字内容</view>
+        <view>小提示：</view>
+        <view>有段落标题和重点会更受欢迎哦～</view>
+      </view>
+      <image src="/images/add_img.png" class="add-img-icon" bindtap="chooseImg" />
+    </view> -->
+  </view>
+</view>
+<view class="pub-mask" catchtouchmove="ture" style="height:{{winHeight}}px;top:{{height>30?(height*2 - 2):(height*2 + 26)}}px;" wx:if="{{showImgOpt}}">
+  <image src="{{currImg}}" class="prev-img" mode="aspectFill" />
+  <view class="btns-container">
+    <view class="img-btns">
+      <view class="img-op-btn red-btn" bindtap="deleteImg">删除此图片</view>
+      <view class="img-op-btn blue-btn" bindtap="chooseImgAgain">重新上传</view>
+    </view>
+    <view class="cancelop-btn" bindtap="cancelImg">取消操作</view>
+  </view>
+</view>
+
+<view class="choose-game-mask" hidden="{{!showMask}}" style="top:{{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+  <!-- catchtouchmove="ture" -->
+  <view class="mask-head">
+    <view>请选择想要发布到的专区</view>
+    <image src="/images/dark_down_arrow.png" class="down-arrow" />
+  </view>
+  <view class="m-game-list" hover-class="list-hover" wx:for="{{gameLists}}" wx:key="index" data-name="{{item.name}}" data-id="{{item.id}}" bindtap="chooseGame">
+    <view class="m-game-info">
+      <image src="{{item.icon_url}}" class="m-game-logo" />
+      <view>
+        <view>{{item.name}}</view>
+        <view class="m-game-nums">{{item.strategy_count}}条 话题</view>
+      </view>
+    </view>
+    <image src="/images/publish_btn1.png" class="gray-publish-btn" />
+  </view>
+  <view class="cancel-btn" wx:if="{{gameLists.length>0}}" bindtap="hideMask">取消发布</view>
+</view>
+
+<view class="pub-mask" catchtouchmove="ture" style="height:{{winHeight}}px;top:{{height>30?(height*2 - 2):(height*2 + 26)}}px;" wx:if="{{showPoster}}">
+  <image src="{{posterImg}}" class="poster-img" mode="widthFix" />
+    <view class="poster-btns">
+      <button class="poster-btn blue-btn" open-type="share">分享好友</button>
+      <view class="poster-btn orange-btn" bindtap="savePoster">保存到相册</view>
+    </view>
+</view>
+
+<dialog-wxml dialog-show="{{showDialog}}" open-type="{{openType}}" auth-info="{{authInfo}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

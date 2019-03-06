@@ -1,0 +1,53 @@
+/* pages/invitePrize/invitePrize.wxss */
+page{position: relative;}
+.game-big-poster{display: block;width: 100%;height: 100%;position: absolute;left: 0;top: 0;z-index: 2}
+.invite-container{
+  position: absolute;left: 0;top: 0;width: 100%;height: 100%;z-index: 3;background: transparent;overflow: hidden;
+}
+.page-view{
+  width: 100%;height: 100%;
+  /* background: url('https://gifres.79643.com/mini_anime/2018/10/01/adeb3cb354d5657d6b6a961a193f89a3_810x1440.jpg') no-repeat; */
+  background-size: 100% 100%;
+  /* overflow: hidden; */
+}
+.invite-title{
+  font-size: 72rpx;color: #fff;
+  position: absolute;left: 232rpx;bottom: 0
+}
+.ivite-slogen{color: #FFEB65;font-size: 36rpx;margin-bottom: 60rpx;text-align: center;}
+.card-view{width: 670rpx;height: 660rpx;background: #fff;position: relative;border-radius: 10rpx;margin: 0 auto 160rpx;}
+.half-circle{width: 40rpx;height: 40rpx;background: #000;position: absolute;border-radius: 50%;opacity: 0.5}
+.left-half-circle{left: -20rpx;bottom: 160rpx;}
+.right-half-circle{right: -20rpx;bottom: 160rpx;}
+.user-infoview{padding: 60rpx 50rpx 40rpx;display: flex;align-items: center;font-size: 24rpx;color: #888}
+.user-avatar{width: 92rpx;height: 92rpx;border-radius: 50%;margin-right: 20rpx;background: #eee}
+.user-name{color: #343434;font-size: 32rpx;margin-bottom: 6rpx;}
+.card-img{display: block;width: 584rpx;height: 256rpx;background: #eee;margin: 0 auto 50rpx;}
+.break-view{display: flex;align-items: center;color: #C7C7CC;font-size: 24rpx;padding: 0 34rpx;margin-bottom: 30rpx}
+.doted-line{width: 184rpx;height: 2rpx;border-top: 1rpx dotted #C7C7CC}
+.break-text{margin-left: 20rpx;margin-right: 20rpx}
+.card-scroll-view{width: 100%;height: 56rpx;display: flex;white-space:nowrap;}
+/* .avatar-group{display: flex;height: 100%;} */
+.user-friend-avatar{width: 52rpx;height: 52rpx;border-radius: 50%;background: #eee;margin-right: 30rpx;border: 2rpx solid #eee}
+.user-friend-avatar:first-child{margin-left: 50rpx;}
+.btn-group{padding: 0 60rpx;display: flex;justify-content: space-between;color: #fff;font-size: 36rpx}
+.has-chance{display: flex;justify-content: center;}
+
+button{padding: 0;margin: 0;color: #fff}
+button::after{border: none}
+.button-hover{color: #fff}
+.invite-btn{display: flex;align-items: center;justify-content: center;width: 280rpx;height: 92rpx;border-radius: 50rpx;box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.15);}
+.blue-btn{background: #18A3FE}
+.orange-btn{background: #F97956}
+.head-bg{width: 100%;height: 230rpx;position: absolute;left: 0;top: 0;
+  background: url('https://gifres.79643.com/mini_aide/2018/12/26/171e92173daebab1124ab402f831fd69.png');
+  background-size: 100% 100%
+}
+.invite-title-img-view{
+  width: 416rpx;height: 176rpx;margin: 114rpx auto 54rpx;
+}
+.invite-title-img{width: 100%;height: 100%;display: block;}
+.go-prize-btn{
+  display: block;width: 420rpx;height: 92rpx;margin: 0 auto;
+}
+.no-friends-view{color: #C7C7CC;font-size: 28rpx;text-align: center;}

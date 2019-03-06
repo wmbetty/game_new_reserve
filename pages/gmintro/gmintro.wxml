@@ -1,0 +1,11 @@
+<!--pages/gmintro/gmintro.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view class="comment-title" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <image mode="aspectFill" src="{{games.bg_url}}" class="banner-img" />
+    <view class="hero-group" wx:if="{{!showEmpty}}">
+      <image mode="widthFix" wx:for="{{roles}}" wx:key="index" src="{{item.img_url}}" class="hero-img" />
+    </view>
+    <empty-wxml wx:if="{{showEmpty}}"></empty-wxml>
+  </view>
+</view>

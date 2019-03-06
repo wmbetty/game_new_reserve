@@ -1,0 +1,7 @@
+/* pages/comment/comment.wxss */
+.comment-title{
+  padding: 30rpx 20rpx 30rpx 40rpx;min-height: 46rpx;background: #F3F5FB;font-size: 32rpx;
+  display: flex;align-items: center;
+}
+.comment-area{padding: 30rpx;}
+.placeholder-text{color: #888;font-size: 32rpx;padding-left: 8rpx;}

@@ -1,0 +1,104 @@
+<!--pages/my/my.wxml-->
+
+<view>
+  <view class="page-head">
+    <image src="/images/my_bg.png" mode="aspectFill" />
+  </view>
+  <!-- 个人信息 -->
+  <view class="my-info-container">
+    <image src="{{userInfo.avatar}}" class="my-avatar" />
+    <view class="my-infos">
+      <view class="my-name">{{userInfo.nickname}}</view>
+      <view class="my-level">「 新手上路小白白 」</view>
+    </view>
+    <view wx:if="{{showFixedTab}}" class="my-tab fixed-tab" style="padding-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+      <view class="{{type*1===item.id?'tab-item tab-item-active':'tab-item'}}" wx:for="{{types}}" wx:key="index" data-type="{{item.id}}" bindtap="changeTab">
+        <view class="tab-head-item">
+          <text>{{item.type_name}}</text>
+          <text wx:if="{{item.count*1>0 && item.id*1!==3}}">{{item.count}}</text>
+        </view>
+        <view wx:if="{{type*1===item.id}}" class="{{item.count*1 && item.id*1!==3?'black-line':'black-line black-line-center'}}"></view>
+      </view>
+    </view>
+    <view wx:if="{{!showFixedTab}}" class="my-tab">
+      <view class="{{type*1===item.id?'tab-item tab-item-active':'tab-item'}}" wx:for="{{types}}" wx:key="index" data-type="{{item.id}}" bindtap="changeTab">
+        <view class="tab-head-item">
+          <text>{{item.type_name}}</text>
+          <text wx:if="{{item.count*1>0 && item.id*1!==3}}">{{item.count}}</text>
+        </view>
+        <view wx:if="{{type*1===item.id}}" class="{{item.count*1 && item.id*1!==3?'black-line':'black-line black-line-center'}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- tab内容切换 -->
+  <empty-wxml wx:if="{{showEmpty}}"></empty-wxml>
+  <view class="list-group" wx:if="{{!showEmpty && type*1!==2}}">
+    <view class="list-item" wx:for="{{topics}}" wx:key="{{index}}" data-id="{{item.id}}" catchtap="goTipDetail">
+      <view class="list-title" wx:if="{{item.title}}">{{item.title}}</view>
+      <view class="list-content" wx:if="{{item.reading!=='' || item.cover_count*1!==0}}">
+        <view style="width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" wx:if="{{item.reading !== ''}}">{{item.reading}}</view>
+        <image class="big-img" src="{{item.cover_url}}" wx:if="{{item.cover_count*1===1}}" mode="aspectFill" />
+        <view class="list-imgs" wx:if="{{item.cover_count*1>=3}}">
+          <view class="img-cont" wx:for="{{item.cover_url}}" wx:for-item="imgs" wx:for-index="imgIdx" wx:key="index">
+            <image src="{{imgs}}" class="tip-img" />
+            <view wx:if="{{imgIdx*1===2}}" class="img-total">{{item.cover_count}}张</view>
+          </view>
+        </view>
+      </view>
+      <view class="list-infos">
+        <view class="flex-item">
+          <text>{{item.created_time}}</text>
+          <text class="game-text">{{item.game_name}}</text>
+        </view>
+        <view class="flex-item">
+          <view class="flex-item lst-comment-cont">
+            <image src="/images/comment1.png" class="list-img-icon" />
+            <text wx:if="{{item.total_comment}}">{{item.total_comment}}</text>
+          </view>
+          <view class="flex-item">
+            <image src="/images/good1.png" class="list-img-icon" />
+            <text wx:if="{{item.total_praise}}">{{item.total_praise}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="list-group" wx:if="{{!showEmpty && type*1===2}}">
+    <view class="list-item" wx:for="{{topics}}" wx:key="{{index}}" data-id="{{item.parent.sid}}" catchtap="goTipDetail">
+      <view class="list-title" wx:if="{{item.content}}">{{item.content}}</view>
+      <view class="list-content">
+        <view style="width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#5A779A" >[原话题] {{item.parent.content}}</view>
+        <!-- <image class="big-img" src="{{item.cover_url}}" wx:if="{{item.cover_count*1===1}}" mode="aspectFill" />
+        <view class="list-imgs" wx:if="{{item.cover_count*1>=3}}">
+          <view class="img-cont" wx:for="{{item.cover_url}}" wx:for-item="imgs" wx:for-index="imgIdx" wx:key="index">
+            <image src="{{imgs}}" class="tip-img" />
+            <view wx:if="{{imgIdx*1===2}}" class="img-total">{{item.cover_count}}张</view>
+          </view>
+        </view> -->
+      </view>
+      <view class="list-infos">
+        <view class="flex-item">
+          <text>{{item.created_time}}</text>
+          <text class="game-text">{{item.game_name}}</text>
+        </view>
+        <view class="flex-item">
+          <view class="flex-item lst-comment-cont">
+            <image src="/images/comment1.png" class="list-img-icon" />
+            <text wx:if="{{item.total_comment}}">{{item.total_comment}}</text>
+          </view>
+          <view class="flex-item">
+            <image src="/images/good1.png" class="list-img-icon" />
+            <text wx:if="{{item.total_praise}}">{{item.total_praise}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="botom-text" wx:if="{{topics.length>=3}}">我也是有底线的</view>
+
+</view>
+<button open-type="contact" class="contact-btn"><image class="contact-btn-img" src="/images/service_icon.png" /></button>
+
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

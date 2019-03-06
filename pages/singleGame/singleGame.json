@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "nav-bar": "/components/navbar/index",
+    "dialog-wxml": "/components/dialog/dialog",
+    "empty-wxml": "/components/empty/empty",
+    "publish-btn": "/components/fixedBtn/fixedBtn"
+  }
+}

@@ -1,0 +1,7 @@
+/* components/fixedBtn/fixedBtn.wxss */
+.publish-btn{
+  position: fixed;right: 30rpx;bottom: 150rpx;
+  width: 100rpx;height: 100rpx;
+}
+.hadtab-publish-btn{bottom: 50rpx;}
+.publish-btn image{display: block;width: 100%;height: 100%;}

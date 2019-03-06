@@ -1,0 +1,5 @@
+<!--components/empty/empty.wxml-->
+<view style="padding: 120rpx 0 0;font-size:28rpx;color:#888;text-align:center">
+  <image src="/images/empty_img.png" class="empty-img" />
+  <view>暂时还没有内容哦</view>
+</view>

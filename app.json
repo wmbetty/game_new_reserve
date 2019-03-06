@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/tips/tips",
+    "pages/my/my",
+    "pages/gmintro/gmintro",
+    "pages/notices/notices",
+    "pages/notedetails/notedetails",
+    "pages/tipDetails/tipDetails",
+    "pages/comment/comment",
+    "pages/singleGame/singleGame",
+    "pages/publish/publish",
+    "pages/activityList/activityList",
+    "pages/reserveGame/reserveGame",
+    "pages/answerQues/answerQues",
+    "pages/invitePrize/invitePrize",
+    "pages/getGift/getGift",
+    "pages/reserveGames/reserveGames",
+    "pages/inviteNew/inviteNew"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "泰尼游戏助手",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#222222",
+    "selectedColor": "#222222",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "游戏",
+        "iconPath": "/images/game1.png",
+        "selectedIconPath": "/images/game2.png"
+      },
+      {
+        "pagePath": "pages/tips/tips",
+        "text": "攻略",
+        "iconPath": "/images/news1.png",
+        "selectedIconPath": "/images/news2.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/images/my1.png",
+        "selectedIconPath": "/images/my2.png"
+      }
+    ]
+  }
+}

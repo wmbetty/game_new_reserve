@@ -1,0 +1,85 @@
+<!--pages/reserveGame/reserveGame.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
+  <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
+  <view>
+    <image src="{{activity.bg_url}}" mode="widthFix" class="game-big-poster" />
+  </view>
+</view>
+
+<view class="reserve-cont" wx:if="{{showNoReserve && !showPhone && !reserveSuccess}}">
+  <view class="reserve-info">提前预约 福利不断</view>
+  <view class="up-arrow-cont">
+    <image class="up-arrow" src="/images/arrow_up.png" />
+  </view>
+
+  <view class="reserve-btn shadow-btn" bindtap="showPhoneInfo">立即预约</view>
+</view>
+
+<!-- 预约填手机号 -->
+<view class="{{showPhoneSlideDown?'reserve-cont has-phone-infos slide-down':'reserve-cont has-phone-infos slide-up'}}" wx:if="{{showPhone && !reserveSuccess}}" catchtouchmove="true">
+  <view class="reserve-info">提前预约 福利不断</view>
+  <view class="up-arrow-cont" bindtap="toggleSlide">
+    <image class="up-arrow" src="{{showPhoneSlideDown?'/images/arrow_up.png':'/images/arrow_down.png'}}" />
+  </view>
+  <view class="reserve-phone-cont" wx:if="{{showPhoneCont}}">
+    <view class="phone-tips">选择您的手机系统</view>
+    <view class="phone-container">
+      <view class="phone-flex-cont phone-icon-cont">
+        <image class="phone-icon" data-type="1" bindtap="choosePlat" mode="aspectFill" src="{{isAndrod?'/images/andr_icon.png':'/images/andr1_icon.png'}}" />
+        <image class="phone-icon" data-type="2" bindtap="choosePlat" mode="aspectFill" src="{{isAndrod?'/images/iphone1_icon.png':'/images/iphone_icon.png'}}" />
+      </view>
+      <view class="phone-flex-cont">
+        <view class="{{isAndrod?'phone-active-text':''}}">Android</view>
+        <view class="{{!isAndrod?'ios-text phone-active-text':'ios-text'}}">IOS</view>
+      </view>
+    </view>
+  </view>
+  <button wx:if="{{!showInput && showPhoneCont}}" class="reserve-btn fade-input" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">请输入你的手机号</button>
+  <input wx:if="{{showInput && !showConfirmBtn && showPhoneCont}}" class="reserve-btn fade-input phone-input" type="number" value="{{phone}}" placeholder="请输入手机号" bindblur="phoneBlur" />
+  <!-- focus="true" -->
+  <!-- <input wx:if="{{showConfirmBtn}}" class="reserve-btn fade-input" type="number" placeholder="请输入验证码" bindblur="codeBlur" /> -->
+  <view wx:if="{{!showConfirmBtn}}" class="reserve-btn" bindtap="sendCode">立即预约</view>
+  <!-- <view class="code-cont" wx:if="{{showConfirmBtn}}">
+    <view class="reserve-btn fade-input code-input-cont">
+      <input class="code-input" type="number" placeholder="请输入验证码" placeholder-style="color:#888" />
+      <image class="refresh-code" src="" />
+    </view>
+    <view class="code-time">59</view>
+  </view>
+  <view wx:if="{{showConfirmBtn}}" class="reserve-btn confirm-btn" bindtap="goReserve">确定</view> -->
+</view>
+
+<!-- 预约成功后 -->
+<view class="{{showPhoneSlideDown?'reserve-cont has-phone-infos slide-down':'reserve-cont has-phone-infos slide-up'}}" wx:if="{{reserveSuccess && activity.open_reward*1===1}}">
+  <view class="reserve-info">预约成功</view>
+  <view class="reserve-success-tips">请留意小程序及短信开服通知</view>
+  <view class="up-arrow-cont" bindtap="toggleSlide">
+    <image class="up-arrow" src="{{showPhoneSlideDown?'/images/arrow_up.png':'/images/arrow_down.png'}}" />
+  </view>
+  <view class="reserve-success-cont">
+    <image class="reserve-succ-img" src="/images/invite_bg.png" mode="aspectFill" />
+    <view class="chance-tip">获得一次机会</view>
+    <view class="gift-tip">京东卡，视频会员，网红潮物送不停</view>
+    <view wx:if="{{activity.open_reward*1===1}}" class="reserve-btn red-btn" bindtap="getPrize">马上抽奖</view>
+  </view>
+</view>
+
+<!-- 预约过 -->
+<view class="reserve-cont" wx:if="{{activity.is_booking*1===1 || (reserveSuccess && activity.open_reward*1===2)}}">
+  <view class="{{activity.open_reward*1===1?'reserve-info':'reserve-info reserve-info-noprize'}}">预约成功</view>
+  <view class="reserve-success-tips" style="margin-bottom:20rpx;">请留意小程序及短信开服通知</view>
+  <view wx:if="{{activity.open_reward*1===1}}" class="reserve-btn red-btn" bindtap="getPrize">马上抽奖</view>
+</view>
+
+<!-- 平台对接使用 -->
+<view class="dialog-mask" wx:if="{{showMask}}" catchtouchmove="true">
+  <view class="go-reward-toast" wx:if="{{showToast}}">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideMask" />
+    <image class="toast-head-img" src="/images/toast_img.png" />
+    <button class="toast-btn" open-type="getPhoneNumber" bindgetphonenumber="verifyPhone">试试手气 GO</button>
+    <view class="toast-text">验证已预约手机号</view>
+  </view>
+</view>
+
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

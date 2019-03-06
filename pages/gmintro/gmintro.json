@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "nav-bar": "/components/navbar/index",
+    "empty-wxml": "/components/empty/empty"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "dialog-wxml": "/components/dialog/dialog",
+    "empty-wxml": "/components/empty/empty"
+  }
+}

@@ -1,0 +1,42 @@
+<!--pages/invitePrize/invitePrize.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view style="height:{{winHeight}}px;overflow:hidden;background:url('{{elements.activity_booking_success_bg.value}}') no-repeat center;background-size:cover;" class="page-view">
+  <!-- <image mode="widthFix" src="{{elements.activity_booking_success_bg.value}}" class="game-big-poster" /> -->
+  <view class="invite-container">
+    <view class="invite-title-img-view">
+      <image wx:if="{{showSucc}}" src="{{elements.activity_booking_success_title.value}}" class="invite-title-img" />
+    </view>
+    <view>
+      <view class="card-view">
+        <view class="user-infoview">
+          <image src="{{inviteDatas.member.avatar}}" class="user-avatar" />
+          <view>
+            <view class="user-name">{{inviteDatas.member.nickname}}</view>
+            <view>我刚刚预约了一个很好玩的游戏</view>
+          </view>
+        </view>
+        <image class="card-img" src="{{inviteDatas.share_url}}" mode="aspectFill" />
+        <view class="break-view">
+          <view class="doted-line"></view>
+          <view class="break-text">已接受邀请的好友</view>
+          <view class="doted-line"></view>
+        </view>
+        <view wx:if="{{inviteDatas.friend.length===0}}" class="no-friends-view">暂无邀请好友哦，快去邀请吧~</view>
+        <scroll-view wx:if="{{inviteDatas.friend.length}}" scroll-x="{{true}}" class="card-scroll-view">
+          <image wx:for="{{inviteDatas.friend}}" wx:key="index" class="user-friend-avatar" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" />
+        </scroll-view>
+        <!-- <view class="left-half-circle half-circle"></view>
+        <view class="right-half-circle half-circle"></view> -->
+      </view>
+      <view class="btn-group" wx:if="{{!showGetPrizeBtn}}">
+        <button class="invite-btn blue-btn" open-type="share">分享好友</button>
+        <view class="invite-btn orange-btn" bindtap="savePoster">保存到相册</view>
+      </view>
+      <view class="btn-group has-chance" wx:if="{{showGetPrizeBtn}}">
+        <image src="{{elements.activity_booking_success_go_draw_button.value}}" mode="widthFix" class="go-prize-btn" bindtap="goPrize" />
+      </view>
+    </view>
+  </view>
+</view>
+
+<dialog-wxml dialog-show="{{showDialog}}" open-type="{{openType}}" auth-info="{{authInfo}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>

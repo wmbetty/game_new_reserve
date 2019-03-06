@@ -1,0 +1,24 @@
+<!--pages/notices/notices.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <scroll-view scroll-x="true" class="scroll-view" style="top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <view class="head-cont" wx:if="{{games.length}}">
+      <view class="{{gameId===''?'head-item head-item-active':'head-item'}}" data-id="{{''}}" bindtap="changeTab">全部</view>
+      <view class="{{gameId*1===item.id*1?'head-item head-item-active':'head-item'}}" wx:for="{{games}}" wx:key="index" data-id="{{item.id}}" bindtap="changeTab">{{item.name}}</view>
+    </view>
+  </scroll-view>
+  <view style="margin-top:{{height>30?(height*2+40):(height*2 + 68)}}px;" wx:if="{{showEmpty}}">
+    <empty-wxml></empty-wxml>
+  </view>
+  <view style="margin-top:{{height>30?(height*2+40):(height*2 + 68)}}px;" wx:if="{{games.length}}">
+    <view class="list-item" wx:for="{{news}}" wx:key="index" data-id="{{item.id}}" bindtap="goNewsDetail">
+      <view class="list-infos">
+        <view wx:if="{{item.type_id*1===1}}" class="list-tag red-border">{{item.type_name}}</view>
+        <view wx:if="{{item.type_id*1===2}}" class="list-tag blue-border">{{item.type_name}}</view>
+        <view wx:if="{{item.type_id*1===3}}" class="list-tag green-border">{{item.type_name}}</view>
+        <view class="game-infos">{{item.title}}</view>
+      </view>
+      <view class="list-date">{{item.created_time}}</view>
+    </view>
+  </view>
+</view>

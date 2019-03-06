@@ -1,0 +1,73 @@
+/* pages/notices/notices.wxss */
+page{background: #fff}
+.scroll-view{
+  position: fixed;left: 0;width: 100%;
+  border-bottom: 1rpx solid #E5E7ED;
+  height: 84rpx;background: #fff;
+  z-index: 999
+}
+.head-item{
+  color: #666;font-size: 28rpx;
+  margin-left: 30rpx;
+  padding: 20rpx 0 0 0;
+  position: relative;width: 150rpx;
+  /* overflow: hidden; */
+  text-align: center;
+  /* white-space: nowrap;text-overflow: ellipsis;word-break: break-all; */
+}
+/* .head-item:first-child{margin-left: 48rpx;} */
+.head-item:last-child{padding-right: 12rpx;}
+.head-item-active{
+  color: #111;
+  /* font-size: 32rpx;font-weight: 600; */
+}
+.head-item-active:before{
+  content: "";
+  position: absolute;left: 50%;bottom: 0;margin-left: -16rpx;
+  height: 8rpx;width: 32rpx;
+  background: #111;
+}
+::-webkit-scrollbar{
+  background-color: #ffffff;
+}
+.head-cont{
+  white-space: nowrap; display: flex;height: 100%;background: #fff
+}
+.list-item{
+  padding: 30rpx 0 20rpx;
+  /* border-bottom: 1rpx solid #E5E7ED; */
+  position: relative;
+}
+.list-item:before{
+  content: "";
+  position: absolute;left: 30rpx;bottom: 0;
+  height: 2rpx;width: 720rpx;
+  background: #E5E7ED;
+}
+.list-infos{
+  display: flex;margin-left: 128rpx;
+}
+.game-infos{
+  height: 74rpx;margin-right: 30rpx;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.list-tag{
+  position: absolute;left: 20rpx;top:26rpx;
+  width: 88rpx;height: 40rpx;font-size: 24rpx;border-radius: 10rpx;
+  display: flex;align-items: center;justify-content: center;
+}
+.blue-border{
+  border: 1rpx solid #019CFF;color: #019CFF;
+}
+.red-border{
+  border: 1rpx solid #FA5961;color: #FA5961;
+}
+.green-border{
+  border: 1rpx solid #8DBC72;color: #8DBC72;
+}
+.game-infos{color: #111;font-size: 26rpx;}
+.list-date{color: #888;font-size: 26rpx;text-align: right;margin-right: 32rpx;}

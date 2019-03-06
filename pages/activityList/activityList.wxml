@@ -1,0 +1,26 @@
+<!--pages/activityList/activityList.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <view class="tab-head" style="top:{{height>30?(height*2 - 2):(height*2 + 26)}}px">
+    <view class="{{type*1===1?'tab-item tab-item-active':'tab-item'}}" data-type="1" bindtap="changeTab">
+      <view>最新活动</view>
+      <view wx:if="{{type*1===1}}" class="black-line left-black-line"></view>
+    </view>
+    <view class="{{type*1===2?'tab-item tab-item-active':'tab-item'}}" data-type="2" bindtap="changeTab">
+      <view>参与记录</view>
+      <view wx:if="{{type*1===2}}" class="black-line right-black-line"></view>
+    </view>
+  </view>
+  <view wx:if="{{activitys.length}}" class="{{activitys.length>=5?'activity-group activity-group-botom':'activity-group'}}" style="margin-top: {{height>30?(height*2+40):(height*2 + 68)}}px;">
+    <view class="list-item" wx:for="{{activitys}}" wx:key="index" data-item="{{item}}" bindtap="goReserve">
+      <image src="{{item.big_cover_url}}" class="activity-img" mode="aspectFill" />
+      <view class="img-mask" wx:if="{{item.state*1===2 || item.state*1===1}}"></view>
+      <image wx:if="{{item.state*1===1}}" src="/images/nostart_tag.png" class="list-tag" />
+      <image wx:if="{{item.state*1===2}}" src="/images/act_end_tag.png" class="list-tag" />
+      <image wx:if="{{item.state*1===3}}" src="/images/nowing.png" class="list-tag" />
+    </view>
+  </view>
+  <view style="margin-top: {{height>30?(height*2+40):(height*2 + 68)}}px;">
+    <empty-wxml wx:if="{{showEmpty}}"></empty-wxml>
+  </view>
+</view>

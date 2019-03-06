@@ -1,0 +1,10 @@
+/* pages/gmintro/gmintro.wxss */
+.banner-img{
+  width: 100%;height: 306rpx;
+}
+.hero-group{
+  padding: 30rpx 20rpx 0;
+}
+.hero-img{
+  width: 710rpx;height: 480rpx;margin-bottom: 10rpx;border-radius: 20rpx;
+}

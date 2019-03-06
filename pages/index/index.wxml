@@ -1,0 +1,76 @@
+<!--index.wxml-->
+<view>
+  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  <!-- 轮播图 -->
+  <view class="swiper-container" style="margin-top: {{height>30?(height*2 - 2):(height*2 + 26)}}px;">
+    <swiper class="swiper-view" autoplay="{{autoplay}}" circular="{{circular}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{banners}}" wx:key="index">
+        <swiper-item>
+          <image src="{{item.img_url}}" class="slide-image" mode="aspectFill" data-index="{{index}}" bindtap="goBanner" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <!-- 公告 -->
+  <view class="note-container" bindtap="goNotices">
+    <image src="/images/notice_icon.png" class="note-icon" />
+    <view class="note-cont">
+      <view class="note-head">公告通知</view>
+      <view class="note-infos">
+        <swiper class="note-swiper" autoplay="{{autoplay}}" vertical="true" circular="true" interval="{{interval}}" duration="{{duration}}">
+          <block wx:for="{{rollData}}" wx:key="index">
+            <swiper-item>
+              <text class="swiper-txt">{{item.title}}</text>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+    </view>
+  </view>
+
+  <!-- 有奖活动 -->
+  <view class="activity-cont" wx:if="{{activitys.length}}">
+    <view class="activity-head" bindtap="goActivityList">
+      <view class="intro-title no-botom">
+        <view class="black-line"></view>
+        <view class="gm-head">热门活动</view>
+      </view>
+      <view class="act-head-right">
+        <view>更多</view>
+        <image src="/images/right_arrow.png" class="act-right-arrow" />
+      </view>
+    </view>
+    <view class="act-img-cont">
+      <view class="act-img-item" wx:for="{{activitys}}" wx:key="index" data-item="{{item}}" bindtap="goReserve">
+        <image class="act-img" src="{{item.small_cover_url}}" mode="aspectFill" />
+      </view>
+      <view class="act-img-item" wx:if="{{activitys.length===1}}">
+        <image class="act-img" src="/images/looking_act.png" mode="aspectFill" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 游戏介绍 -->
+  <view class="game-intros-cont">
+    <view class="intro-title">
+      <view class="black-line"></view>
+      <view class="gm-head">游戏推荐</view>
+    </view>
+    <view hidden="{{!(games.length>0)}}" class="game-item" wx:for="{{games}}" wx:key="index" data-id="{{item.id}}" bindtap="goGameIntro">
+      <image src="{{item.cover_url}}" class="game-img" mode="aspectFill" />
+    </view>
+  </view>
+
+  <!-- slogen -->
+  <view class="slogen-view">
+    <view class="slogen-line"></view>
+    <view class="slogen-texts">
+      <view class="big-text">小游戏 大快乐</view>
+      <view class="small-text">泰尼游戏玩家宝典</view>
+    </view>
+    <view class="slogen-line"></view>
+  </view>
+
+</view>
+<button open-type="contact" class="contact-btn"><image class="contact-btn-img" src="/images/service_icon.png" /></button>
