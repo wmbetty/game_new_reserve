@@ -30,47 +30,43 @@ Page({
     app.aldstat.sendEvent(`进入攻略页面`,{
       play : ""
     });
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        fun.quest(loginApi, 'POST', {code: code}, (res)=>{
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let gameListApi = backApi.gameListApi+token;
+        let strategyApi = backApi.strategyApi+token;
+        let strategyNewestApi = backApi.strategyNewestApi+token;
+        wx.showLoading();
+        fun.quest(gameListApi,'GET',{},(res)=>{
           if (res) {
-            let token = res.access_token;
-            that.setData({token: token});
-            let gameListApi = backApi.gameListApi+token;
-            let strategyApi = backApi.strategyApi+token;
-            let strategyNewestApi = backApi.strategyNewestApi+token;
-            wx.showLoading();
-            fun.quest(gameListApi,'GET',{},(res)=>{
-              if (res) {
-                wx.hideLoading();
-                that.setData({games: res});
-              } else {
-                wx.hideLoading();
-              }
-            })
-            fun.quest(strategyApi,'GET',{},(res)=>{
-              if (res) {
-                let datas = res;
-                if (datas.length>0) {
-                  for (let item of datas) {
-                    item.created_time = item.created_time.substring(0, 10);
-                    that.setData({lists: datas});
-                  }
-                } else {
-                  Api.wxShowToast('暂无攻略数据~', 'none', 2000);
-                }
-              }
-            })
-            fun.quest(strategyNewestApi,'GET',{},(res)=>{
-              if (res) {
-                let gameDatas = res;
-                that.setData({gameAreas: gameDatas})
-              }
-            })
+            wx.hideLoading();
+            that.setData({games: res});
+          } else {
+            wx.hideLoading();
           }
         })
+        fun.quest(strategyApi,'GET',{},(res)=>{
+          if (res) {
+            let datas = res;
+            if (datas.length>0) {
+              for (let item of datas) {
+                item.created_time = item.created_time.substring(0, 10);
+                that.setData({lists: datas});
+              }
+            } else {
+              Api.wxShowToast('暂无攻略数据~', 'none', 2000);
+            }
+          }
+        })
+        fun.quest(strategyNewestApi,'GET',{},(res)=>{
+          if (res) {
+            let gameDatas = res;
+            that.setData({gameAreas: gameDatas})
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

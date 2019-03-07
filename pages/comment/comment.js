@@ -27,19 +27,13 @@ Page({
     if (options.id) {
       that.setData({commentId: options.id})
     }
-    that.setData({sid: options.sid})
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-          } else {
-            console.log('token获取失败')
-          }
-        })
+    that.setData({sid: options.sid});
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

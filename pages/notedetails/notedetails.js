@@ -23,32 +23,26 @@ Page({
       play : ""
     });
 
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let newsDetailApi = backApi.newsDetailApi+options.id;
-            wx.showLoading();
-            fun.quest(newsDetailApi,'GET',{'access-token': token},(res)=>{
-              if (res) {
-                wx.hideLoading();
-                let nvabarData = {
-                  title: res.title, showCapsule: 1
-                }
-                that.setData({details: res, nvabarData: nvabarData});
-                WxParse.wxParse('article', 'html', res.content, that, 0);
-              } else {
-                wx.hideLoading();
-              }
-            })
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let newsDetailApi = backApi.newsDetailApi+options.id;
+        wx.showLoading();
+        fun.quest(newsDetailApi,'GET',{'access-token': token},(res)=>{
+          if (res) {
+            wx.hideLoading();
+            let nvabarData = {
+              title: res.title, showCapsule: 1
+            }
+            that.setData({details: res, nvabarData: nvabarData});
+            WxParse.wxParse('article', 'html', res.content, that, 0);
           } else {
-            console.log('token获取失败')
+            wx.hideLoading();
           }
         })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

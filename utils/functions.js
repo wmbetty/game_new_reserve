@@ -1,3 +1,4 @@
+const backApi = require('../utils/util');
 const Api = require('../utils/wxApi');
 
 function taskMake(api, method, paramData={}, callback) {
@@ -22,8 +23,26 @@ function quest(api, method, paramData={}, callback) {
   })
 }
 
+function wxLogin() {
+  let loginApi = backApi.loginApi;
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success: function(res) {
+        let code = res.code;
+        quest(loginApi, 'POST', {code: code}, (res)=>{
+          if (res) {
+            let token = res.access_token;
+            resolve(token)
+          }
+        })
+      }
+    })
+  })
+}
+
 
 module.exports = {
   taskMake: taskMake,
-  quest: quest
+  quest: quest,
+  wxLogin: wxLogin
 }

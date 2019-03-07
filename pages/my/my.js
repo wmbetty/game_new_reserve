@@ -30,34 +30,31 @@ Page({
     });
     let userInfo = wx.getStorageSync('userInfo');
     if (userInfo.id) {
-      that.setData({userInfo: userInfo})
-      let loginApi = backApi.loginApi;
-      wx.login({
-        success: function(res) {
-          let code = res.code;
-          fun.quest(loginApi, 'POST', {code: code}, (res)=>{
+      that.setData({userInfo: userInfo});
+
+      fun.wxLogin().then((res)=>{
+        if (res) {
+          let token = res;
+          that.setData({token: token});
+          let userApi = backApi.userApi+token;
+          wx.showLoading();
+          fun.quest(userApi, 'GET', {type_id: that.data.type, page: 1}, (res)=>{
             if (res) {
-              let token = res.access_token;
-              that.setData({token: token});
-              let userApi = backApi.userApi+token;
-              wx.showLoading();
-              fun.quest(userApi, 'GET', {type_id: that.data.type, page: 1}, (res)=>{
-                if (res) {
-                  wx.hideLoading();
-                  let types = res.type;
-                  let datas = res.data;
-                  that.setData({types: types});
-                  if (datas.length===0) {
-                    that.setData({showEmpty: true})
-                  } else {
-                    that.setData({topics: datas, showEmpty: false})
-                  }
-                } else {
-                  wx.hideLoading();
-                }
-              })
+              wx.hideLoading();
+              let types = res.type;
+              let datas = res.data;
+              that.setData({types: types});
+              if (datas.length===0) {
+                that.setData({showEmpty: true})
+              } else {
+                that.setData({topics: datas, showEmpty: false})
+              }
+            } else {
+              wx.hideLoading();
             }
           })
+        } else {
+          Api.wxShowToast('微信登录失败~', 'none', 2000);
         }
       })
     } else {
@@ -132,61 +129,57 @@ Page({
     that.setData({
       showDialog: false
     });
-    wx.login({
-      success: function (res) {
-        let code = res.code;
-        fun.quest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res) {
-            let token = res.access_token;
-            that.setData({token: token});
-            let updateUserInfoApi = backApi.updateUserInfoApi+token;
-            wx.getUserInfo({
-              success: (res)=>{
-                let encryptedData = res.encryptedData;
-                let iv = res.iv;
-                wx.login({
-                  success: function (res) {
-                    let code = res.code;
-                    let userData = {
-                      encryptedData: encryptedData,
-                      iv: iv,
-                      code: code
-                    }
-                    fun.quest(updateUserInfoApi,'POST',userData,(res)=> {
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let updateUserInfoApi = backApi.updateUserInfoApi+token;
+        wx.getUserInfo({
+          success: (res)=>{
+            let encryptedData = res.encryptedData;
+            let iv = res.iv;
+            wx.login({
+              success: function (res) {
+                let code = res.code;
+                let userData = {
+                  encryptedData: encryptedData,
+                  iv: iv,
+                  code: code
+                }
+                fun.quest(updateUserInfoApi,'POST',userData,(res)=> {
+                  if (res) {
+                    wx.setStorageSync('userInfo', res);
+                    that.setData({userInfo: res})
+                    Api.wxShowToast('授权成功', 'none', 2000);
+                    let userApi = backApi.userApi+token;
+                    wx.showLoading();
+                    fun.quest(userApi, 'GET', {type_id: that.data.type, page: 1}, (res)=>{
                       if (res) {
-                        wx.setStorageSync('userInfo', res);
-                        that.setData({userInfo: res})
-                        Api.wxShowToast('授权成功', 'none', 2000);
-                        let userApi = backApi.userApi+token;
-                        wx.showLoading();
-                        fun.quest(userApi, 'GET', {type_id: that.data.type, page: 1}, (res)=>{
-                          if (res) {
-                            wx.hideLoading();
-                            let types = res.type;
-                            let datas = res.data;
-                            that.setData({types: types});
-                            if (datas.length===0) {
-                              that.setData({showEmpty: true})
-                            } else {
-                              that.setData({topics: datas, showEmpty: false})
-                            }
-                          } else {
-                            wx.hideLoading();
-                          }
-                        })
+                        wx.hideLoading();
+                        let types = res.type;
+                        let datas = res.data;
+                        that.setData({types: types});
+                        if (datas.length===0) {
+                          that.setData({showEmpty: true})
+                        } else {
+                          that.setData({topics: datas, showEmpty: false})
+                        }
+                      } else {
+                        wx.hideLoading();
                       }
                     })
                   }
                 })
-                fail: (res) => {
-                  console.log(res,'ss')
-                }
               }
             })
-          } else {
-            Api.wxShowToast('token获取失败', 'none', 2000);
+            fail: (res) => {
+              console.log(res,'ss')
+            }
           }
         })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

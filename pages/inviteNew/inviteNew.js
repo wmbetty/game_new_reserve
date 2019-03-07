@@ -23,16 +23,22 @@ Page({
   },
   onLoad: function (options) {
     let that = this;
-    let token = wx.getStorageSync('token');
-    that.setData({token: token, activityId: options.activityId});
-    let rewardInviteApi = backApi.rewardInviteApi+token;
-    fun.quest(rewardInviteApi, 'GET', {activity_id: options.activityId}, (res)=>{
+    that.setData({activityId: options.activityId});
+    fun.wxLogin().then((res)=>{
       if (res) {
-        let datas = res;
-        that.setData({inviteDatas: datas});
+        let token = res;
+        that.setData({token: token});
+        let rewardInviteApi = backApi.rewardInviteApi+token;
+        fun.quest(rewardInviteApi, 'GET', {activity_id: options.activityId}, (res)=>{
+          if (res) {
+            let datas = res;
+            that.setData({inviteDatas: datas});
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
-
   },
   onReady: function () {},
   onShow: function () {

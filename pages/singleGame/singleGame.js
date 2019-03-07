@@ -24,47 +24,40 @@ Page({
     app.aldstat.sendEvent(`进入某个游戏攻略页面，当前游戏id为${options.id}`,{
       play : ""
     });
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let gameDetailApi = backApi.gameDetailApi+ options.id;
-            wx.showLoading();
-            let allStrategyApi = backApi.allStrategyApi+token;
-            fun.quest(allStrategyApi,'GET',{game_id: options.id,type_id: 3, page: 1},(res)=>{
-              if (res) {
-                wx.hideLoading();
-                let datas = res;
-                that.setData({types: datas.type.reverse()})
-                if (datas.data.length>0) {
-                  for (let item of datas.data) {
-                    item.created_time = item.created_time.substring(0, 10);
-                    that.setData({lists: datas.data, showEmpty: false});
-                  }
-                } else {
-                  wx.hideLoading();
-                  that.setData({showEmpty: true});
-                }
-              } else {
-                wx.hideLoading();
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let gameDetailApi = backApi.gameDetailApi+ options.id;
+        wx.showLoading();
+        let allStrategyApi = backApi.allStrategyApi+token;
+        fun.quest(allStrategyApi,'GET',{game_id: options.id,type_id: 3, page: 1},(res)=>{
+          if (res) {
+            wx.hideLoading();
+            let datas = res;
+            that.setData({types: datas.type.reverse()})
+            if (datas.data.length>0) {
+              for (let item of datas.data) {
+                item.created_time = item.created_time.substring(0, 10);
+                that.setData({lists: datas.data, showEmpty: false});
               }
-            })
-            fun.quest(gameDetailApi,'GET',{'access-token':token},(res)=>{
-              if (res) {
-                that.setData({games: res});
-              }
-            })
+            } else {
+              wx.hideLoading();
+              that.setData({showEmpty: true});
+            }
           } else {
-            console.log('token获取失败')
+            wx.hideLoading();
           }
         })
+        fun.quest(gameDetailApi,'GET',{'access-token':token},(res)=>{
+          if (res) {
+            that.setData({games: res});
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
-
   },
   onReady: function () {},
   onShow: function () {

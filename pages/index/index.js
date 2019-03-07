@@ -74,44 +74,41 @@ Page({
         url: `/pages/activityList/activityList`
       })
     }
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        fun.quest(loginApi, 'POST', {code: code}, (res)=>{
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let bannerApi = backApi.bannerApi+token;
+        let newestApi = backApi.newestApi+token;
+        let activityRecommendApi = backApi.activityRecommendApi+token;
+        let gameListApi = backApi.gameListApi+token;
+        fun.quest(bannerApi,'GET',{},(res)=>{
           if (res) {
-            let token = res.access_token;
-            that.setData({token: token});
-            let bannerApi = backApi.bannerApi+token;
-            let newestApi = backApi.newestApi+token;
-            let activityRecommendApi = backApi.activityRecommendApi+token;
-            let gameListApi = backApi.gameListApi+token;
-            fun.quest(bannerApi,'GET',{},(res)=>{
-              if (res) {
-                that.setData({banners: res});
-              }
-            })
-            fun.quest(newestApi,'GET',{},(res)=>{
-              if (res) {
-                that.setData({rollData: res});
-              }
-            })
-            fun.quest(activityRecommendApi,'GET',{},(res)=>{
-              if (res) {
-                that.setData({activitys: res});
-              }
-            })
-            wx.showLoading();
-            fun.quest(gameListApi,'GET',{},(res)=>{
-              if (res) {
-                wx.hideLoading();
-                that.setData({games: res});
-              } else {
-                wx.hideLoading();
-              }
-            })
+            that.setData({banners: res});
           }
         })
+        fun.quest(newestApi,'GET',{},(res)=>{
+          if (res) {
+            that.setData({rollData: res});
+          }
+        })
+        fun.quest(activityRecommendApi,'GET',{},(res)=>{
+          if (res) {
+            that.setData({activitys: res});
+          }
+        })
+        wx.showLoading();
+        fun.quest(gameListApi,'GET',{},(res)=>{
+          if (res) {
+            wx.hideLoading();
+            that.setData({games: res});
+          } else {
+            wx.hideLoading();
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

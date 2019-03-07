@@ -51,52 +51,46 @@ Page({
     that.setData({height: height});
     wx.showLoading();
     setTimeout(()=>{
-      let loginApi = backApi.loginApi;
-      wx.login({
-        success: function(res) {
-          let code = res.code;
-          Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-            if (res.data.status*1===200) {
-              let token = res.data.data.access_token;
-              that.setData({token: token});
-              let strategyViewApi = backApi.strategyViewApi+token;
-              fun.quest(strategyViewApi,'GET',{strategy_id: tipId},(res)=>{
-                if (res) {
-                  that.setData({details: res});
-                  if (res.video_url==='') {
-                    that.setData({showVideo: false})
-                  } else {
-                    that.setData({showVideo: true})
-                  }
-                  WxParse.wxParse('article', 'html', res.content, that, 0);
-                  let gameDetailApi = backApi.gameDetailApi+res.game_id;
-                  fun.quest(gameDetailApi,'GET',{'access-token': token},(res)=>{
-                    if (res) {
-                      that.setData({gameDetils: res});
-                    }
-                  })
-                }
-              })
-              let commentListApi = backApi.commentListApi+token;
-              fun.quest(commentListApi,'GET',{strategy_id: tipId, page: 1},(res)=>{
-                if (res) {
-                  wx.hideLoading();
-                  let datas = res;
-                  if (datas.length===0) {
-                    that.setData({showEmpty: true});
-                  } else {
-                    that.setData({comments: datas, showEmpty: false});
-                  }
-                } else {
-                  wx.hideLoading();
-                }
-              })
+      fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let strategyViewApi = backApi.strategyViewApi+token;
+        fun.quest(strategyViewApi,'GET',{strategy_id: tipId},(res)=>{
+          if (res) {
+            that.setData({details: res});
+            if (res.video_url==='') {
+              that.setData({showVideo: false})
             } else {
-              console.log('token获取失败')
+              that.setData({showVideo: true})
             }
-          })
-        }
-      })
+            WxParse.wxParse('article', 'html', res.content, that, 0);
+            let gameDetailApi = backApi.gameDetailApi+res.game_id;
+            fun.quest(gameDetailApi,'GET',{'access-token': token},(res)=>{
+              if (res) {
+                that.setData({gameDetils: res});
+              }
+            })
+          }
+        })
+        let commentListApi = backApi.commentListApi+token;
+        fun.quest(commentListApi,'GET',{strategy_id: tipId, page: 1},(res)=>{
+          if (res) {
+            wx.hideLoading();
+            let datas = res;
+            if (datas.length===0) {
+              that.setData({showEmpty: true});
+            } else {
+              that.setData({comments: datas, showEmpty: false});
+            }
+          } else {
+            wx.hideLoading();
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
+      }
+    })
 
     },800)
   },

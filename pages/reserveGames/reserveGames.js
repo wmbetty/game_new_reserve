@@ -61,104 +61,98 @@ Page({
   },
   onLoad: function (options) {
     let that = this;
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            if(options.scene){
-              let scene = decodeURIComponent(options.scene);
-              //&是我们定义的参数链接方式
-              let scenes = options.scene.split("&");
-              if (scenes.length===2) {
-                let activityId = scenes[0];
-                app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板2)，当前活动id为${activityId}`,{
-                  play : ""
-                });
-                that.setData({activityId: activityId, isQrcodeIn: true});
-                let encryptId = scenes[1];
-                if (encryptId) {
-                  let phoneReserveApi = backApi.phoneReserveApi + token;
-                  let pdata = {
-                    activity_id: activityId,
-                    encrypt_id: encryptId,
-                    sign: 'invite'
-                  }
-                  fun.taskMake(phoneReserveApi, 'POST', pdata, (res)=>{
-                    if (res.data.status*1===200) {
-                      console.log('邀请成功，获得一次抽奖机会')
-                    } else {
-                      console.log(res.data.msg)
-                    }
-                  })
-                }
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        if(options.scene){
+          let scene = decodeURIComponent(options.scene);
+          //&是我们定义的参数链接方式
+          let scenes = options.scene.split("&");
+          if (scenes.length===2) {
+            let activityId = scenes[0];
+            app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板2)，当前活动id为${activityId}`,{
+              play : ""
+            });
+            that.setData({activityId: activityId, isQrcodeIn: true});
+            let encryptId = scenes[1];
+            if (encryptId) {
+              let phoneReserveApi = backApi.phoneReserveApi + token;
+              let pdata = {
+                activity_id: activityId,
+                encrypt_id: encryptId,
+                sign: 'invite'
               }
-            } else {
-              let encryptId = wx.getStorageSync('encryptId');
-              if (encryptId) {
-                let phoneReserveApi = backApi.phoneReserveApi + token;
-                let pData = {
-                  activity_id: options.activityId,
-                  encrypt_id: encryptId,
-                  sign: 'invite'
-                }
-                fun.taskMake(phoneReserveApi, 'POST', pData, (res)=>{
-                  if (res.data.status*1===200) {
-                    console.log('邀请成功，获得一次抽奖机会')
-                    wx.setStorageSync('encryptId', '');
-                  } else {
-                    console.log(res.data.msg)
-                  }
-                })
-              }
-            }
-            let source = options.source;
-            if (source==='platform') {
-              let activityId = options.activityId;
-              // 平台对接逻辑
-              let activityViewApi = backApi.activityViewApi+token;
-              fun.quest(activityViewApi, 'GET', {activity_id: activityId}, (res)=>{
-                if (res) {
-                  that.setData({activity: res, isQrcodeIn: true, activityId: activityId});
-                  if (res.is_booking*1!==1) {
-                    that.setData({showToast: true, showMask: true});
-                  } else {
-                    that.setData({showToast: false, showMask: false});
-                    Api.wxShowToast('已验证过手机预约~', 'none', 2000);
-                    let noElements = that.data.noElements;
-                    if (!noElements) {
-                      let scrollTop = that.data.winHeight*2;
-                      setTimeout(()=>{
-                        wx.pageScrollTo({
-                          scrollTop: scrollTop,
-                          duration: 400
-                        })
-                      },1200)
-                    }
-                  }
+              fun.taskMake(phoneReserveApi, 'POST', pdata, (res)=>{
+                if (res.data.status*1===200) {
+                  console.log('邀请成功，获得一次抽奖机会')
+                } else {
+                  console.log(res.data.msg)
                 }
               })
             }
-            let isSucc = options.isSucc;
-            let scrollTop = that.data.winHeight*2;
-            let noElements = that.data.noElements;
-            if (!noElements && isSucc) {
-              setTimeout(()=>{
-                wx.pageScrollTo({
-                  scrollTop: scrollTop,
-                  duration: 400
-                })
-              },1200)
-            }
-          } else {
-            Api.wxShowToast('token获取失败~', 'none', 2000);
           }
-        })
+        } else {
+          let encryptId = wx.getStorageSync('encryptId');
+          if (encryptId) {
+            let phoneReserveApi = backApi.phoneReserveApi + token;
+            let pData = {
+              activity_id: options.activityId,
+              encrypt_id: encryptId,
+              sign: 'invite'
+            }
+            fun.taskMake(phoneReserveApi, 'POST', pData, (res)=>{
+              if (res.data.status*1===200) {
+                console.log('邀请成功，获得一次抽奖机会')
+                wx.setStorageSync('encryptId', '');
+              } else {
+                console.log(res.data.msg)
+              }
+            })
+          }
+        }
+        let source = options.source;
+        if (source==='platform') {
+          let activityId = options.activityId;
+          // 平台对接逻辑
+          let activityViewApi = backApi.activityViewApi+token;
+          fun.quest(activityViewApi, 'GET', {activity_id: activityId}, (res)=>{
+            if (res) {
+              that.setData({activity: res, isQrcodeIn: true, activityId: activityId});
+              if (res.is_booking*1!==1) {
+                that.setData({showToast: true, showMask: true});
+              } else {
+                that.setData({showToast: false, showMask: false});
+                Api.wxShowToast('已验证过手机预约~', 'none', 2000);
+                let noElements = that.data.noElements;
+                if (!noElements) {
+                  let scrollTop = that.data.winHeight*2;
+                  setTimeout(()=>{
+                    wx.pageScrollTo({
+                      scrollTop: scrollTop,
+                      duration: 400
+                    })
+                  },1200)
+                }
+              }
+            }
+          })
+        }
+        let isSucc = options.isSucc;
+        let scrollTop = that.data.winHeight*2;
+        let noElements = that.data.noElements;
+        if (!noElements && isSucc) {
+          setTimeout(()=>{
+            wx.pageScrollTo({
+              scrollTop: scrollTop,
+              duration: 400
+            })
+          },1200)
+        }
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
-    });
+    })
 
     let platform = app.globalData.platform;
     if (platform === 'IOS') {
@@ -193,79 +187,73 @@ Page({
     that.setData({height: height, winHeight: winHeight});
 
     setTimeout(()=>{
-      let loginApi = backApi.loginApi;
-      wx.login({
-        success: function(res) {
-          let code = res.code;
-          Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-            if (res.data.status*1===200) {
-              let token = res.data.data.access_token;
-              let activityViewApi = backApi.activityViewApi+token;
-              fun.quest(activityViewApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  that.setData({activity: res});
-                  if (res.is_booking*1===1) {
-                    that.setData({showReserved: true})
-                  }else {
-                    that.setData({showNoReserve: true})
-                  }
-                }
-              })
-              let reserveElementsApi = backApi.reserveElementsApi+token;
-              fun.quest(reserveElementsApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  let len = Object.keys(res).length;
-                  if (len===0) {
-                    that.setData({noElements: true})
-                  } else {
-                    that.setData({
-                      elements: res
-                    })
-                  }
-                }
-              })
-              let rulesApi = backApi.rulesApi+token;
-              fun.quest(rulesApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  that.setData({rules: res})
-                }
-              })
-              let gameGeaturesApi = backApi.gameGeaturesApi+token;
-              fun.quest(gameGeaturesApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  that.setData({swipers: res})
-                }
-              })
-              let rewardDataApi = backApi.rewardDataApi+token;
-              fun.quest(rewardDataApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  let datas = res;
-                  that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
-                    rewardUrl: datas.reward_url, myPrizes: datas.my_prize_record, sendNumber: datas.send_number,
-                    rewardSendNumber: datas.reward_send_number
-                  });
-                }
-              })
-              let ladderApi = backApi.ladderApi+token;
-              fun.quest(ladderApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  let datas = res;
-                  that.setData({ladders: datas});
-                }
-              })
-              let rewardInviteApi = backApi.rewardInviteApi+token;
-              fun.quest(rewardInviteApi, 'GET', {activity_id: aid}, (res)=>{
-                if (res) {
-                  let datas = res;
-                  that.setData({inviteDatas: datas});
-                }
-              })
-            } else {
-              console.log('token获取失败')
+      fun.wxLogin().then((res)=>{
+        if (res) {
+          let token = res;
+          let activityViewApi = backApi.activityViewApi+token;
+          fun.quest(activityViewApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              that.setData({activity: res});
+              if (res.is_booking*1===1) {
+                that.setData({showReserved: true})
+              }else {
+                that.setData({showNoReserve: true})
+              }
             }
           })
+          let reserveElementsApi = backApi.reserveElementsApi+token;
+          fun.quest(reserveElementsApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              let len = Object.keys(res).length;
+              if (len===0) {
+                that.setData({noElements: true})
+              } else {
+                that.setData({
+                  elements: res
+                })
+              }
+            }
+          })
+          let rulesApi = backApi.rulesApi+token;
+          fun.quest(rulesApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              that.setData({rules: res})
+            }
+          })
+          let gameGeaturesApi = backApi.gameGeaturesApi+token;
+          fun.quest(gameGeaturesApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              that.setData({swipers: res})
+            }
+          })
+          let rewardDataApi = backApi.rewardDataApi+token;
+          fun.quest(rewardDataApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              let datas = res;
+              that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
+                rewardUrl: datas.reward_url, myPrizes: datas.my_prize_record, sendNumber: datas.send_number,
+                rewardSendNumber: datas.reward_send_number
+              });
+            }
+          })
+          let ladderApi = backApi.ladderApi+token;
+          fun.quest(ladderApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              let datas = res;
+              that.setData({ladders: datas});
+            }
+          })
+          let rewardInviteApi = backApi.rewardInviteApi+token;
+          fun.quest(rewardInviteApi, 'GET', {activity_id: aid}, (res)=>{
+            if (res) {
+              let datas = res;
+              that.setData({inviteDatas: datas});
+            }
+          })
+        } else {
+          Api.wxShowToast('微信登录失败~', 'none', 2000);
         }
-      })
+     })
     },300)
 
     let userInfo = wx.getStorageSync('userInfo');

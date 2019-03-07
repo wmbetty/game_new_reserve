@@ -34,24 +34,19 @@ Page({
   },
   onLoad: function (options) {
     let that = this;
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let gameListApi = backApi.gameListApi+token;
-            fun.quest(gameListApi,'GET',{},(res)=>{
-              if (res) {
-                that.setData({gameLists: res});
-              }
-            })
-          } else {
-            console.log('token获取失败')
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let gameListApi = backApi.gameListApi+token;
+        fun.quest(gameListApi,'GET',{},(res)=>{
+          if (res) {
+            that.setData({gameLists: res});
           }
         })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
 

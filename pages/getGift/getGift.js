@@ -49,21 +49,6 @@ Page({
     app.aldstat.sendEvent(`进入抽奖页面，当前活动id为${options.activityId}`,{
       play : ""
     });
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-          } else {
-            console.log('token获取失败')
-          }
-        })
-      }
-    })
-
     wx.setStorageSync('pinActivityId', options.activityId);
   },
   onReady: function () {},
@@ -74,49 +59,45 @@ Page({
     let winHeight = app.globalData.screenHeight;
     let gzCode = wx.getStorageSync('gzCode');
     that.setData({height: height, winHeight: winHeight});
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            let attentionTaskApi = backApi.phoneReserveApi+token;
-            let rewardDataApi = backApi.rewardDataApi+token;
-            if (gzCode && gzCode*1===1035) {
-              fun.taskMake(attentionTaskApi, 'POST', {activity_id: pageData.activityId, sign: 'attention', code: gzCode, scene: '1035'}, (res)=>{
-                if (res.data.status*1===200) {
-                  console.log('关注成功')
-                } else {
-                  console.log(res, '出错了')
-                }
-              })
-              setTimeout(()=>{
-                fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
-                  if (res) {
-                    let datas = res;
-                    that.setData({myPrizes: datas.my_prize_record, prizeRecord: datas.prize_record,
-                      tasks: datas.task, rewardCount: datas.reward_count, rewardUrl: datas.reward_url,
-                      rules: datas.rule, sendNumber: datas.send_number, rewardSendNumber: datas.reward_send_number
-                    });
-                  }
-                })
-              }, 200)
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let attentionTaskApi = backApi.phoneReserveApi+token;
+        let rewardDataApi = backApi.rewardDataApi+token;
+        if (gzCode && gzCode*1===1035) {
+          fun.taskMake(attentionTaskApi, 'POST', {activity_id: pageData.activityId, sign: 'attention', code: gzCode, scene: '1035'}, (res)=>{
+            if (res.data.status*1===200) {
+              console.log('关注成功')
             } else {
-              fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
-                if (res) {
-                  let datas = res;
-                  that.setData({myPrizes: datas.my_prize_record, prizeRecord: datas.prize_record,
-                    tasks: datas.task, rewardCount: datas.reward_count, rewardUrl: datas.reward_url,
-                    rules: datas.rule, sendNumber: datas.send_number, rewardSendNumber: datas.reward_send_number
-                  });
-                }
-              })
+              console.log(res, '出错了')
             }
-          } else {
-            console.log('token获取失败')
-          }
-        })
+          })
+          setTimeout(()=>{
+            fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+              if (res) {
+                let datas = res;
+                that.setData({myPrizes: datas.my_prize_record, prizeRecord: datas.prize_record,
+                  tasks: datas.task, rewardCount: datas.reward_count, rewardUrl: datas.reward_url,
+                  rules: datas.rule, sendNumber: datas.send_number, rewardSendNumber: datas.reward_send_number
+                });
+              }
+            })
+          }, 200)
+        } else {
+          fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+            if (res) {
+              let datas = res;
+              that.setData({myPrizes: datas.my_prize_record, prizeRecord: datas.prize_record,
+                tasks: datas.task, rewardCount: datas.reward_count, rewardUrl: datas.reward_url,
+                rules: datas.rule, sendNumber: datas.send_number, rewardSendNumber: datas.reward_send_number
+              });
+            }
+          })
+        }
+      } else {
+        Api.wxShowToast('token获取失败~', 'none', 2000);
       }
     })
     let userInfo = wx.getStorageSync('userInfo');

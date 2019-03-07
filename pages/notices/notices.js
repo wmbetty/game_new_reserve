@@ -20,45 +20,40 @@ Page({
   },
   onLoad: function (options) {
     let that = this;
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let gameListApi = backApi.gameListApi+token;
-            let newsListApi = backApi.newsListApi+token;
-            wx.showLoading();
-            fun.quest(gameListApi,'GET',{},(res)=>{
-              if (res) {
-                wx.hideLoading();
-                let datas = res;
-                for (let item of datas) {
-                  if (item.name.length>4) {
-                    item.name = item.name.substring(0,4)+'...';
-                  }
-                }
-                that.setData({games: datas});
-              } else {
-                wx.hideLoading();
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let gameListApi = backApi.gameListApi+token;
+        let newsListApi = backApi.newsListApi+token;
+        wx.showLoading();
+        fun.quest(gameListApi,'GET',{},(res)=>{
+          if (res) {
+            wx.hideLoading();
+            let datas = res;
+            for (let item of datas) {
+              if (item.name.length>4) {
+                item.name = item.name.substring(0,4)+'...';
               }
-            })
-            fun.quest(newsListApi,'GET',{page: 1},(res)=>{
-              if (res) {
-                let datas = res;
-                that.setData({page: 1});
-                for (let item of datas) {
-                  item.created_time = item.created_time.substring(0, 10);
-                  that.setData({news: datas});
-                }
-              }
-            })
+            }
+            that.setData({games: datas});
           } else {
-            console.log('token获取失败')
+            wx.hideLoading();
           }
         })
+        fun.quest(newsListApi,'GET',{page: 1},(res)=>{
+          if (res) {
+            let datas = res;
+            that.setData({page: 1});
+            for (let item of datas) {
+              item.created_time = item.created_time.substring(0, 10);
+              that.setData({news: datas});
+            }
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

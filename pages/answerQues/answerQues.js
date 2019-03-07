@@ -34,30 +34,24 @@ Page({
     app.aldstat.sendEvent(`进入答题页面，当前活动id为${options.activityId}`,{
       play : ""
     });
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let questionApi = backApi.questionApi+token;
-            fun.quest(questionApi, 'GET', {activity_id: options.activityId}, (res)=>{
-              if (res) {
-                let datas = res;
-                if (datas.answer) {
-                  that.setData({todayQues: datas.answer, todayQuestionId: datas.answer.activity_id, showChoice: true})
-                } else {
-                  that.setData({noQues: true})
-                }
-                that.setData({record: datas.record})
-              }
-            })
-          } else {
-            console.log('token获取失败')
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let questionApi = backApi.questionApi+token;
+        fun.quest(questionApi, 'GET', {activity_id: options.activityId}, (res)=>{
+          if (res) {
+            let datas = res;
+            if (datas.answer) {
+              that.setData({todayQues: datas.answer, todayQuestionId: datas.answer.activity_id, showChoice: true})
+            } else {
+              that.setData({noQues: true})
+            }
+            that.setData({record: datas.record})
           }
         })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },

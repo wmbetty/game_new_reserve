@@ -35,33 +35,28 @@ Page({
       that.setData({showGetPrizeBtn: true})
     }
     that.setData({activityId: actId});
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let rewardInviteApi = backApi.rewardInviteApi+token;
-            fun.quest(rewardInviteApi, 'GET', {activity_id: actId}, (res)=>{
-              if (res) {
-                let datas = res;
-                that.setData({inviteDatas: datas});
-              }
-            })
-            let reserveElementsApi = backApi.reserveElementsApi+token;
-            fun.quest(reserveElementsApi, 'GET', {activity_id: actId}, (res)=>{
-              if (res) {
-                that.setData({
-                  elements: res
-                })
-              }
-            })
-          } else {
-            console.log('token获取失败')
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let rewardInviteApi = backApi.rewardInviteApi+token;
+        fun.quest(rewardInviteApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            let datas = res;
+            that.setData({inviteDatas: datas});
           }
         })
+        let reserveElementsApi = backApi.reserveElementsApi+token;
+        fun.quest(reserveElementsApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            that.setData({
+              elements: res
+            })
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
 

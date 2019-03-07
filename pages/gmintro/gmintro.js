@@ -22,38 +22,33 @@ Page({
     app.aldstat.sendEvent(`进入游戏介绍页面，当前游戏id为${options.id}`,{
       play : ""
     });
-    let loginApi = backApi.loginApi;
-    wx.login({
-      success: function(res) {
-        let code = res.code;
-        Api.wxRequest(loginApi, 'POST', {code: code}, (res)=>{
-          if (res.data.status*1===200) {
-            let token = res.data.data.access_token;
-            that.setData({token: token});
-            let gameDetailApi = backApi.gameDetailApi+options.id;
-            let gameRolesApi = backApi.gameRolesApi+token;
-            fun.quest(gameDetailApi,'GET',{'access-token': token}, (res)=>{
-              if (res) {
-                let nvabarData = {
-                  title: res.name, showCapsule: 1
-                }
-                that.setData({games: res, nvabarData: nvabarData});
-              }
-            })
-            fun.quest(gameRolesApi,'GET',{game_id: options.id}, (res)=>{
-              if (res) {
-                let datas = res;
-                if (datas.length===0) {
-                  that.setData({showEmpty: true})
-                } else {
-                  that.setData({roles: datas, showEmpty: false});
-                }
-              }
-            })
-          } else {
-            console.log('token获取失败')
+
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let gameDetailApi = backApi.gameDetailApi+options.id;
+        let gameRolesApi = backApi.gameRolesApi+token;
+        fun.quest(gameDetailApi,'GET',{'access-token': token}, (res)=>{
+          if (res) {
+            let nvabarData = {
+              title: res.name, showCapsule: 1
+            }
+            that.setData({games: res, nvabarData: nvabarData});
           }
         })
+        fun.quest(gameRolesApi,'GET',{game_id: options.id}, (res)=>{
+          if (res) {
+            let datas = res;
+            if (datas.length===0) {
+              that.setData({showEmpty: true})
+            } else {
+              that.setData({roles: datas, showEmpty: false});
+            }
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
   },
