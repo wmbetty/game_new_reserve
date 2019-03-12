@@ -512,8 +512,17 @@ Page({
                   let scrollTop = pageData.winHeight*2;
                   let noElements = pageData.noElements;
                   that.setData({showMask: false});
+                  let rewardDataApi = backApi.rewardDataApi+pageData.token;
                   if (!noElements) {
                     setTimeout(()=>{
+                      fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+                        if (res) {
+                          let datas = res;
+                          that.setData({rewardCount: datas.reward_count});
+                        } else {
+                          console.log('出错了~')
+                        }
+                      });
                       wx.pageScrollTo({
                         scrollTop: scrollTop,
                         duration: 400
