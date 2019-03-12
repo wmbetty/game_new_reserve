@@ -2,8 +2,8 @@
 <view>
   <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
   <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
-  <view>
-    <image src="{{activity.bg_url}}" mode="widthFix" class="game-big-poster" />
+  <view style="height:{{winHeight}}px;background:url('{{activity.bg_url}}') no-repeat;background-size:cover;width:100%;">
+    <!-- <image src="{{activity.bg_url}}" mode="widthFix" class="game-big-poster" /> -->
   </view>
 </view>
 
