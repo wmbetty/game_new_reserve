@@ -226,7 +226,7 @@ button.invite-btn{background: none}
 .lst-user-avatar{display: block;margin: 30rpx auto 12rpx;}
 .list-item-view{margin-left: 46rpx;text-align: center;}
 .invite-nums-cont{
-  width: 660rpx;height: 180rpx;overflow: hidden;
+  width: 500rpx;height: 180rpx;overflow: hidden;
   background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;margin: 0 auto 44rpx;
 }
 .no-radius{border-radius: 0;margin-bottom: 20rpx;background: none;margin-top: 20rpx;}

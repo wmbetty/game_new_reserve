@@ -624,6 +624,15 @@ Page({
                 that.setData({
                   prizeObj: res.prize, showGetPrize: true
                 });
+                let rewardDataApi = backApi.rewardDataApi+pageData.token;
+                fun.quest(rewardDataApi, 'GET', {activity_id: activityId}, (res)=>{
+                  if (res) {
+                    let datas = res;
+                    that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
+                      myPrizes: datas.my_prize_record
+                    });
+                  }
+                })
               }, duration)
             } else {
               wx.hideLoading();
