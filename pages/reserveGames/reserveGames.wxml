@@ -4,7 +4,6 @@
   <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
   <view style="height:{{winHeight}}px;position:relative">
     <view class="game-big-poster-view" style="background:url('{{activity.bg_url}}') no-repeat center;background-size:cover;">
-      <!-- <image src="{{activity.bg_url}}" mode="widthFix" class="game-big-poster" /> -->
     </view>
     <view class="btn-container">
       <image wx:if="{{showNoReserve}}" bindtap="showPhoneInfo" class="btn-img" mode="widthFix" src="{{elements.activity_booking_button.value}}" />
@@ -16,12 +15,12 @@
     </view>
   </view>
   <view wx:if="{{!noElements}}">
-    <view class="swiper-view" wx:if="{{swipers.length}}" style="background:{{elements.activity_game_features_bg.value}} no-repeat;background-size:cover">
+    <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
       <view class="r-reward-cont-view">
         <swiper class="r-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}" bindchange="imageChange">
           <block wx:for="{{swipers}}" wx:key="index">
             <swiper-item class="r-swiper-item">
-              <image src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px {{elements.activity_progress_dark_color.value}};" />
+              <image src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.75);" />
             </swiper-item>
           </block>
         </swiper>
@@ -32,8 +31,8 @@
       </view>
     </view>
 
-    <view class="r-rewards" wx:if="{{ladders.data.length}}">
-      <view style="background:url('{{elements.activity_booking_reward_bg.value}}') no-repeat center;background-size:cover;">
+    <view class="r-rewards" wx:if="{{ladders.data.length}}" style="background:url('{{elements.activity_booking_reward_bg.value}}') no-repeat center;background-size:cover;">
+      <view>
           <image class="r-rewards-title" mode="widthFix" src="{{elements.activity_booking_reward_title.value}}" />
           <view class="reserve-text" style="color:{{elements.activity_ordinary_text_color.value}}">
             <text>已预约</text><text class="reserve-num-text" style="color:{{elements.activity_shine_text_color.value}}">{{ladders.number}}</text><text>人</text>
@@ -114,14 +113,14 @@
           <!-- <view class="gift-dot-line"></view> -->
           <!-- 没有邀请好友时 -->
           <view class="get-gift-nums" wx:if="{{inviteDatas.friend.length===0}}">
-            <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次，邀请好友获得</text></view>
+            <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次</text></view>
             <image src="{{elements.activity_lottery_frequency_refresh_button.value}}" bindtap="refreshTimes" class="refresh-icon" />
           </view>
 
           <!-- 有邀请好友时 -->
           <view class="invite-nums-cont" wx:if="{{inviteDatas.friend.length}}">
             <view class="get-gift-nums no-radius">
-              <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次，邀请好友获得</text></view>
+              <view class="gift-num-tips" style="color:{{elements.activity_ordinary_text_color.value}}"><text>剩余抽奖机会</text><text class="gift-num" style="color:{{elements.activity_shine_text_color.value}}">{{rewardCount}}</text><text> 次</text></view>
               <image src="{{elements.activity_lottery_frequency_refresh_button.value}}" class="refresh-icon" />
             </view>
             <scroll-view scroll-x="true" class="invite-users-avatars">
@@ -143,23 +142,24 @@
         </view>
         <view class="ranks" wx:if="{{activity.open_reward*1!==2 && (prizeRecord.length || myPrizes.length)}}">
           <view class="rank-title">获奖榜单</view>
+          <view wx:if="{{myPrizes.length}}">
+            <view class="rank-list is-my-record-list" wx:for="{{myPrizes}}" wx:key="index" data-rname="{{item.reward_name}}" bindtap="lookYourGiftRecord">
+              <view class="is-my-list-cont">
+                <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+                <view class="my-name blue-text">恭喜你获得了</view>
+                <view class="prize-text red-text">{{item.reward_name}}</view>
+              </view>
+              <view class="look-detail-text">查看详情 》</view>
+            </view>
+          </view>
           <view class="rank-dot-line"></view>
-          <scroll-view scroll-y="true" class="rank-scroll-view">
-            <view class="rank-list" wx:for="{{myPrizes}}" wx:key="index">
-              <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
-              <view>恭喜“</view>
-              <view class="my-name is-my-name">{{item.member.nickname || '无名氏'}}</view>
-              <view>”抽取了</view>
-              <view class="prize-text">{{item.reward_name}}</view>
-            </view>
-            <view class="rank-list" wx:for="{{prizeRecord}}" wx:key="index">
-              <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
-              <view>恭喜“</view>
-              <view class="my-name">{{item.member.nickname || '无名氏'}}</view>
-              <view>”抽取了</view>
-              <view class="prize-text">{{item.reward_name}}</view>
-            </view>
-          </scroll-view>
+          <view class="rank-list" wx:for="{{prizeRecord}}" wx:key="index">
+            <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+            <view>恭喜“</view>
+            <view class="my-name">{{item.member.nickname || '无名氏'}}</view>
+            <view>”抽取了</view>
+            <view class="prize-text">{{item.reward_name}}</view>
+          </view>
         </view>
         <view class="gift-botom-line"></view>
         <!-- 活动规则 -->

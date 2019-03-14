@@ -33,9 +33,9 @@ page{position: relative;}
 .btn-group{padding: 0 60rpx;display: flex;justify-content: space-between;color: #fff;font-size: 36rpx}
 .has-chance{display: flex;justify-content: center;}
 
-button{padding: 0;margin: 0;color: #fff}
+button{padding: 0;margin: 0;color: #fff;}
 button::after{border: none}
-.button-hover{color: #fff}
+.button-hover{color: #fff;background: none}
 .invite-btn{display: flex;align-items: center;justify-content: center;width: 280rpx;height: 92rpx;border-radius: 50rpx;box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.15);}
 .blue-btn{background: #18A3FE}
 .orange-btn{background: #F97956}
@@ -51,3 +51,5 @@ button::after{border: none}
   display: block;width: 420rpx;height: 92rpx;margin: 0 auto;
 }
 .no-friends-view{color: #C7C7CC;font-size: 28rpx;text-align: center;}
+button.no-friends-view{background: #fff}
+.blue-text{color: #18A3FE}

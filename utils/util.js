@@ -52,6 +52,7 @@ const gameGeaturesApi = `${http}features?access-token=`
 const rulesApi = `${http}activity/rule?access-token=`
 const ladderApi = `${http}ladder?access-token=`
 const successApi = `${http}activity/success?access-token=`
+const sourceApi = `${http}member/source?access-token=`
 
 module.exports = {
   formatTime: formatTime,
@@ -88,5 +89,6 @@ module.exports = {
   gameGeaturesApi: gameGeaturesApi,
   rulesApi: rulesApi,
   ladderApi: ladderApi,
-  successApi: successApi
+  successApi: successApi,
+  sourceApi: sourceApi
 }

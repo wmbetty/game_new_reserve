@@ -118,6 +118,12 @@ Page({
               }
             }
           })
+          let sourceApi = backApi.sourceApi+token;
+          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
+            if (res) {
+              wx.setStorageSync('userInfo', res);
+            }
+          })
         }
       } else {
         Api.wxShowToast('微信登录失败~', 'none', 2000);

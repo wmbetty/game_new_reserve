@@ -137,6 +137,12 @@ Page({
               }
             }
           })
+          let sourceApi = backApi.sourceApi+token;
+          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
+            if (res) {
+              wx.setStorageSync('userInfo', res);
+            }
+          })
         }
         let isSucc = options.isSucc;
         let scrollTop = that.data.winHeight*2;
@@ -629,6 +635,10 @@ Page({
     let item = e.currentTarget.dataset.item;
     let pname = item.prize_name;
     this.setData({pname: pname, showYourPrize: true});
+  },
+  lookYourGiftRecord (e) {
+    let rname = e.currentTarget.dataset.rname;
+    this.setData({pname: rname, showYourPrize: true});
   },
   hideYourPrize () {
     this.setData({showYourPrize: false});

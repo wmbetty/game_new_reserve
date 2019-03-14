@@ -192,7 +192,9 @@ button::after{border: none}
   margin: 60rpx auto 22rpx;width: 320rpx;height: 76rpx
 }
 .get-gift-nums{
-  width: 660rpx;height: 52rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;margin: 0 auto 44rpx;
+  /* width: 660rpx; */
+  width: 500rpx;
+  height: 52rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;margin: 0 auto 44rpx;
   display: flex;align-items: center;justify-content: space-between;
   color: #C7C7CC;font-size: 32rpx;
 }
@@ -272,7 +274,7 @@ button.invite-btn{background: none}
 .gift-dot-line{width: 100%;height: 1rpx;border-top: 2rpx dotted rgba(255, 255, 255, 0.35);margin-bottom: 24rpx;}
 .ranks{
   color: #E5E7ED;font-size: 24rpx;margin: 0 auto 60rpx;overflow: hidden;
-  width: 690rpx;height: 280rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;
+  width: 690rpx;min-height: 280rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;
 }
 .rank-title{font-size: 32rpx;margin: 20rpx 0 30rpx 20rpx;}
 .rank-list{display: flex;align-items: center;margin-bottom: 24rpx;}
@@ -285,7 +287,7 @@ button.invite-btn{background: none}
 .prize-bg-img-view{position: absolute;left: 0;top:0;width: 100%;z-index: 2;height: 100%;}
 .prize-bg-img{display: block;width: 100%;height: 100%}
 .prize-cont{position: absolute;left: 0;top:0;width: 100%;height: auto;z-index: 3}
-.rank-dot-line{width: 640rpx;height: 2rpx;border-top: 2rpx dotted rgba(199, 199, 204, 0.35);margin: 0 auto;}
+.rank-dot-line{width: 640rpx;height: 2rpx;border-top: 2rpx dotted rgba(199, 199, 204, 0.35);margin: 0 auto 30rpx;}
 .rank-scroll-view{height: 120rpx;padding-top: 30rpx;}
 .rank-list{display: flex;align-items: center;margin-bottom: 24rpx;margin-left: 30rpx;}
 .rank-list:last-child{margin-bottom: 30rpx}
@@ -303,3 +305,8 @@ button[disabled]:not([type]){background: none}
 .one-per{text-align: center;}
 .two-per{display: flex;align-items: center;}
 .two-per-view{width: 100%;height: 100%;margin-bottom: 0;display: flex;align-items: center;}
+.blue-text{color: #18A3FE}
+.red-text{color: #FA5961}
+.is-my-record-list{display:flex;align-items: center;justify-content: space-between;}
+.is-my-list-cont{display: flex;align-items: center;}
+.look-detail-text{color: #E5E7ED;font-size: 24rpx;margin: -6rpx 20rpx 0 0}
