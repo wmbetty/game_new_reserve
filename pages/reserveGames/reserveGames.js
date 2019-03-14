@@ -68,7 +68,7 @@ Page({
         if(options.scene){
           let scene = decodeURIComponent(options.scene);
           //&是我们定义的参数链接方式
-          let scenes = options.scene.split("&");
+          let scenes = options.scene.split("%");
           if (scenes.length===2) {
             let activityId = scenes[0];
             app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板2)，当前活动id为${activityId}`,{
@@ -406,11 +406,21 @@ Page({
   showPhoneInfo () {
     let that = this;
     let userInfo = wx.getStorageSync('userInfo');
+    let activity = that.data.activity;
     if (userInfo.id) {
       app.aldstat.sendEvent(`模板2预约页面点击立即预约按钮，当前活动id为${that.data.activityId}`,{
         play : ""
       });
-      that.setData({showPhone: true, showMask: true})
+      if (activity.is_booking*1===1) {
+        Api.wxShowToast('您已预约成功，邀请好友预约吧', 'none', 2000);
+        setTimeout(()=>{
+          wx.navigateTo({
+            url: `/pages/invitePrize/invitePrize?activityId=${that.data.activityId}&isReserve=1`
+          })
+        }, 2100)
+      } else {
+        that.setData({ showPhone: true, showMask: true })
+      }      
     } else {
       that.setData({showDialog:true})
     }
@@ -535,6 +545,17 @@ Page({
                             that.setData({rewardCount: datas.reward_count});
                           } else {
                             console.log('出错了~')
+                          }
+                        });
+                        let activityViewApi = backApi.activityViewApi + pageData.token;
+                        fun.quest(activityViewApi, 'GET', { activity_id: pageData.activityId},    (res) => {
+                          if (res) {
+                            that.setData({ activity: res });
+                            if (res.is_booking * 1 === 1) {
+                              that.setData({ showReserved: true })
+                            } else {
+                              that.setData({ showNoReserve: true })
+                            }
                           }
                         });
                         wx.pageScrollTo({

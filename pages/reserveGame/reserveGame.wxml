@@ -7,7 +7,7 @@
   </view>
 </view>
 
-<view class="reserve-cont" wx:if="{{showNoReserve && !showPhone && !reserveSuccess}}">
+<view class="reserve-cont" wx:if="{{showNoReserve && !showPhone && !reserveSuccess && !showMask}}">
   <view class="reserve-info">提前预约 福利不断</view>
   <view class="up-arrow-cont">
     <image class="up-arrow" src="/images/arrow_up.png" />

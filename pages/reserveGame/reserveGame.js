@@ -50,7 +50,7 @@ Page({
         if(options.scene){
           let scene = decodeURIComponent(options.scene);
           //&是我们定义的参数链接方式
-          let scenes = options.scene.split("&");
+          let scenes = options.scene.split("%");
           if (scenes.length===2) {
             let activityId = scenes[0];
             app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板1)，当前活动id为${activityId}`,{
@@ -395,6 +395,15 @@ Page({
                   Api.wxShowToast('手机授权成功，验证已预约', 'none', 1500);
                   setTimeout(()=>{
                     that.setData({showMask: false});
+                    let activityViewApi = backApi.activityViewApi + pageData.token;
+                    fun.quest(activityViewApi, 'GET', { activity_id: pageData.activityId }, (res) => {
+                      if (res) {
+                        that.setData({ activity: res });
+                        if (res.is_booking * 1 !== 1) {
+                          that.setData({ showNoReserve: true });
+                        }
+                      }
+                    })
                     let openReward = pageData.activity.open_reward*1;
                     if (openReward===1) {
                       wx.navigateTo({

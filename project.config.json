@@ -38,7 +38,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 19,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -159,6 +159,20 @@
 					"name": "test1",
 					"pathName": "pages/test/test",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": 20,
+					"name": "pingtai",
+					"pathName": "pages/reserveGames/reserveGames",
+					"query": "activityId=2&source=platform",
+					"scene": null
+				},
+				{
+					"id": 21,
+					"name": "pingtai2",
+					"pathName": "pages/reserveGames/reserveGames",
+					"query": "activityId=2&source=platform",
 					"scene": null
 				}
 			]
