@@ -31,7 +31,6 @@ Page({
     let userInfo = wx.getStorageSync('userInfo');
     if (userInfo.id) {
       that.setData({userInfo: userInfo});
-
       fun.wxLogin().then((res)=>{
         if (res) {
           let token = res;
@@ -58,7 +57,7 @@ Page({
         }
       })
     } else {
-      this.setData({showDialog:true})
+      that.setData({showDialog:true})
     }
   },
   onHide: function () {},

@@ -191,6 +191,10 @@ Page({
     let height = app.globalData.height;
     let winHeight = app.globalData.screenHeight;
     that.setData({height: height, winHeight: winHeight});
+    let userInfo = wx.getStorageSync('userInfo');
+    if (!userInfo.id) {
+      that.setData({showDialog:true})
+    }
 
     setTimeout(()=>{
       fun.wxLogin().then((res)=>{
@@ -261,13 +265,6 @@ Page({
         }
      })
     },300)
-
-    let userInfo = wx.getStorageSync('userInfo');
-    if (userInfo.id) {
-      that.setData({showDialog:false})
-    } else {
-      that.setData({showDialog:true})
-    }
   },
   onHide: function () {},
   onUnload: function () {},
@@ -380,12 +377,17 @@ Page({
     })
   },
   gotoInvite () {
-    app.aldstat.sendEvent(`模板2预约页面点击邀请好友,当前活动id为${this.data.activityId}`,{
-      play : ""
-    });
-    wx.navigateTo({
-      url: `/pages/invitePrize/invitePrize?activityId=${this.data.activityId}`
-    })
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo.id) {
+      app.aldstat.sendEvent(`模板2预约页面点击邀请好友,当前活动id为${this.data.activityId}`,{
+        play : ""
+      });
+      wx.navigateTo({
+        url: `/pages/invitePrize/invitePrize?activityId=${this.data.activityId}`
+      })
+    } else {
+      this.setData({showDialog: true})
+    }
   },
   getPrize () {
     let that = this;
@@ -403,7 +405,6 @@ Page({
   },
   showPhoneInfo () {
     let that = this;
-    console.log(1111)
     let userInfo = wx.getStorageSync('userInfo');
     if (userInfo.id) {
       app.aldstat.sendEvent(`模板2预约页面点击立即预约按钮，当前活动id为${that.data.activityId}`,{
@@ -467,19 +468,24 @@ Page({
     let that = this;
     let pageData = that.data;
     let rewardDataApi = backApi.rewardDataApi+pageData.token;
-    wx.showLoading({title: '刷新中'});
-    fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
-      if (res) {
-        wx.hideLoading();
-        app.aldstat.sendEvent(`点击抽奖刷新按钮`,{
-          play : ""
-        });
-        let datas = res;
-        that.setData({prizeRecord: datas.prize_record,rewardCount: datas.reward_count});
-      } else {
-        wx.hideLoading();
-      }
-    })
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo.id) {
+      wx.showLoading({title: '刷新中'});
+      fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+        if (res) {
+          wx.hideLoading();
+          app.aldstat.sendEvent(`点击抽奖刷新按钮`,{
+            play : ""
+          });
+          let datas = res;
+          that.setData({prizeRecord: datas.prize_record,rewardCount: datas.reward_count});
+        } else {
+          wx.hideLoading();
+        }
+      })
+    } else {
+      that.setData({showDialog: true})
+    }
   },
   verifyPhone (e) {
     let that = this;
@@ -488,61 +494,66 @@ Page({
     app.aldstat.sendEvent(`预约模板2平台对接页面按钮点击,当前活动id为${pageData.activityId}`,{
       play : ""
     });
-    if (e.detail.encryptedData) {
-      wx.login({
-        success: function (res) {
-          let code = res.code;
-          let phoneNumberApi = backApi.phoneNumberApi+'?access-token='+pageData.token;
-          let userData = {
-            encryptedData: e.detail.encryptedData,
-            iv: e.detail.iv,
-            code: code
-          }
-          fun.quest(phoneNumberApi, 'POST', userData, (res)=>{
-            if (res) {
-              let phone = res;
-              wx.setStorageSync('phone', phone);
-              that.setData({phone: phone});
-              // 预约接口
-              let type = pageData.isAndrod?1:2;
-              let reserveData = {
-                activity_id: pageData.activityId,
-                phone: phone,
-                type: type,
-                sign: 'booking'
-              }
-              let phoneReserveApi = backApi.phoneReserveApi+pageData.token;
-              fun.taskMake(phoneReserveApi, 'POST', reserveData, (res)=>{
-                if (res.data.status*1===200) {
-                  Api.wxShowToast('手机授权成功，验证已预约', 'none', 1500);
-                  let scrollTop = pageData.winHeight*2;
-                  let noElements = pageData.noElements;
-                  that.setData({showMask: false});
-                  let rewardDataApi = backApi.rewardDataApi+pageData.token;
-                  if (!noElements) {
-                    setTimeout(()=>{
-                      fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
-                        if (res) {
-                          let datas = res;
-                          that.setData({rewardCount: datas.reward_count});
-                        } else {
-                          console.log('出错了~')
-                        }
-                      });
-                      wx.pageScrollTo({
-                        scrollTop: scrollTop,
-                        duration: 400
-                      })
-                    },1200)
-                  }
-                } else {
-                  Api.wxShowToast(res.data.msg, 'none', 2000);
-                }
-              })
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo.id) {
+      if (e.detail.encryptedData) {
+        wx.login({
+          success: function (res) {
+            let code = res.code;
+            let phoneNumberApi = backApi.phoneNumberApi+'?access-token='+pageData.token;
+            let userData = {
+              encryptedData: e.detail.encryptedData,
+              iv: e.detail.iv,
+              code: code
             }
-          })
-        }
-      })
+            fun.quest(phoneNumberApi, 'POST', userData, (res)=>{
+              if (res) {
+                let phone = res;
+                wx.setStorageSync('phone', phone);
+                that.setData({phone: phone});
+                // 预约接口
+                let type = pageData.isAndrod?1:2;
+                let reserveData = {
+                  activity_id: pageData.activityId,
+                  phone: phone,
+                  type: type,
+                  sign: 'booking'
+                }
+                let phoneReserveApi = backApi.phoneReserveApi+pageData.token;
+                fun.taskMake(phoneReserveApi, 'POST', reserveData, (res)=>{
+                  if (res.data.status*1===200) {
+                    Api.wxShowToast('手机授权成功，验证已预约', 'none', 1500);
+                    let scrollTop = pageData.winHeight*2;
+                    let noElements = pageData.noElements;
+                    that.setData({showMask: false});
+                    let rewardDataApi = backApi.rewardDataApi+pageData.token;
+                    if (!noElements) {
+                      setTimeout(()=>{
+                        fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+                          if (res) {
+                            let datas = res;
+                            that.setData({rewardCount: datas.reward_count});
+                          } else {
+                            console.log('出错了~')
+                          }
+                        });
+                        wx.pageScrollTo({
+                          scrollTop: scrollTop,
+                          duration: 400
+                        })
+                      },1200)
+                    }
+                  } else {
+                    Api.wxShowToast(res.data.msg, 'none', 2000);
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    } else {
+      that.setData({showDialog: true})
     }
   },
   showMoreList (e) {
@@ -575,61 +586,71 @@ Page({
     let activityId = pageData.activityId;
     let rewardCount = pageData.rewardCount;
     let btnDisabled = pageData.disabled;
-    if (!btnDisabled) {
-      if (rewardCount*1>0) {
-        that.setData({rewardCount: rewardCount*1-1, disabled: true});
-        wx.showLoading();
-        let rewardLotteryApi = backApi.rewardLotteryApi+pageData.token;
-        fun.quest(rewardLotteryApi, 'POST', {activity_id: activityId},(res)=>{
-          if (res) {
-            app.aldstat.sendEvent(`模板2点击转盘抽奖`,{
-              play : ""
-            });
-            wx.hideLoading();
-            /** 获取到中奖结果后，转盘才开始启动 */
-            let duration = 5000; //转盘时长
-            let circle = 8; //转盘圈数（1圈为360度）
-            let degree = parseInt(360 * circle)  + parseInt(res.prize.degree); //最终转盘要转的度数
-            let animation = wx.createAnimation({
-              duration: duration,
-              timingFunction: 'ease-in-out',
-            })
-            that.animation = animation
-            animation.rotate(-degree).step()
-            that.setData({
-              luckDrawAnimation: animation.export()
-            });
-            setTimeout(()=>{
-              animation.rotate(-res.prize.degree).step({
-                duration: 0
-              })
-              that.setData({
-                luckDrawAnimation: animation.export(),
-                disabled: false
-              })
-              /** 获得奖品 */
-              that.setData({
-                prizeObj: res.prize, showGetPrize: true
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo.id) {
+      if (!btnDisabled) {
+        if (rewardCount*1>0) {
+          that.setData({rewardCount: rewardCount*1-1, disabled: true});
+          wx.showLoading();
+          let rewardLotteryApi = backApi.rewardLotteryApi+pageData.token;
+          fun.quest(rewardLotteryApi, 'POST', {activity_id: activityId},(res)=>{
+            if (res) {
+              app.aldstat.sendEvent(`模板2点击转盘抽奖`,{
+                play : ""
               });
-            }, duration)
-          } else {
-            wx.hideLoading();
-          }
-        })
+              wx.hideLoading();
+              /** 获取到中奖结果后，转盘才开始启动 */
+              let duration = 6000; //转盘时长
+              let circle = 8; //转盘圈数（1圈为360度）
+              let degree = parseInt(360 * circle)  + parseInt(res.prize.degree); //最终转盘要转的度数
+              let animation = wx.createAnimation({
+                duration: duration,
+                timingFunction: 'ease-in-out',
+              })
+              that.animation = animation
+              animation.rotate(-degree).step()
+              that.setData({
+                luckDrawAnimation: animation.export()
+              });
+              setTimeout(()=>{
+                animation.rotate(-res.prize.degree).step({
+                  duration: 0
+                })
+                that.setData({
+                  luckDrawAnimation: animation.export(),
+                  disabled: false
+                })
+                /** 获得奖品 */
+                that.setData({
+                  prizeObj: res.prize, showGetPrize: true
+                });
+              }, duration)
+            } else {
+              wx.hideLoading();
+            }
+          })
+        } else {
+          Api.wxShowToast('机会用完了，快去邀请好友吧', 'none', 2000);
+        }
       } else {
-        Api.wxShowToast('机会用完了，快去邀请好友吧', 'none', 2000);
+        Api.wxShowToast('抽奖中，请勿频繁操作~', 'none', 2000);
       }
     } else {
-      Api.wxShowToast('抽奖中，请勿频繁操作~', 'none', 2000);
+      that.setData({showDialog: true})
     }
   },
   hidePhone () {
     this.setData({showMask: false})
   },
   goSucc () {
-    wx.navigateTo({
-      url: `/pages/invitePrize/invitePrize?activityId=${this.data.activityId}&isReserve=1`
-    })
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo.id) {
+      wx.navigateTo({
+        url: `/pages/invitePrize/invitePrize?activityId=${this.data.activityId}&isReserve=1`
+      })
+    } else {
+      this.setData({showDialog: true})
+    }
   },
   lookYourGift (e) {
     let item = e.currentTarget.dataset.item;

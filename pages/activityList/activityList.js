@@ -17,7 +17,8 @@ Page({
     activitys: [],
     showEmpty: false,
     page1: 1,
-    page2: 1
+    page2: 1,
+    showDialog: false
   },
   onLoad: function (options) {
     let that = this;
@@ -49,6 +50,10 @@ Page({
     app.aldstat.sendEvent(`进入活动列表页面`,{
       play : ""
     });
+    let userInfo = wx.getStorageSync('userInfo');
+    if (!userInfo.id) {
+      that.setData({showDialog: true})
+    }
   },
   onHide: function () {},
   onUnload: function () {},
@@ -167,5 +172,35 @@ Page({
         })
       }
     }
+  },
+  cancelDialog () {
+    this.setData({showDialog:false})
+  },
+  confirmDialog (e) {
+    let that = this;
+    let updateUserInfoApi = backApi.updateUserInfoApi+that.data.token;
+    that.setData({
+      showDialog: false
+    });
+    wx.login({
+      success: function (res) {
+        let code = res.code;
+        wx.getUserInfo({
+          success: (res)=>{
+            let userData = {
+              encryptedData: res.encryptedData,
+              iv: res.iv,
+              code: code
+            }
+            fun.quest(updateUserInfoApi, 'POST', userData, (res)=>{
+              if (res) {
+                wx.setStorageSync('userInfo', res);
+                Api.wxShowToast('授权成功，可以进行更多操作了', 'none', 2000);
+              }
+            })
+          }
+        })
+      }
+    })
   }
 })

@@ -158,6 +158,10 @@ Page({
     let height = app.globalData.height;
     let winHeight = app.globalData.screenHeight;
     that.setData({height: height, winHeight: winHeight});
+    let userInfo = wx.getStorageSync('userInfo');
+    if (!userInfo.id) {
+      that.setData({showDialog:true})
+    }
 
     fun.wxLogin().then((res)=>{
       if (res) {
@@ -175,13 +179,6 @@ Page({
         Api.wxShowToast('微信登录失败~', 'none', 2000);
       }
     })
-
-    let userInfo = wx.getStorageSync('userInfo');
-    if (userInfo.id) {
-      that.setData({showDialog:false})
-    } else {
-      that.setData({showDialog:true})
-    }
   },
   onHide: function () {},
   onUnload: function () {},

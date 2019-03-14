@@ -24,3 +24,5 @@
     <empty-wxml wx:if="{{showEmpty}}"></empty-wxml>
   </view>
 </view>
+
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>
