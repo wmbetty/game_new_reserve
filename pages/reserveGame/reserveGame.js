@@ -50,7 +50,7 @@ Page({
         if(options.scene){
           let scene = decodeURIComponent(options.scene);
           //&是我们定义的参数链接方式
-          let scenes = options.scene.split("%");
+          let scenes = scene.split("&");
           if (scenes.length===2) {
             let activityId = scenes[0];
             app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板1)，当前活动id为${activityId}`,{

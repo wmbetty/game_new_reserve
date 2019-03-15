@@ -246,7 +246,7 @@ button.invite-btn{background: none}
 .close-icon{width: 54rpx;height: 54rpx;position: absolute;top:30rpx;right: 30rpx;}
 .gift-img-tip{display: block;width: 100%;height: 100%;}
 .gift-text-tip{position: absolute;width: 472rpx;height: 136rpx;left: 20rpx;bottom: 110rpx;font-size: 40rpx;color: #fff;text-align: center;}
-.gift-name{color: #FFE745;font-size: 52rpx;width: 360rpx;margin: 0 auto;}
+.gift-name{color: #FFE745;font-size: 48rpx;width: 360rpx;margin: 0 auto;}
 .get-prize-cont{font-size: 24rpx;color: #666;margin-left: 70rpx;margin-bottom: 40rpx;}
 .get-prize-title{font-size: 28rpx;margin-bottom: 14rpx;}
 .get-prize-step{margin-bottom: 30rpx;}
@@ -277,8 +277,8 @@ button.invite-btn{background: none}
   width: 690rpx;min-height: 280rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;
 }
 .rank-title{font-size: 32rpx;margin: 20rpx 0 30rpx 20rpx;}
-.rank-list{display: flex;align-items: center;margin-bottom: 24rpx;}
-.rank-list:last-child{margin-bottom: 30rpx}
+/* .rank-list{display: flex;align-items: center;margin-bottom: 22rpx;}
+.rank-list:last-child{margin-bottom: 30rpx} */
 .user-avatar{width: 40rpx;height: 40rpx;border-radius: 50%;margin-right: 12rpx;border: 1rpx solid #eee}
 .prize-text{margin-left: 14rpx;max-width: 300rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .red-font{color: #FA5961}
@@ -289,7 +289,7 @@ button.invite-btn{background: none}
 .prize-cont{position: absolute;left: 0;top:0;width: 100%;height: auto;z-index: 3}
 .rank-dot-line{width: 640rpx;height: 2rpx;border-top: 2rpx dotted rgba(199, 199, 204, 0.35);margin: 0 auto 30rpx;}
 .rank-scroll-view{height: 120rpx;padding-top: 30rpx;}
-.rank-list{display: flex;align-items: center;margin-bottom: 24rpx;margin-left: 30rpx;}
+.rank-list{display: flex;align-items: center;margin-bottom: 18rpx;margin-left: 30rpx;}
 .rank-list:last-child{margin-bottom: 30rpx}
 /* ::-webkit-scrollbar{width: 0;height: 0;color: transparent;} */
 .dialog-mask{position: fixed;width: 100%;height: 100%;left: 0;bottom: 0;background: rgba(0,0,0,0.5);z-index: 99}

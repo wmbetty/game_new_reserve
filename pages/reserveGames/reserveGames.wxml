@@ -153,14 +153,25 @@
             </view>
           </view>
           <view class="rank-dot-line"></view>
-          <view class="rank-list" wx:for="{{prizeRecord}}" wx:key="index">
-            <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
-            <view>恭喜“</view>
-            <view class="my-name">{{item.member.nickname || '无名氏'}}</view>
-            <view>”抽取了</view>
-            <view class="prize-text">{{item.reward_name}}</view>
+
+          <view>
+            <swiper circular="{{true}}" autoplay="{{autoplay}}" vertical="true" interval="{{3500}}">
+              <block wx:for="{{prizeRecord}}" wx:key="index">
+                <swiper-item class="">
+                  <view class="rank-list" wx:for="{{item}}" wx:key="index" wx:for-item="records">
+                    <image src="{{records.member.avatar || '/images/avatarDefault.png'}}" class="user-avatar"  />
+                    <view>恭喜“</view>
+                    <view class="my-name">{{records.member.nickname || '无名氏'}}</view>
+                    <view>”抽取了</view>
+                    <view class="prize-text">{{records.reward_name}}</view>
+                  </view>
+                </swiper-item>
+              </block>
+            </swiper>
           </view>
+
         </view>
+
         <view class="gift-botom-line"></view>
         <!-- 活动规则 -->
         <view class="rules-cont" wx:if="{{activity.open_reward*1!==2 && rules.length}}">
@@ -218,7 +229,7 @@
       </view>
       <view class="gift-text-tip" wx:if="{{prizeObj.is_prize*1===2}}">
         <view>谢谢参与</view>
-        <view class="gift-name">再接再厉</view>
+        <view class="gift-name">{{prizeObj.reward_name}}</view>
       </view>
     </view>
     <view class="get-prize-cont" wx:if="{{prizeObj.is_prize*1!==2}}">
