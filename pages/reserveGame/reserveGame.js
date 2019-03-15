@@ -50,6 +50,7 @@ Page({
         if(options.scene){
           let scene = decodeURIComponent(options.scene);
           //&是我们定义的参数链接方式
+
           let scenes = scene.split("&");
           if (scenes.length===2) {
             let activityId = scenes[0];
@@ -95,6 +96,12 @@ Page({
         }
 
         let source = options.source;
+        if (source) {
+          let sourceApi = backApi.sourceApi+token;
+          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
+            console.log(res, 'sss')
+          })
+        }
         if (source==='platform') {
           // 平台对接逻辑
           let activityId = options.activityId;

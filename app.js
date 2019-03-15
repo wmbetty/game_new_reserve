@@ -66,6 +66,7 @@ App({
     });
   },
   onLoad (options) {
+    console.log(options.scene, 'app')
     let scene = options.scene*1;
     if (scene === 1007 || scene === 1008) {
       this.globalData.share = true

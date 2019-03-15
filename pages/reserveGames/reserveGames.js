@@ -71,10 +71,10 @@ Page({
           let scenes = scene.split("&");
           if (scenes.length===2) {
             let activityId = scenes[0];
+            that.setData({activityId: activityId, isQrcodeIn: true});
             app.aldstat.sendEvent(`通过小程序码进入预约页面(预约模板2)，当前活动id为${activityId}`,{
               play : ""
             });
-            that.setData({activityId: activityId, isQrcodeIn: true});
             let encryptId = scenes[1];
             if (encryptId) {
               let phoneReserveApi = backApi.phoneReserveApi + token;
@@ -112,6 +112,12 @@ Page({
           }
         }
         let source = options.source;
+        if (source) {
+          let sourceApi = backApi.sourceApi+token;
+          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
+            console.log(res, 'sss')
+          })
+        }
         if (source==='platform') {
           let activityId = options.activityId;
           // 平台对接逻辑
@@ -135,12 +141,6 @@ Page({
                   },1200)
                 }
               }
-            }
-          })
-          let sourceApi = backApi.sourceApi+token;
-          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
-            if (res) {
-              wx.setStorageSync('userInfo', res);
             }
           })
         }
@@ -182,8 +182,7 @@ Page({
   onReady: function () {},
   onShow: function () {
     let that = this;
-    let pageData = that.data;
-    let aid = pageData.activityId;
+
     let phone = wx.getStorageSync('phone');
     if (phone) {
       that.setData({showInput: true, phone: phone})
@@ -197,6 +196,8 @@ Page({
     }
 
     setTimeout(()=>{
+      let pageData = that.data;
+      let aid = pageData.activityId;
       fun.wxLogin().then((res)=>{
         if (res) {
           let token = res;
@@ -264,7 +265,7 @@ Page({
           Api.wxShowToast('微信登录失败~', 'none', 2000);
         }
      })
-    },300)
+   },1250)
   },
   onHide: function () {},
   onUnload: function () {},
