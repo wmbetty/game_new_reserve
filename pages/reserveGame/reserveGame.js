@@ -98,7 +98,7 @@ Page({
         let source = options.source;
         if (source) {
           let sourceApi = backApi.sourceApi+token;
-          fun.quest(sourceApi, 'POST', {source: 'platform'}, (res)=>{
+          fun.quest(sourceApi, 'POST', {source: source}, (res)=>{
             console.log(res, 'sss')
           })
         }
