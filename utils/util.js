@@ -16,8 +16,8 @@ const formatNumber = n => {
 }
 
 
-// const http = `https://fabu.aide.604f.cn/v1/`
-const http = `https://aide.79643.com/v1/`
+const http = `https://fabu.aide.604f.cn/v1/`
+// const http = `https://aide.79643.com/v1/`
 const loginApi = `${http}member/login`
 const bannerApi = `${http}banner?access-token=`
 const newsListApi = `${http}news?access-token=`

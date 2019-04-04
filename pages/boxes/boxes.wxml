@@ -1,0 +1,105 @@
+<!--pages/boxes/boxes.wxml-->
+
+<view class="page-view" style="background: #130C42;min-height:{{winHeight}}px">
+  <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
+  <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
+  <view style="height:1186rpx;position:relative">
+    <view class="game-big-poster-view" style="background:url('https://gifres.79643.com/mini_aide/2019/03/13/9e342ddf5fcdee7f96127ba82a42c7b0.jpg') no-repeat center;background-size:cover;"></view>
+  </view>
+  <view class="download-btn-view" bindtap="downloadGame">
+    <view>下载游戏按钮</view>
+    <image class="reserve-arrow" src="/images/arrow_down.png" />
+  </view>
+  <view class="swiper-view">
+    <swiper circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
+      <block wx:for="{{imgUrls}}" wx:key="index">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.75);" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <view class="boxs-view">
+    <view class="open-box-title">宝箱 の 拿好礼</view>
+    <view>开宝箱拿奖品，首次进入赠送1把钥匙</view>
+    <view>通过好友助力获得更多钥匙</view>
+    <view>使用钥匙可开箱拿奖，每次开箱需要消耗1把</view>
+  </view>
+  <view class="boxs-gift-square">
+    <view class="same-box first-box"></view>
+    <view class="same-box second-box"></view>
+    <view class="same-box third-box"></view>
+  </view>
+
+  <view class="invite-view">
+    <view class="invite-tip-view">
+      <image src="" class="key-icon" />
+      <view class="invite-tips">
+        <text>剩余<text class="num-text num-color">3</text> 把钥匙，邀请好友获取更多</text>
+      </view>
+      <image class="refresh-icon" src="" />
+    </view>
+    <view class="avatars-view">
+      <image class="user-avatar" src="" />
+      <image class="user-avatar" src="" />
+      <image class="user-avatar" src="" />
+      <image class="user-avatar" src="" />
+      <image class="user-avatar" src="" />
+    </view>
+    <button class="invite-btn" open-type="share">
+      <image class="invite-btn-img" src="" />
+    </button>
+  </view>
+
+  <view class="rewards-view">
+    <view class="rewards-head">
+      <view class="rewards-head-line"></view>
+      <view class="rewards-head-text">奖品多多</view>
+      <view class="rewards-head-line"></view>
+    </view>
+    <view class="rewards-cont-view">
+      <view class="one-reward-view">
+        <image class="reward-img" src="" />
+        <view class="reward-name">Switch 游戏机</view>
+      </view>
+      <view class="one-reward-view">
+        <image class="reward-img" src="" />
+        <view class="reward-name">蕾姆婚纱 精品手办</view>
+      </view>
+      <view class="one-reward-view">
+        <image class="reward-img" src="" />
+        <view class="reward-name">App Store 50元券</view>
+      </view>
+      <view class="one-reward-view">
+        <image class="reward-img" src="" />
+        <view class="reward-name">刀剑神域 桐人手办</view>
+      </view>
+    </view>
+  </view>
+
+</view>
+
+<dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>
+
+<!-- 复制链接弹窗 -->
+<view class="box-mask" wx:if="{{showMask}}" catchtouchmove="ture">
+  <view wx:if="{{showClipboard}}" style="color:#fff;margin-top:200rpx">
+    <view>已复制</view>
+    <view bindtap="hideDialog" style="font-size:100rpx">好的</view>
+  </view>
+  <view wx:if="{{showGiveKeys}}" catchtouchmove="ture">
+    <view bindtap="goTakeGift">去拿奖品</view>
+  </view>
+  <view wx:if="{{showGift}}" catchtouchmove="ture">我是中奖弹窗</view>
+  <view wx:if="{{showNoGift}}" catchtouchmove="ture">
+    <view>我是没中奖弹窗</view>
+    <view bindtap="hideDialog">关闭按钮</view>
+    <view bindtap="hideDialog">继续开箱</view>
+    <button open-type="share">邀请好友领钥匙</button>
+  </view>
+  <view wx:if="{{showNomoreKeys}}" catchtouchmove="ture">
+    <view bindtap="hideDialog">关闭按钮</view>
+    <view>没有钥匙啊</view>
+    <button open-type="share">邀请好友领钥匙</button>
+  </view>
+</view>

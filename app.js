@@ -11,7 +11,8 @@ App({
     share: false,
     token: '',
     platform: '',
-    screenHeight: 0
+    screenHeight: 0,
+    backApi: {}
   },
   onLaunch: function () {
     wx.getSystemInfo({

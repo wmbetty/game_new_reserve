@@ -16,7 +16,8 @@
     "pages/invitePrize/invitePrize",
     "pages/getGift/getGift",
     "pages/reserveGames/reserveGames",
-    "pages/inviteNew/inviteNew"
+    "pages/inviteNew/inviteNew",
+    "pages/boxes/boxes"
   ],
   "window": {
     "backgroundTextStyle": "light",
