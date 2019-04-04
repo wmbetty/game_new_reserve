@@ -37,7 +37,8 @@ Page({
       'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
     ],
     interval: 3000,
-    autoplay: true
+    autoplay: true,
+    showFirstJoin: false
   },
   onLoad: function (options) {
   },
@@ -63,6 +64,9 @@ Page({
 
   },
   onShareAppMessage: function () {
+
+  },
+  onPageScroll (e) {
 
   },
   // 点击下载游戏按钮

@@ -7,86 +7,153 @@
     <view class="game-big-poster-view" style="background:url('https://gifres.79643.com/mini_aide/2019/03/13/9e342ddf5fcdee7f96127ba82a42c7b0.jpg') no-repeat center;background-size:cover;"></view>
   </view>
   <view class="download-btn-view" bindtap="downloadGame">
-    <view>下载游戏按钮</view>
+    <image class="download-btn" src="" />
     <image class="reserve-arrow" src="/images/arrow_down.png" />
   </view>
   <view class="swiper-view">
-    <swiper circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
+    <swiper class="feature-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
       <block wx:for="{{imgUrls}}" wx:key="index">
         <swiper-item>
-          <image src="{{item}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.75);" />
+          <image mode="aspectFit" src="{{item}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.75);" />
         </swiper-item>
       </block>
     </swiper>
   </view>
   <view class="boxs-view">
-    <view class="open-box-title">宝箱 の 拿好礼</view>
-    <view>开宝箱拿奖品，首次进入赠送1把钥匙</view>
-    <view>通过好友助力获得更多钥匙</view>
-    <view>使用钥匙可开箱拿奖，每次开箱需要消耗1把</view>
-  </view>
-  <view class="boxs-gift-square">
-    <view class="same-box first-box"></view>
-    <view class="same-box second-box"></view>
-    <view class="same-box third-box"></view>
-  </view>
-
-  <view class="invite-view">
-    <view class="invite-tip-view">
-      <image src="" class="key-icon" />
-      <view class="invite-tips">
-        <text>剩余<text class="num-text num-color">3</text> 把钥匙，邀请好友获取更多</text>
-      </view>
-      <image class="refresh-icon" src="" />
+    <!-- <view>
+      <view class="open-box-title">宝箱 の 拿好礼</view>
+      <view>开宝箱拿奖品，首次进入赠送1把钥匙</view>
+      <view>通过好友助力获得更多钥匙</view>
+      <view>使用钥匙可开箱拿奖，每次开箱需要消耗1把</view>
+    </view> -->
+    <image class="open-box-tips" src="" />
+    <view class="boxs-gift-square">
+      <view class="same-box first-box"></view>
+      <view class="same-box second-box"></view>
+      <view class="same-box third-box"></view>
     </view>
-    <view class="avatars-view">
-      <image class="user-avatar" src="" />
-      <image class="user-avatar" src="" />
-      <image class="user-avatar" src="" />
-      <image class="user-avatar" src="" />
-      <image class="user-avatar" src="" />
+    <view class="invite-view">
+      <view class="invite-tip-view">
+        <image src="" class="key-icon" />
+        <view class="invite-tips">
+          <text>剩余<text class="num-text num-color">3</text> 把钥匙，邀请好友获取更多</text>
+        </view>
+        <image class="refresh-icon" src="" />
+      </view>
+      <view class="avatars-view">
+        <image class="user-avatar" src="" />
+        <image class="user-avatar" src="" />
+        <image class="user-avatar" src="" />
+        <image class="user-avatar" src="" />
+        <image class="user-avatar" src="" />
+      </view>
+      <button class="invite-btn" open-type="share">
+        <image class="invite-btn-img" src="" />
+      </button>
     </view>
-    <button class="invite-btn" open-type="share">
-      <image class="invite-btn-img" src="" />
-    </button>
+    <view class="rewards-view">
+      <view class="rewards-head">
+        <view class="rewards-head-line"></view>
+        <view class="rewards-head-text">奖品多多</view>
+        <view class="rewards-head-line"></view>
+      </view>
+      <view class="rewards-cont-view">
+        <view class="one-reward-view">
+          <image class="reward-img" src="" />
+          <view class="reward-name">Switch 游戏机</view>
+        </view>
+        <view class="one-reward-view">
+          <image class="reward-img" src="" />
+          <view class="reward-name">蕾姆婚纱 精品手办</view>
+        </view>
+        <view class="one-reward-view">
+          <image class="reward-img" src="" />
+          <view class="reward-name">App Store 50元券</view>
+        </view>
+        <view class="one-reward-view">
+          <image class="reward-img" src="" />
+          <view class="reward-name">刀剑神域 桐人手办</view>
+        </view>
+      </view>
+    </view>
+    <view class="ranks">
+      <view class="rank-title">获奖榜单</view>
+      <view>
+        <view class="rank-list is-my-record-list">
+          <view class="is-my-list-cont">
+            <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
+            <view class="my-name blue-text">恭喜你获得了</view>
+            <view class="prize-text red-text">XXX</view>
+          </view>
+          <view class="look-detail-text">查看详情 》</view>
+        </view>
+      </view>
+      <view class="rank-dot-line"></view>
+      <view>
+        <swiper class="rank-swiper" circular="{{true}}" autoplay="{{autoplay}}" vertical="true" interval="{{3500}}">
+          <block wx:for="{{[1,2,3,4]}}" wx:key="index">
+            <swiper-item class="">
+              <view class="rank-list" wx:for="{{[1,2,3]}}" wx:key="index" wx:for-item="records">
+                <image src="{{records.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
+                <view>恭喜“</view>
+                <view class="my-name">{{records.member.nickname || '无名氏'}}</view>
+                <view>”抽取了</view>
+                <view class="prize-text">XXX</view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+    </view>
   </view>
-
-  <view class="rewards-view">
-    <view class="rewards-head">
-      <view class="rewards-head-line"></view>
-      <view class="rewards-head-text">奖品多多</view>
-      <view class="rewards-head-line"></view>
-    </view>
-    <view class="rewards-cont-view">
-      <view class="one-reward-view">
-        <image class="reward-img" src="" />
-        <view class="reward-name">Switch 游戏机</view>
-      </view>
-      <view class="one-reward-view">
-        <image class="reward-img" src="" />
-        <view class="reward-name">蕾姆婚纱 精品手办</view>
-      </view>
-      <view class="one-reward-view">
-        <image class="reward-img" src="" />
-        <view class="reward-name">App Store 50元券</view>
-      </view>
-      <view class="one-reward-view">
-        <image class="reward-img" src="" />
-        <view class="reward-name">刀剑神域 桐人手办</view>
+  <view>
+    <view class="gift-botom-line"></view>
+    <!-- 活动规则 -->
+    <view class="rules-cont">
+      <view class="rule-list-cont">
+        <view class="rule-title">活动规则</view>
+        <view class="rule-list" wx:for="{{[1,2,3]}}" wx:key="index">XXXX</view>
       </view>
     </view>
   </view>
-
 </view>
 
 <dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>
 
 <!-- 复制链接弹窗 -->
-<view class="box-mask" wx:if="{{showMask}}" catchtouchmove="ture">
-  <view wx:if="{{showClipboard}}" style="color:#fff;margin-top:200rpx">
-    <view>已复制</view>
-    <view bindtap="hideDialog" style="font-size:100rpx">好的</view>
+<view class="box-mask" catchtouchmove="ture">
+  <!-- 复制链接提示 -->
+  <view class="clipboard-dialog" wx:if="{{showClipboard}}">
+    <view class="clipboard-text">
+      <view class="clipboard-first-text">已经复制下载地址至粘贴板 </view>
+      <view class="clipboard-second-text">
+        <view>请前往</view>
+        <image class="browser-icon" src="/images/browser_icon.png" />
+        <view>浏览器打开下载</view>
+      </view>
+    </view>
+    <image class="clipboard-btn" bindtap="hideDialog" src="" />
   </view>
+
+  <!-- 获得钥匙提示 -->
+  <view class="keys-dialog" wx:if="{{showKeyDialog}}">
+    <image class="big-key" src="" />
+    <view wx:if="{{showFirstJoin}}">
+      <view class="key-text">
+        <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">1</text><text>把钥匙</text></view>
+        <view>快去开宝箱拿奖品吧</view>
+      </view>
+      <image class="clipboard-btn" bindtap="hideDialog" src="" />
+    </view>
+    <view wx:if="{{showShareJoin}}">
+      <view class="key-text">
+        <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">1</text><text>把钥匙</text></view>
+        <view><text>同时平台赠送您</text><text class="give-key-num">2</text><text>把钥匙</text></view>
+      </view>
+      <image class="clipboard-btn" bindtap="hideDialog" src="" />
+    </view>
+  </view>
+
   <view wx:if="{{showGiveKeys}}" catchtouchmove="ture">
     <view bindtap="goTakeGift">去拿奖品</view>
   </view>

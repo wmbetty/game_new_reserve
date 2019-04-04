@@ -8,6 +8,7 @@
 }
 .game-big-poster-view{display: block;width: 100%;height: 100%;overflow: hidden;}
 .download-btn-view{width: 100%;height: 140rpx;position: relative;}
+.download-btn{display: block;width: 100%;height: 100%}
 .reserve-arrow{
   position: absolute;left: 360rpx;bottom: -8rpx;
   width: 40rpx;height: 40rpx;
@@ -16,10 +17,10 @@
 .slide-image{
   width: 500rpx;height: 300rpx;border-radius: 20rpx;margin: 24rpx auto;display: block;
 }
-swiper{display: block;width: 100%;height: 100%}
-.boxs-view{color: #7A70C8;font-size: 28rpx;padding: 60rpx 46rpx 40rpx;}
+.feature-swiper{display: block;width: 100%;height: 100%}
+.boxs-view{color: #7A70C8;font-size: 28rpx;padding: 60rpx 46rpx 0;position: relative;}
 .open-box-title{font-size: 52rpx;margin-bottom: 20rpx}
-.boxs-gift-square{width: 480rpx;height: 480rpx;margin: 94rpx auto;background: orange;position: relative;}
+.boxs-gift-square{width: 480rpx;height: 480rpx;margin: 320rpx auto 94rpx;background: orange;position: relative;}
 .same-box{
   width: 252rpx;height: 210rpx;
   background: #fff
@@ -59,5 +60,53 @@ button::after{border: none}
 .rewards-cont-view{padding: 0 36rpx}
 .one-reward-view{display: inline-block;margin-right: 50rpx;font-size: 18rpx;color: #888;overflow: hidden;margin-bottom: 10rpx}
 .one-reward-view:nth-child(5n+5) {margin-right: 0}
-.reward-img{display: block;width: 80rpx;height: 80rpx;border-radius: 10rpx;background: #fff;margin: 0 auto 12rpx;}
+.reward-img{display: block;width: 80rpx;height: 80rpx;background: #fff;margin: 0 auto 12rpx;}
+/* border-radius: 10rpx; */
 .reward-name{max-width: 72rpx;text-align: center;margin: 0 auto;max-height: 48rpx;overflow: hidden;}
+.open-box-tips{display: block;position: absolute;left: 0;top:0;width: 100%;height: 292rpx;background: #fff}
+.ranks{
+  color: #E5E7ED;font-size: 24rpx;margin: 0 auto 10rpx;overflow: hidden;
+  width: 690rpx;min-height: 280rpx;background: rgba(0, 0, 0, 0.2);border-radius: 10rpx;
+}
+.rank-title{font-size: 32rpx;margin: 20rpx 0 30rpx 20rpx;}
+.rank-list{display: flex;align-items: center;margin-bottom: 18rpx;margin-left: 30rpx;}
+.rank-list:last-child{margin-bottom: 30rpx}
+.is-my-record-list{display:flex;align-items: center;justify-content: space-between;}
+.is-my-list-cont{display: flex;align-items: center;}
+.look-detail-text{color: #E5E7ED;font-size: 24rpx;margin: -6rpx 20rpx 0 0}
+.rank-user-avatar{width: 40rpx;height: 40rpx;border-radius: 50%;margin-right: 12rpx;border: 1rpx solid #eee}
+.my-name{max-width: 260rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.is-my-name{color: #FA5961}
+.blue-text{color: #18A3FE}
+.red-text{color: #FA5961}
+.prize-text{margin-left: 14rpx;max-width: 300rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.look-detail-text{color: #E5E7ED;font-size: 24rpx;margin: -6rpx 20rpx 0 0}
+.rank-dot-line{width: 640rpx;height: 2rpx;border-top: 2rpx dotted rgba(199, 199, 204, 0.35);margin: 0 auto 30rpx;}
+.rank-swiper{height: 200rpx;}
+.gift-botom-line{width: 670rpx;height: 2rpx;background: rgba(255, 255, 255, 0.2);margin: 0 auto 60rpx;}
+.rules-cont{overflow: hidden;}
+.rule-list-cont{
+  width: 690rpx;height: auto;color: #8D81E5;font-size: 28rpx;
+  border-radius: 10rpx 10rpx 0 0;overflow: hidden;margin: 0 auto;padding-bottom: 30rpx
+}
+.rule-title{font-size: 40rpx;margin: 0 0 20rpx 30rpx;color: #A094FF}
+.rule-list{margin-left: 30rpx;margin-bottom: 24rpx}
+.clipboard-dialog{
+  position: absolute;left: 40rpx;top:418rpx;
+  width: 670rpx;height: 520rpx;background: rgba(255, 255, 255, 0.95);border-radius: 30rpx;
+  font-size: 40rpx;color: #666;overflow: hidden;
+}
+.clipboard-text{margin: 80rpx auto 90rpx;width: 480rpx}
+.clipboard-first-text{margin-bottom: 44rpx;text-align: center;}
+.clipboard-second-text{margin-bottom: 8rpx;display: flex;align-items: center;}
+.browser-icon{width: 44rpx;height: 44rpx;margin: 0 10rpx 0 20rpx;}
+.clipboard-btn{display: block;width: 388rpx;height: 130rpx;margin: 0 auto;background: red}
+.keys-dialog{
+  position: absolute;left: 40rpx;top:332rpx;
+  width: 670rpx;height: 700rpx;background: rgba(255, 255, 255, 0.95);border-radius: 30rpx;
+  font-size: 36rpx;color: #666;overflow: hidden;
+}
+.big-key{display: block;width: 200rpx;height: 200rpx;margin: 100rpx auto 30rpx;background: orange}
+.key-text{width: 476rpx;margin: 0 auto 80rpx;}
+.give-key-num{color: #F97956;margin: 0 10rpx}
+.key-first-text{margin-bottom: 20rpx;}
