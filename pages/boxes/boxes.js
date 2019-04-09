@@ -8,6 +8,7 @@ Page({
   data: {
     showClipboard: false,
     showMask: false,
+    showYourPrize: false,
     showGift: false,
     showNoGift: false,
     showNomoreKeys: false,
@@ -31,16 +32,77 @@ Page({
     authInfo: '微信授权才能操作哦',
     height: 0,
     winHeight: 0,
-    imgUrls: [
-      'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-      'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-      'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-    ],
+    swipers: [],
     interval: 3000,
     autoplay: true,
-    showFirstJoin: false
+    showFirstJoin: false,
+    boxIdx: 0,
+    showHandTip: true,
+    isSlideUp: true,
+    activityId: '',
+    token: '',
+    prizeObj: {}
   },
   onLoad: function (options) {
+    let that = this;
+    let actId = options.activityId || 6;
+    that.setData({activityId: actId})
+    fun.wxLogin().then((res)=>{
+      if (res) {
+        let token = res;
+        that.setData({token: token});
+        let activityViewApi = backApi.activityViewApi+token;
+        fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            that.setData({activity: res});
+          }
+        })
+        let reserveElementsApi = backApi.reserveElementsApi+token;
+        fun.quest(reserveElementsApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            let len = Object.keys(res).length;
+            if (len===0) {
+              that.setData({noElements: true})
+            } else {
+              that.setData({
+                elements: res
+              })
+            }
+          }
+        })
+        let rulesApi = backApi.rulesApi+token;
+        fun.quest(rulesApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            that.setData({rules: res})
+          }
+        })
+        let gameGeaturesApi = backApi.gameGeaturesApi+token;
+        fun.quest(gameGeaturesApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            that.setData({swipers: res})
+          }
+        })
+        let rewardDataApi = backApi.rewardDataApi+token;
+        fun.quest(rewardDataApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            let datas = res;
+            that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
+              rewardUrl: datas.reward_url, myPrizes: datas.my_prize_record, sendNumber: datas.send_number,
+              rewardSendNumber: datas.reward_send_number
+            });
+          }
+        })
+        let rewardInviteApi = backApi.rewardInviteApi+token;
+        fun.quest(rewardInviteApi, 'GET', {activity_id: actId}, (res)=>{
+          if (res) {
+            let datas = res;
+            that.setData({inviteDatas: datas});
+          }
+        })
+      } else {
+        Api.wxShowToast('微信登录失败~', 'none', 2000);
+      }
+   })
   },
   onReady: function () {
 
@@ -50,6 +112,10 @@ Page({
     let height = app.globalData.height;
     let winHeight = app.globalData.screenHeight;
     that.setData({height: height, winHeight: winHeight});
+    let userInfo = wx.getStorageSync('userInfo');
+    if (!userInfo.id) {
+      that.setData({showDialog:true})
+    }
   },
   onHide: function () {
 
@@ -64,10 +130,14 @@ Page({
 
   },
   onShareAppMessage: function () {
-
+    let that = this;
+    that.setData({showNoGift: false,showMask: false})
   },
   onPageScroll (e) {
-
+    let scrollTop = e.scrollTop*1;
+    if (scrollTop>=700 && scrollTop<=800) {
+      // this.setData({showMask: true, showKeyDialog: true, showFirstJoin: true})
+    }
   },
   // 点击下载游戏按钮
   downloadGame () {
@@ -122,5 +192,48 @@ Page({
          })
        }
      })
+   },
+   openBox (e) {
+     let that = this;
+     let activityId = that.data.activityId;
+     let box = e.currentTarget.dataset.box;
+     let rewardLotteryApi = backApi.rewardLotteryApi+that.data.token;
+     let rewardCount = that.data.rewardCount*1;
+     if (rewardCount>=1) {
+       that.setData({boxIdx: box, showHandTip: false});
+       setTimeout(()=>{
+         that.setData({showHandTip: true});
+       },1200);
+       fun.quest(rewardLotteryApi, 'POST', {activity_id: activityId},(res)=>{
+         if (res) {
+           /** 获得奖品 */
+           setTimeout(()=>{
+             that.setData({
+               prizeObj: res.prize, showMask: true
+             });
+           },1300)
+         }
+       })
+     } else {
+       console.log('钥匙不够了！')
+     }
+
+   },
+   hideGetPrize () {
+     let that = this;
+     that.setData({isSlideUp: false});
+     setTimeout(()=>{
+       that.setData({showGift: false,showMask: false})
+     },300)
+   },
+   hideNoGift () {
+     let that = this;
+     that.setData({isSlideUp: false});
+     setTimeout(()=>{
+       that.setData({showNoGift: false,showMask: false})
+     },300)
+   },
+   hideYourPrize () {
+     this.setData({showYourPrize: false,showMask: false})
    }
 })

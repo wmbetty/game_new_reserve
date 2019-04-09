@@ -1,24 +1,36 @@
 <!--pages/boxes/boxes.wxml-->
 
-<view class="page-view" style="background: #130C42;min-height:{{winHeight}}px">
+<view class="page-view" style="background: {{elements.activity_extension_1_bg_color.value}};min-height:{{winHeight}}px">
   <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
   <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
   <view style="height:1186rpx;position:relative">
-    <view class="game-big-poster-view" style="background:url('https://gifres.79643.com/mini_aide/2019/03/13/9e342ddf5fcdee7f96127ba82a42c7b0.jpg') no-repeat center;background-size:cover;"></view>
+    <view class="game-big-poster-view" style="background:url('{{activity.bg_url}}') no-repeat center;background-size:cover;"></view>
   </view>
   <view class="download-btn-view" bindtap="downloadGame">
-    <image class="download-btn" src="" />
+    <image class="download-btn" src="{{elements.activity_extension_1_download_button.value}}" />
     <image class="reserve-arrow" src="/images/arrow_down.png" />
   </view>
-  <view class="swiper-view">
+  <!-- <view class="swiper-view">
     <swiper class="feature-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
-      <block wx:for="{{imgUrls}}" wx:key="index">
+      <block wx:for="{{swipers}}" wx:key="index">
         <swiper-item>
-          <image mode="aspectFit" src="{{item}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.75);" />
+          <image mode="aspectFit" src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.65);" />
         </swiper-item>
       </block>
     </swiper>
+  </view> -->
+  <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
+    <view class="r-reward-cont-view">
+      <swiper class="r-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
+        <block wx:for="{{swipers}}" wx:key="index">
+          <swiper-item class="r-swiper-item">
+            <image src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.6);" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
   </view>
+
   <view class="boxs-view">
     <!-- <view>
       <view class="open-box-title">宝箱 の 拿好礼</view>
@@ -26,29 +38,32 @@
       <view>通过好友助力获得更多钥匙</view>
       <view>使用钥匙可开箱拿奖，每次开箱需要消耗1把</view>
     </view> -->
-    <image class="open-box-tips" src="" />
-    <view class="boxs-gift-square">
-      <view class="same-box first-box"></view>
-      <view class="same-box second-box"></view>
-      <view class="same-box third-box"></view>
+    <image class="open-box-tips" src="{{elements.activity_extension_1_treasure_chest_desc.value}}" />
+    <view class="boxs-gift-square" style="background:url('{{elements.activity_extension_1_treasure_chest_bg_img.value}}') no-repeat;background-size:cover;">
+      <view class="same-box first-box" data-box="1" bindtap="openBox">
+        <image src="{{boxIdx*1===1?elements.activity_extension_1_treasure_chest_open_img.value:elements.activity_extension_1_treasure_chest_usual_img.value}}" class="{{boxIdx*1===1?'box-usual-img box-shake':'box-usual-img'}}" />
+      </view>
+      <view class="same-box second-box" data-box="2" bindtap="openBox">
+        <image src="{{boxIdx*1===2?elements.activity_extension_1_treasure_chest_open_img.value:elements.activity_extension_1_treasure_chest_usual_img.value}}" class="{{boxIdx*1===2?'box-usual-img box-shake':'box-usual-img'}}" />
+      </view>
+      <view class="same-box third-box" data-box="3" bindtap="openBox">
+        <image src="{{boxIdx*1===3?elements.activity_extension_1_treasure_chest_open_img.value:elements.activity_extension_1_treasure_chest_usual_img.value}}" class="{{boxIdx*1===3?'box-usual-img box-shake':'box-usual-img'}}" />
+      </view>
+      <image src="{{elements.activity_extension_1_flicker_tip_img.value}}" wx:if="{{showHandTip}}" class="hand-tip" />
     </view>
     <view class="invite-view">
       <view class="invite-tip-view">
-        <image src="" class="key-icon" />
+        <image src="{{elements.activity_extension_1_small_key_img.value}}" class="key-icon" />
         <view class="invite-tips">
-          <text>剩余<text class="num-text num-color">3</text> 把钥匙，邀请好友获取更多</text>
+          <text>剩余<text class="num-text num-color">{{rewardCount}}</text> 把钥匙，邀请好友获取更多</text>
         </view>
-        <image class="refresh-icon" src="" />
+        <image class="refresh-icon" src="{{elements.activity_extension_1_reload_key_img.value}}" />
       </view>
       <view class="avatars-view">
-        <image class="user-avatar" src="" />
-        <image class="user-avatar" src="" />
-        <image class="user-avatar" src="" />
-        <image class="user-avatar" src="" />
-        <image class="user-avatar" src="" />
+        <image class="user-avatar" wx:for="{{inviteDatas.friend}}" wx:key="index" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" src="" />
       </view>
       <button class="invite-btn" open-type="share">
-        <image class="invite-btn-img" src="" />
+        <image class="invite-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
       </button>
     </view>
     <view class="rewards-view">
@@ -76,14 +91,14 @@
         </view>
       </view>
     </view>
-    <view class="ranks">
+    <view class="ranks" wx:if="{{prizeRecord.length || myPrizes.length}}">
       <view class="rank-title">获奖榜单</view>
       <view>
-        <view class="rank-list is-my-record-list">
+        <view class="rank-list is-my-record-list" wx:for="{{myPrizes}}" wx:key="index" data-rname="{{item.reward_name}}" bindtap="lookYourGiftRecord">
           <view class="is-my-list-cont">
             <image src="{{item.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
             <view class="my-name blue-text">恭喜你获得了</view>
-            <view class="prize-text red-text">XXX</view>
+            <view class="prize-text red-text">{{item.reward_name}}</view>
           </view>
           <view class="look-detail-text">查看详情 》</view>
         </view>
@@ -91,14 +106,14 @@
       <view class="rank-dot-line"></view>
       <view>
         <swiper class="rank-swiper" circular="{{true}}" autoplay="{{autoplay}}" vertical="true" interval="{{3500}}">
-          <block wx:for="{{[1,2,3,4]}}" wx:key="index">
+          <block wx:for="{{prizeRecord}}" wx:key="index">
             <swiper-item class="">
-              <view class="rank-list" wx:for="{{[1,2,3]}}" wx:key="index" wx:for-item="records">
+              <view class="rank-list" wx:for="{{item}}" wx:key="index" wx:for-item="records">
                 <image src="{{records.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
                 <view>恭喜“</view>
                 <view class="my-name">{{records.member.nickname || '无名氏'}}</view>
                 <view>”抽取了</view>
-                <view class="prize-text">XXX</view>
+                <view class="prize-text">{{records.reward_name}}</view>
               </view>
             </swiper-item>
           </block>
@@ -120,8 +135,7 @@
 
 <dialog-wxml dialog-show="{{showDialog}}" bind:cancelDialog="cancelDialog" bind:confirmDialog="confirmDialog"></dialog-wxml>
 
-<!-- 复制链接弹窗 -->
-<view class="box-mask" catchtouchmove="ture">
+<view class="box-mask" catchtouchmove="ture" wx:if="{{showMask}}">
   <!-- 复制链接提示 -->
   <view class="clipboard-dialog" wx:if="{{showClipboard}}">
     <view class="clipboard-text">
@@ -132,38 +146,88 @@
         <view>浏览器打开下载</view>
       </view>
     </view>
-    <image class="clipboard-btn" bindtap="hideDialog" src="" />
+    <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_i_konw_button.value}}" />
   </view>
 
   <!-- 获得钥匙提示 -->
   <view class="keys-dialog" wx:if="{{showKeyDialog}}">
-    <image class="big-key" src="" />
+    <image class="big-key" src="{{elements.activity_extension_1_bright_big_key_img.value}}" />
+    <!-- 第一次进入送钥匙提示 -->
     <view wx:if="{{showFirstJoin}}">
       <view class="key-text">
-        <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">1</text><text>把钥匙</text></view>
+        <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">{{elements.activity_extension_1_give_qualification.value}}</text><text>把钥匙</text></view>
         <view>快去开宝箱拿奖品吧</view>
       </view>
       <image class="clipboard-btn" bindtap="hideDialog" src="" />
     </view>
+    <!-- 助力好友送钥匙提示 -->
     <view wx:if="{{showShareJoin}}">
       <view class="key-text">
-        <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">1</text><text>把钥匙</text></view>
+        <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{elements.activity_extension_1_be_invite_get_qualification.value}}</text><text>把钥匙</text></view>
         <view><text>同时平台赠送您</text><text class="give-key-num">2</text><text>把钥匙</text></view>
       </view>
-      <image class="clipboard-btn" bindtap="hideDialog" src="" />
+      <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
     </view>
   </view>
 
   <view wx:if="{{showGiveKeys}}" catchtouchmove="ture">
     <view bindtap="goTakeGift">去拿奖品</view>
   </view>
-  <view wx:if="{{showGift}}" catchtouchmove="ture">我是中奖弹窗</view>
-  <view wx:if="{{showNoGift}}" catchtouchmove="ture">
-    <view>我是没中奖弹窗</view>
-    <view bindtap="hideDialog">关闭按钮</view>
-    <view bindtap="hideDialog">继续开箱</view>
-    <button open-type="share">邀请好友领钥匙</button>
+  <!-- 中奖提示 -->
+  <view wx:if="{{prizeObj.is_prize*1!==2}}" class="{{isSlideUp?'get-gift-dialog slide-up':' get-gift-dialog slide-down'}}">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideGetPrize" />
+    <view class="gift-tips-cont">
+      <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
+      <view class="gift-text-tip">
+        <view>恭喜中奖</view>
+        <view class="gift-name">{{prizeObj.reward_name}}</view>
+      </view>
+    </view>
+    <view class="get-prize-cont">
+      <view class="get-prize-title">领取流程</view>
+      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
+      <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
+    </view>
+    <button open-type="contact" class="get-prize-btn">
+      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
+    </button>
   </view>
+  <!-- 查看自己奖品弹窗 -->
+  <view class="get-gift-dialog" wx:if="{{showYourPrize}}">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideYourPrize" />
+    <view class="gift-tips-cont">
+      <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
+      <view class="gift-text-tip">
+        <view>您的奖品为</view>
+        <view class="gift-name">{{pname}}</view>
+      </view>
+    </view>
+    <view class="get-prize-cont">
+      <view class="get-prize-title">领取流程</view>
+      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
+      <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
+    </view>
+    <button open-type="contact" class="get-prize-btn">
+      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
+    </button>
+  </view>
+
+  <!-- 开个空箱 -->
+  <view wx:if="{{prizeObj.is_prize*1===2}}" class="{{isSlideUp?'no-gift-dialog slide-up':'no-gift-dialog slide-down'}}" catchtouchmove="ture">
+    <image class="close-icon" src="/images/gray_close.png" bindtap="hideNoGift" />
+    <image src="{{elements.activity_extension_1_no_prize_img.value}}" class="sad-face" />
+    <view class="no-gift-text">
+      <view class="no-gift-big-text">开了个空箱</view>
+      <view class="no-gift-small-text">加油加油再试试</view>
+    </view>
+    <view class="no-gift-btns">
+      <image src="{{elements.activity_extension_1_no_prize_continue_open_treasure_chest_button.value}}" class="no-gift-btn" bindtap="hideNoGift" />
+      <button class="no-gift-btn" open-type="share"><image src="{{elements.activity_extension_1_no_prize_get_key_button.value}}" class="no-gift-btn-img" /></button>
+    </view>
+  </view>
+
   <view wx:if="{{showNomoreKeys}}" catchtouchmove="ture">
     <view bindtap="hideDialog">关闭按钮</view>
     <view>没有钥匙啊</view>
