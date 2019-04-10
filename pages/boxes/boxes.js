@@ -50,9 +50,10 @@ Page({
     let actId = options.activityId;
     that.setData({activityId: actId});
     let userInfo = wx.getStorageSync('userInfo');
-    fun.wxLogin().then((res)=>{
-      if (res) {
-        let token = res;
+
+    fun.wxLogin().then((loginRes)=>{
+      if (loginRes) {
+        let token = loginRes;
         that.setData({token: token});
         let activityViewApi = backApi.activityViewApi+token;
         let phoneReserveApi = backApi.phoneReserveApi + token;
@@ -62,28 +63,27 @@ Page({
             if (options.isShareIn) {
               // that.setData({isQrcodeIn: true});
               that.setData({encryptId: options.encryptId});
+            }
+            if (res.activity_extension_1_give_qualification) {
+              that.setData({isFirstIn: true})
+            }
+            if (userInfo.id && options.isShareIn) {
               let pdata = {
                 activity_id: actId,
                 encrypt_id: options.encryptId,
                 sign: 'invite'
               }
-              if (userInfo.id) {
-                fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
-                  if (inviteRes.data.status*1===200) {
-                    if (res.activity_extension_1_be_invite_get_qualification) {
-                      that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
-                    }
-                  } else {
-                    console.log(inviteRes.data.msg)
-                  }
-                })
-              }
-            }
-            if (res.activity_extension_1_give_qualification) {
-              that.setData({isFirstIn: true})
+              fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
+                if (inviteRes.data.status*1===200) {
+                  that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+                } else {
+                  console.log(inviteRes.data.msg)
+                }
+              })
             }
           }
         })
+
         let reserveElementsApi = backApi.reserveElementsApi+token;
         fun.quest(reserveElementsApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
@@ -170,8 +170,12 @@ Page({
     let that = this;
     let isFirstIn = that.data.isFirstIn;
     let scrollTop = e.scrollTop*1;
-    if (scrollTop>=600 && scrollTop<=800 &&isFirstIn) {
-      that.setData({showMask: true, showKeyDialog: true, showFirstJoin: true})
+    let isFirst = wx.getStorageSync('isFirstIn');
+    if (!isFirst) {
+      if (scrollTop>=600 && scrollTop<=800 &&isFirstIn) {
+        that.setData({showMask: true, showKeyDialog: true, showFirstJoin: true});
+        wx.setStorageSync('isFirstIn', 1);
+      }
     }
   },
   // 点击下载游戏按钮
@@ -192,20 +196,12 @@ Page({
        that.setData({showDialog: true})
      }
    },
-   goTakeGift () {
-     let that = this;
-     let userInfo = wx.getStorageSync('userInfo');
-     if (userInfo.id) {
-      that.setData({showInviteTips: false, showMask: false})
-     } else {
-       that.setData({showDialog: true})
-     }
-   },
    hideDialog () {
      let that = this;
      that.setData({
-       showNoGift: false, showMask: false, showInviteTips: false,
-       showGift: false, showGiveKeys: false, showNoGift: false, showClipboard: false
+       showNoGift: false, showMask: false, showYourPrize: false,
+       showGift: false, showNoGift: false, showClipboard: false,
+       showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
      })
    },
    cancelDialog () {
@@ -271,8 +267,8 @@ Page({
            if (res) {
              /** 获得奖品 */
              setTimeout(()=>{
-               if (res.is_prize*1!==2) {
-                 that.setData({showGift: true});
+               if (res.prize.is_prize*1!==2) {
+                 that.setData({showGift: true, isSlideUp: true});
                } else {
                  that.setData({showNoGift: true});
                }
@@ -302,18 +298,30 @@ Page({
      let that = this;
      that.setData({isSlideUp: false});
      setTimeout(()=>{
-       that.setData({showGift: false,showMask: false})
+       that.setData({
+         showNoGift: false, showMask: false, showYourPrize: false,
+         showGift: false, showNoGift: false, showClipboard: false,
+         showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
+       })
      },300)
    },
    hideNoGift () {
      let that = this;
      that.setData({isSlideUp: false});
      setTimeout(()=>{
-       that.setData({showNoGift: false,showMask: false})
+       that.setData({
+         showNoGift: false, showMask: false, showYourPrize: false,
+         showGift: false, showNoGift: false, showClipboard: false,
+         showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
+       })
      },300)
    },
    hideYourPrize () {
-     this.setData({showYourPrize: false,showMask: false})
+     that.setData({
+       showNoGift: false, showMask: false, showYourPrize: false,
+       showGift: false, showNoGift: false, showClipboard: false,
+       showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
+     })
    },
    lookYourGiftRecord (e) {
      let that = this;

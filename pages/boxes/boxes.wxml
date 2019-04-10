@@ -4,11 +4,12 @@
   <nav-bar navbar-data='{{nvabarData}}' wx:if="{{!isQrcodeIn}}"></nav-bar>
   <nav-bar navbar-data='{{nvabarData1}}' wx:if="{{isQrcodeIn}}"></nav-bar>
   <view style="height:1186rpx;position:relative">
-    <view class="game-big-poster-view" style="background:url('{{activity.bg_url}}') no-repeat center;background-size:cover;"></view>
-  </view>
-  <view class="download-btn-view" bindtap="downloadGame">
-    <image class="download-btn" src="{{elements.activity_extension_1_download_button.value}}" />
-    <!-- <image class="reserve-arrow" src="/images/arrow_down.png" /> -->
+    <view class="game-big-poster-view" style="background:url('{{activity.bg_url}}') no-repeat center;background-size:cover;">
+      <view class="download-btn-view" bindtap="downloadGame">
+        <image class="download-btn" src="{{elements.activity_extension_1_download_button.value}}" />
+        <!-- <image class="reserve-arrow" src="/images/arrow_down.png" /> -->
+      </view>
+    </view>
   </view>
   <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
     <view class="r-reward-cont-view">
@@ -152,14 +153,11 @@
 
     <!-- 没有钥匙了 -->
     <view wx:if="{{showNomoreKeys}}">
+      <image class="close-icon" src="/images/gray_close.png" bindtap="hideGetPrize" />
       <view class="nomore-key-big-text">钥匙已用完</view>
       <view class="nomore-key-small-text">领取更多钥匙再来鸭～</view>
       <button open-type="share" class="nomore-key-btn"><image src="{{elements.activity_extension_1_invite_receive_key_button.value}}" /></button>
     </view>
-  </view>
-
-  <view wx:if="{{showGiveKeys}}" catchtouchmove="ture">
-    <view bindtap="goTakeGift">去拿奖品</view>
   </view>
   <!-- 中奖提示 -->
   <view wx:if="{{showGift}}" class="{{isSlideUp?'get-gift-dialog slide-up':' get-gift-dialog slide-down'}}">

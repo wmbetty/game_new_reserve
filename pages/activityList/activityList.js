@@ -176,6 +176,11 @@ Page({
           url: '/pages/reserveGames/reserveGames?activityId='+activityId
         })
       }
+      if (typeSign==='extension_1') {
+        wx.navigateTo({
+          url: '/pages/boxes/boxes?activityId='+activityId
+        })
+      }
     }
   },
   cancelDialog () {
