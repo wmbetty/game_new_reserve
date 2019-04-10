@@ -8,7 +8,7 @@
   </view>
   <view class="download-btn-view" bindtap="downloadGame">
     <image class="download-btn" src="{{elements.activity_extension_1_download_button.value}}" />
-    <image class="reserve-arrow" src="/images/arrow_down.png" />
+    <!-- <image class="reserve-arrow" src="/images/arrow_down.png" /> -->
   </view>
   <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
     <view class="r-reward-cont-view">

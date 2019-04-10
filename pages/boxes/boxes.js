@@ -49,6 +49,7 @@ Page({
     let that = this;
     let actId = options.activityId;
     that.setData({activityId: actId});
+    let userInfo = wx.getStorageSync('userInfo');
     fun.wxLogin().then((res)=>{
       if (res) {
         let token = res;
@@ -59,21 +60,24 @@ Page({
           if (res) {
             that.setData({activity: res});
             if (options.isShareIn) {
-              that.setData({isQrcodeIn: true});
+              // that.setData({isQrcodeIn: true});
+              that.setData({encryptId: options.encryptId});
               let pdata = {
                 activity_id: actId,
                 encrypt_id: options.encryptId,
                 sign: 'invite'
               }
-              fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
-                if (inviteRes.data.status*1===200) {
-                  if (res.activity_extension_1_be_invite_get_qualification) {
-                    that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+              if (userInfo.id) {
+                fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
+                  if (inviteRes.data.status*1===200) {
+                    if (res.activity_extension_1_be_invite_get_qualification) {
+                      that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+                    }
+                  } else {
+                    console.log(inviteRes.data.msg)
                   }
-                } else {
-                  console.log(inviteRes.data.msg)
-                }
-              })
+                })
+              }
             }
             if (res.activity_extension_1_give_qualification) {
               that.setData({isFirstIn: true})
@@ -210,6 +214,7 @@ Page({
    confirmDialog (e) {
      let that = this;
      let updateUserInfoApi = backApi.updateUserInfoApi+that.data.token;
+     let phoneReserveApi = backApi.phoneReserveApi + that.data.token;
      that.setData({
        showDialog: false
      });
@@ -227,6 +232,20 @@ Page({
                if (res) {
                  wx.setStorageSync('userInfo', res);
                  Api.wxShowToast('授权成功，可以进行更多操作了', 'none', 2000);
+                 let pdata = {
+                   activity_id: that.data.activityId,
+                   encrypt_id: that.data.encryptId,
+                   sign: 'invite'
+                 }
+                 fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
+                   if (inviteRes.data.status*1===200) {
+                     if (that.data.activity.activity_extension_1_be_invite_get_qualification) {
+                       that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+                     }
+                   } else {
+                     console.log(inviteRes.data.msg)
+                   }
+                 })
                }
              })
            }
@@ -269,7 +288,7 @@ Page({
                    });
                  }
                })
-             },1300)
+             },900)
            }
          })
        } else {

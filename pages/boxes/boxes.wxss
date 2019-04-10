@@ -29,7 +29,7 @@
 }
 .box-usual-img{display: block;width: 100%;height: 100%}
 .first-box{
-  position: absolute;left: 112rpx;bottom: 316rpx
+  position: absolute;left: 112rpx;bottom: 346rpx
 }
 .second-box{
   position: absolute;left: -60rpx;bottom: 36rpx
