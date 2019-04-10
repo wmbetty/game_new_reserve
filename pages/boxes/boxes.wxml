@@ -206,7 +206,7 @@
     <image src="{{elements.activity_extension_1_no_prize_img.value}}" class="sad-face" />
     <view class="no-gift-text">
       <view class="no-gift-big-text">开了个空箱</view>
-      <view class="no-gift-small-text">加油加油再试试</view>
+      <view class="no-gift-small-text">{{prizeObj.reward_name}}</view>
     </view>
     <view class="no-gift-btns">
       <image src="{{elements.activity_extension_1_no_prize_continue_open_treasure_chest_button.value}}" class="no-gift-btn" bindtap="hideNoGift" />

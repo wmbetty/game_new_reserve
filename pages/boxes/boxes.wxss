@@ -196,7 +196,7 @@ button::after{border: none}
 }
 .get-prize-btn-img{display: block;width: 100%;height: 100%;}
 .slide-up{
-	animation: slideup .3s linear
+	animation: slideup .2s linear
 }
 @keyframes slideup {
 	from {
@@ -208,7 +208,7 @@ button::after{border: none}
 	}
 }
 .slide-down{
-	animation: slidedown .3s linear
+	animation: slidedown .2s linear
 }
 @keyframes slidedown {
 	from {

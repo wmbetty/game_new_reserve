@@ -189,7 +189,7 @@ Page({
           success: function(res) {
             setTimeout(()=>{
               that.setData({showClipboard: true, showMask: true})
-            }, 1300)
+            }, 800)
           }
         })
      } else {
