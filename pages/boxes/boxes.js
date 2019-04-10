@@ -41,20 +41,43 @@ Page({
     isSlideUp: true,
     activityId: '',
     token: '',
-    prizeObj: {}
+    prizeObj: {},
+    rewards: [],
+    isFirstIn: false
   },
   onLoad: function (options) {
     let that = this;
-    let actId = options.activityId || 6;
-    that.setData({activityId: actId})
+    let actId = options.activityId;
+    that.setData({activityId: actId});
     fun.wxLogin().then((res)=>{
       if (res) {
         let token = res;
         that.setData({token: token});
         let activityViewApi = backApi.activityViewApi+token;
+        let phoneReserveApi = backApi.phoneReserveApi + token;
         fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
             that.setData({activity: res});
+            if (options.isShareIn) {
+              that.setData({isQrcodeIn: true});
+              let pdata = {
+                activity_id: actId,
+                encrypt_id: options.encryptId,
+                sign: 'invite'
+              }
+              fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
+                if (inviteRes.data.status*1===200) {
+                  if (res.activity_extension_1_be_invite_get_qualification) {
+                    that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+                  }
+                } else {
+                  console.log(inviteRes.data.msg)
+                }
+              })
+            }
+            if (res.activity_extension_1_give_qualification) {
+              that.setData({isFirstIn: true})
+            }
           }
         })
         let reserveElementsApi = backApi.reserveElementsApi+token;
@@ -87,8 +110,8 @@ Page({
           if (res) {
             let datas = res;
             that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
-              rewardUrl: datas.reward_url, myPrizes: datas.my_prize_record, sendNumber: datas.send_number,
-              rewardSendNumber: datas.reward_send_number
+              myPrizes: datas.my_prize_record, sendNumber: datas.send_number,
+              rewardSendNumber: datas.reward_send_number, rewards: datas.reward
             });
           }
         })
@@ -131,30 +154,48 @@ Page({
   },
   onShareAppMessage: function () {
     let that = this;
-    that.setData({showNoGift: false,showMask: false})
+    that.setData({showNoGift: false,showMask: false, showKeyDialog: false});
+    let pdata = that.data;
+    return {
+      title: pdata.activity.friend_lang,
+      imageUrl: pdata.activity.friend_url,
+      path: `/pages/activityList/activityList?activityId=${pdata.activityId}&isBox=1&encryptId=${pdata.inviteDatas.member.encrypt_id}`
+    }
   },
   onPageScroll (e) {
+    let that = this;
+    let isFirstIn = that.data.isFirstIn;
     let scrollTop = e.scrollTop*1;
-    if (scrollTop>=700 && scrollTop<=800) {
-      // this.setData({showMask: true, showKeyDialog: true, showFirstJoin: true})
+    if (scrollTop>=600 && scrollTop<=800 &&isFirstIn) {
+      that.setData({showMask: true, showKeyDialog: true, showFirstJoin: true})
     }
   },
   // 点击下载游戏按钮
   downloadGame () {
     let that = this;
-    let gameUrl = 'https://baidu.com';
-    wx.setClipboardData({
-       data: gameUrl,
-       success: function(res) {
-         setTimeout(()=>{
-           that.setData({showClipboard: true, showMask: true})
-         }, 2100)
-       }
-     })
+    let gameUrl = that.data.elements.activity_extension_1_game_download_link.value;
+    let userInfo = wx.getStorageSync('userInfo');
+     if (userInfo.id) {
+       wx.setClipboardData({
+          data: gameUrl,
+          success: function(res) {
+            setTimeout(()=>{
+              that.setData({showClipboard: true, showMask: true})
+            }, 1800)
+          }
+        })
+     } else {
+       that.setData({showDialog: true})
+     }
    },
    goTakeGift () {
      let that = this;
-     that.setData({showInviteTips: false, showMask: false})
+     let userInfo = wx.getStorageSync('userInfo');
+     if (userInfo.id) {
+      that.setData({showInviteTips: false, showMask: false})
+     } else {
+       that.setData({showDialog: true})
+     }
    },
    hideDialog () {
      let that = this;
@@ -198,26 +239,45 @@ Page({
      let activityId = that.data.activityId;
      let box = e.currentTarget.dataset.box;
      let rewardLotteryApi = backApi.rewardLotteryApi+that.data.token;
+     let rewardDataApi = backApi.rewardDataApi+that.data.token;
      let rewardCount = that.data.rewardCount*1;
-     if (rewardCount>=1) {
-       that.setData({boxIdx: box, showHandTip: false});
-       setTimeout(()=>{
-         that.setData({showHandTip: true});
-       },1200);
-       fun.quest(rewardLotteryApi, 'POST', {activity_id: activityId},(res)=>{
-         if (res) {
-           /** 获得奖品 */
-           setTimeout(()=>{
-             that.setData({
-               prizeObj: res.prize, showMask: true
-             });
-           },1300)
-         }
-       })
-     } else {
-       console.log('钥匙不够了！')
-     }
+     let userInfo = wx.getStorageSync('userInfo');
+     if (userInfo.id) {
+       if (rewardCount>=1) {
+         that.setData({boxIdx: box, showHandTip: false});
+         setTimeout(()=>{
+           that.setData({showHandTip: true});
+         },1200);
+         fun.quest(rewardLotteryApi, 'POST', {activity_id: activityId},(res)=>{
+           if (res) {
+             /** 获得奖品 */
+             setTimeout(()=>{
+               if (res.is_prize*1!==2) {
+                 that.setData({showGift: true});
+               } else {
+                 that.setData({showNoGift: true});
+               }
+               that.setData({
+                 prizeObj: res.prize, showMask: true
+               });
 
+               fun.quest(rewardDataApi, 'GET', {activity_id: activityId}, (res)=>{
+                 if (res) {
+                   let datas = res;
+                   that.setData({prizeRecord: datas.prize_record, rewardCount: datas.reward_count,
+                     myPrizes: datas.my_prize_record
+                   });
+                 }
+               })
+             },1300)
+           }
+         })
+       } else {
+         that.setData({showMask: true, showKeyDialog: true, showNomoreKeys: true})
+       }
+     } else {
+       that.setData({showDialog: true})
+     }
    },
    hideGetPrize () {
      let that = this;
@@ -235,5 +295,30 @@ Page({
    },
    hideYourPrize () {
      this.setData({showYourPrize: false,showMask: false})
+   },
+   lookYourGiftRecord (e) {
+     let that = this;
+     let rname = e.currentTarget.dataset.rname;
+     that.setData({showMask: true, pname: rname, showYourPrize: true});
+   },
+   refreshTimes () {
+     let that = this;
+     let pageData = that.data;
+     let rewardDataApi = backApi.rewardDataApi+pageData.token;
+     let userInfo = wx.getStorageSync('userInfo');
+     if (userInfo.id) {
+       wx.showLoading({title: '刷新中'});
+       fun.quest(rewardDataApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+         if (res) {
+           wx.hideLoading();
+           let datas = res;
+           that.setData({prizeRecord: datas.prize_record,rewardCount: datas.reward_count});
+         } else {
+           wx.hideLoading();
+         }
+       })
+     } else {
+       that.setData({showDialog: true})
+     }
    }
 })

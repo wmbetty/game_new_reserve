@@ -10,15 +10,6 @@
     <image class="download-btn" src="{{elements.activity_extension_1_download_button.value}}" />
     <image class="reserve-arrow" src="/images/arrow_down.png" />
   </view>
-  <!-- <view class="swiper-view">
-    <swiper class="feature-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
-      <block wx:for="{{swipers}}" wx:key="index">
-        <swiper-item>
-          <image mode="aspectFit" src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.65);" />
-        </swiper-item>
-      </block>
-    </swiper>
-  </view> -->
   <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
     <view class="r-reward-cont-view">
       <swiper class="r-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
@@ -55,12 +46,12 @@
       <view class="invite-tip-view">
         <image src="{{elements.activity_extension_1_small_key_img.value}}" class="key-icon" />
         <view class="invite-tips">
-          <text>剩余<text class="num-text num-color">{{rewardCount}}</text> 把钥匙，邀请好友获取更多</text>
+          <view>剩余</view><view class="num-text num-color">{{rewardCount}}</view><view>把钥匙，邀请好友获取更多</view>
         </view>
-        <image class="refresh-icon" src="{{elements.activity_extension_1_reload_key_img.value}}" />
+        <image class="refresh-icon" bindtap="refreshTimes" src="{{elements.activity_extension_1_reload_key_img.value}}" />
       </view>
       <view class="avatars-view">
-        <image class="user-avatar" wx:for="{{inviteDatas.friend}}" wx:key="index" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" src="" />
+        <image class="user-avatar" wx:for="{{inviteDatas.friend}}" wx:key="index" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" />
       </view>
       <button class="invite-btn" open-type="share">
         <image class="invite-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
@@ -73,21 +64,9 @@
         <view class="rewards-head-line"></view>
       </view>
       <view class="rewards-cont-view">
-        <view class="one-reward-view">
-          <image class="reward-img" src="" />
-          <view class="reward-name">Switch 游戏机</view>
-        </view>
-        <view class="one-reward-view">
-          <image class="reward-img" src="" />
-          <view class="reward-name">蕾姆婚纱 精品手办</view>
-        </view>
-        <view class="one-reward-view">
-          <image class="reward-img" src="" />
-          <view class="reward-name">App Store 50元券</view>
-        </view>
-        <view class="one-reward-view">
-          <image class="reward-img" src="" />
-          <view class="reward-name">刀剑神域 桐人手办</view>
+        <view class="one-reward-view" wx:for="{{rewards}}" wx:key="index">
+          <image class="reward-img" src="{{item.reward_img}}" />
+          <view class="reward-name">{{item.reward_name}}</view>
         </view>
       </view>
     </view>
@@ -127,7 +106,7 @@
     <view class="rules-cont">
       <view class="rule-list-cont">
         <view class="rule-title">活动规则</view>
-        <view class="rule-list" wx:for="{{[1,2,3]}}" wx:key="index">XXXX</view>
+        <view class="rule-list" wx:for="{{rules}}" wx:key="index">{{item.title}}</view>
       </view>
     </view>
   </view>
@@ -151,22 +130,31 @@
 
   <!-- 获得钥匙提示 -->
   <view class="keys-dialog" wx:if="{{showKeyDialog}}">
-    <image class="big-key" src="{{elements.activity_extension_1_bright_big_key_img.value}}" />
+    <image wx:if="{{showFirstJoin || showShareJoin}}" class="big-key" src="{{elements.activity_extension_1_bright_big_key_img.value}}" />
+    <image wx:if="{{showNomoreKeys}}" class="big-key" src="{{elements.activity_extension_1_dark_big_key_img.value}}" />
     <!-- 第一次进入送钥匙提示 -->
     <view wx:if="{{showFirstJoin}}">
       <view class="key-text">
-        <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">{{elements.activity_extension_1_give_qualification.value}}</text><text>把钥匙</text></view>
+        <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">{{activity.activity_extension_1_give_qualification}}</text><text>把钥匙</text></view>
         <view>快去开宝箱拿奖品吧</view>
       </view>
-      <image class="clipboard-btn" bindtap="hideDialog" src="" />
+      <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_i_konw_button.value}}" />
     </view>
+
     <!-- 助力好友送钥匙提示 -->
     <view wx:if="{{showShareJoin}}">
       <view class="key-text">
-        <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{elements.activity_extension_1_be_invite_get_qualification.value}}</text><text>把钥匙</text></view>
-        <view><text>同时平台赠送您</text><text class="give-key-num">2</text><text>把钥匙</text></view>
+        <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{activity.invite_reward_count}}</text><text>把钥匙</text></view>
+        <view><text>同时平台赠送您</text><text class="give-key-num">{{activity.activity_extension_1_be_invite_get_qualification*1+activity.invite_reward_count*1}}</text><text>把钥匙</text></view>
       </view>
       <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
+    </view>
+
+    <!-- 没有钥匙了 -->
+    <view wx:if="{{showNomoreKeys}}">
+      <view class="nomore-key-big-text">钥匙已用完</view>
+      <view class="nomore-key-small-text">领取更多钥匙再来鸭～</view>
+      <button open-type="share" class="nomore-key-btn"><image src="{{elements.activity_extension_1_invite_receive_key_button.value}}" /></button>
     </view>
   </view>
 
@@ -174,7 +162,7 @@
     <view bindtap="goTakeGift">去拿奖品</view>
   </view>
   <!-- 中奖提示 -->
-  <view wx:if="{{prizeObj.is_prize*1!==2}}" class="{{isSlideUp?'get-gift-dialog slide-up':' get-gift-dialog slide-down'}}">
+  <view wx:if="{{showGift}}" class="{{isSlideUp?'get-gift-dialog slide-up':' get-gift-dialog slide-down'}}">
     <image class="close-icon" src="/images/gray_close.png" bindtap="hideGetPrize" />
     <view class="gift-tips-cont">
       <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />
@@ -190,7 +178,7 @@
       <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
     </view>
     <button open-type="contact" class="get-prize-btn">
-      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
+      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_go_receive_prize_button.value}}" />
     </button>
   </view>
   <!-- 查看自己奖品弹窗 -->
@@ -210,12 +198,12 @@
       <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
     </view>
     <button open-type="contact" class="get-prize-btn">
-      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
+      <image class="get-prize-btn-img" src="{{elements.activity_extension_1_go_receive_prize_button.value}}" />
     </button>
   </view>
 
   <!-- 开个空箱 -->
-  <view wx:if="{{prizeObj.is_prize*1===2}}" class="{{isSlideUp?'no-gift-dialog slide-up':'no-gift-dialog slide-down'}}" catchtouchmove="ture">
+  <view wx:if="{{showNoGift}}" class="{{isSlideUp?'no-gift-dialog slide-up':'no-gift-dialog slide-down'}}" catchtouchmove="ture">
     <image class="close-icon" src="/images/gray_close.png" bindtap="hideNoGift" />
     <image src="{{elements.activity_extension_1_no_prize_img.value}}" class="sad-face" />
     <view class="no-gift-text">
@@ -226,11 +214,5 @@
       <image src="{{elements.activity_extension_1_no_prize_continue_open_treasure_chest_button.value}}" class="no-gift-btn" bindtap="hideNoGift" />
       <button class="no-gift-btn" open-type="share"><image src="{{elements.activity_extension_1_no_prize_get_key_button.value}}" class="no-gift-btn-img" /></button>
     </view>
-  </view>
-
-  <view wx:if="{{showNomoreKeys}}" catchtouchmove="ture">
-    <view bindtap="hideDialog">关闭按钮</view>
-    <view>没有钥匙啊</view>
-    <button open-type="share">邀请好友领钥匙</button>
   </view>
 </view>

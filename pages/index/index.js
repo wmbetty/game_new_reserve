@@ -52,7 +52,7 @@ Page({
         url: `/pages/reserveGame/reserveGame?activityId=${options.activityId}`
       })
     }
-    if (options.activityId && !options.reserveMode) {
+    if (options.activityId && options.mode) {
       wx.navigateTo({
         url: `/pages/reserveGames/reserveGames?activityId=${options.activityId}`
       })
@@ -74,7 +74,6 @@ Page({
         url: `/pages/activityList/activityList`
       })
     }
-
     fun.wxLogin().then((res)=>{
       if (res) {
         let token = res;
@@ -185,6 +184,11 @@ Page({
       if (typeSign==='booking_2') {
         wx.navigateTo({
           url: '/pages/reserveGames/reserveGames?activityId='+activityId
+        })
+      }
+      if (typeSign==='extension_1') {
+        wx.navigateTo({
+          url: '/pages/boxes/boxes?activityId='+activityId
         })
       }
     }

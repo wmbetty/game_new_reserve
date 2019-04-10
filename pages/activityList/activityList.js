@@ -22,6 +22,11 @@ Page({
   },
   onLoad: function (options) {
     let that = this;
+    if (options.isBox) {
+      wx.navigateTo({
+        url: `/pages/boxes/boxes?activityId=${options.activityId}&isShareIn=1&encryptId=${options.encryptId}`
+      })
+    }
     fun.wxLogin().then((res)=>{
       if (res) {
         let token = res;

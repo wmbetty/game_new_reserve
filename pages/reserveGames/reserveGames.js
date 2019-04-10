@@ -280,7 +280,7 @@ Page({
     return {
       title: pdata.activity.friend_lang,
       imageUrl: pdata.activity.friend_url,
-      path: `/pages/index/index?activityId=${pdata.activityId}`
+      path: `/pages/index/index?activityId=${pdata.activityId}&mode=2`
     }
   },
   choosePlat (e) {

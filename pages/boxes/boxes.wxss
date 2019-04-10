@@ -38,12 +38,12 @@
   position: absolute;right: -60rpx;bottom: 36rpx
 }
 .invite-view{width: 660rpx;min-height: 120rpx;margin: 0 auto;font-size: 32rpx;color: #C7C7CC}
-.num-text{margin: 0 4rpx}
+.invite-tips{display: flex;align-items: center;}
+.num-text{margin: 0 6rpx}
 .num-color{color: #F97956}
 .invite-tip-view{
-  display: flex;align-items: center;margin-bottom: 30rpx
+  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 30rpx
 }
-.avatars-view{}
 .key-icon{
   width: 40rpx;height: 40rpx;margin-right: 20rpx;
 }
@@ -56,14 +56,14 @@ button::after{border: none}
 .button-hover{background: none}
 .invite-btn{width: 340rpx;height: 100rpx;margin: 8rpx auto 30rpx;}
 .invite-btn-img{display: block;width: 100%;height: 100%}
-.rewards-view{width: 680rpx;min-height: 300rpx;margin: 0 auto 20rpx;}
+.rewards-view{width: 680rpx;min-height: 300rpx;margin: 0 auto 10rpx;}
 .rewards-head{display: flex;align-items: center;color: #7A70C8;font-size: 32rpx;margin-bottom: 40rpx}
 .rewards-head-line{width: 248rpx;height: 2rpx;background: rgba(122, 112, 200, 0.6)}
 .rewards-head-text{margin: 0 24rpx;}
 .rewards-cont-view{padding: 0 36rpx}
 .one-reward-view{display: inline-block;margin-right: 50rpx;font-size: 18rpx;color: #888;overflow: hidden;margin-bottom: 10rpx}
 .one-reward-view:nth-child(5n+5) {margin-right: 0}
-.reward-img{display: block;width: 80rpx;height: 80rpx;background: #fff;margin: 0 auto 12rpx;}
+.reward-img{display: block;width: 80rpx;height: 80rpx;margin: 0 auto 12rpx;}
 /* border-radius: 10rpx; */
 .reward-name{max-width: 72rpx;text-align: center;margin: 0 auto;max-height: 48rpx;overflow: hidden;}
 .open-box-tips{display: block;position: absolute;left: 0;top:0;width: 100%;height: 292rpx;background: #fff}
@@ -96,20 +96,20 @@ button::after{border: none}
 .rule-list{margin-left: 30rpx;margin-bottom: 24rpx}
 .clipboard-dialog{
   position: absolute;left: 40rpx;top:418rpx;
-  width: 670rpx;height: 520rpx;background: rgba(255, 255, 255, 0.95);border-radius: 30rpx;
+  width: 670rpx;height: 520rpx;background: rgba(255, 255, 255, 0.9);border-radius: 30rpx;
   font-size: 40rpx;color: #666;overflow: hidden;
 }
 .clipboard-text{margin: 80rpx auto 90rpx;width: 480rpx}
 .clipboard-first-text{margin-bottom: 44rpx;text-align: center;}
 .clipboard-second-text{margin-bottom: 8rpx;display: flex;align-items: center;}
 .browser-icon{width: 44rpx;height: 44rpx;margin: 0 10rpx 0 20rpx;}
-.clipboard-btn{display: block;width: 388rpx;height: 130rpx;margin: 0 auto;background: red}
+.clipboard-btn{display: block;width: 388rpx;height: 130rpx;margin: 0 auto;}
 .keys-dialog{
   position: absolute;left: 40rpx;top:332rpx;
-  width: 670rpx;height: 700rpx;background: rgba(255, 255, 255, 0.95);border-radius: 30rpx;
+  width: 670rpx;height: 700rpx;background: rgba(255, 255, 255, 0.9);border-radius: 30rpx;
   font-size: 36rpx;color: #666;overflow: hidden;
 }
-.big-key{display: block;width: 200rpx;height: 200rpx;margin: 100rpx auto 30rpx;background: orange}
+.big-key{display: block;width: 200rpx;height: 200rpx;margin: 100rpx auto 30rpx;}
 .key-text{width: 476rpx;margin: 0 auto 80rpx;}
 .give-key-num{color: #F97956;margin: 0 10rpx}
 .key-first-text{margin-bottom: 20rpx;}
@@ -194,7 +194,7 @@ button::after{border: none}
 .get-prize-btn{
   width: 380rpx;height: 130rpx;margin: 0 auto;
 }
-.get-prize-btn-img{display: block;width: 100%;height: 100%;background: #ddd}
+.get-prize-btn-img{display: block;width: 100%;height: 100%;}
 .slide-up{
 	animation: slideup .3s linear
 }
@@ -232,3 +232,7 @@ button::after{border: none}
 .no-gift-btns{padding: 0 70rpx;display: flex;justify-content: space-between;align-items: center;}
 .no-gift-btn{width: 288rpx;height: 130rpx;background: #ddd}
 .no-gift-btn-img{display: block;width: 100%;height: 100%}
+.nomore-key-big-text{font-size: 52rpx;color: #666;text-align: center;margin-bottom: 4rpx}
+.nomore-key-small-text{font-size: 36rpx;color: #666;text-align: center;margin-bottom: 76rpx}
+.nomore-key-btn{display: block;width: 448rpx;height: 130rpx;margin: 0 auto;}
+.nomore-key-btn image{display: block;width: 100%;height: 100%}

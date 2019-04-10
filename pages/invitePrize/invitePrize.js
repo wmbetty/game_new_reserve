@@ -85,7 +85,7 @@ Page({
     return {
       title: inviteDatas.friend_lang,
       imageUrl: inviteDatas.friend_url,
-      path: `/pages/index/index?activityId=${pdata.activityId}&encryptId=${inviteDatas.member.encrypt_id}`
+      path: `/pages/index/index?activityId=${pdata.activityId}&encryptId=${inviteDatas.member.encrypt_id}&mode=1`
     }
   },
   savePoster () {

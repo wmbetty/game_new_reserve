@@ -87,7 +87,7 @@ page{background: #260846;}
 .pin-dialog{margin-top: 146rpx;width: 100%;height: auto;border-radius: 30rpx;position: relative;}
 .get-prize-btn-close{margin-top: 200rpx;}
 .rank-swiper{width: 100%;padding-bottom: 10rpx;margin-bottom: 20rpx;margin-top: 30rpx;
-  /* height: 44rpx; */
+  height: 320rpx;
 }
 button::after{border: none;}
 button{padding: 0}
