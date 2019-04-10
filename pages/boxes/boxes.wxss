@@ -42,7 +42,7 @@
 .num-text{margin: 0 6rpx}
 .num-color{color: #F97956}
 .invite-tip-view{
-  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 30rpx
+  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 20rpx
 }
 .key-icon{
   width: 40rpx;height: 40rpx;margin-right: 20rpx;
@@ -110,7 +110,7 @@ button::after{border: none}
   font-size: 36rpx;color: #666;overflow: hidden;
 }
 .big-key{display: block;width: 200rpx;height: 200rpx;margin: 100rpx auto 30rpx;}
-.key-text{width: 476rpx;margin: 0 auto 80rpx;}
+.key-text{width: 476rpx;margin: 0 auto 80rpx;text-align: center;}
 .give-key-num{color: #F97956;margin: 0 10rpx}
 .key-first-text{margin-bottom: 20rpx;}
 .box-shake{

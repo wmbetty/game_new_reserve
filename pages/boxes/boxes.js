@@ -189,7 +189,7 @@ Page({
           success: function(res) {
             setTimeout(()=>{
               that.setData({showClipboard: true, showMask: true})
-            }, 1800)
+            }, 1300)
           }
         })
      } else {
@@ -267,14 +267,18 @@ Page({
            if (res) {
              /** 获得奖品 */
              setTimeout(()=>{
-               if (res.prize.is_prize*1!==2) {
-                 that.setData({showGift: true, isSlideUp: true});
+               if (res.status*1===1) {
+                 if (res.prize.is_prize*1!==2) {
+                   that.setData({showGift: true, isSlideUp: true});
+                 } else {
+                   that.setData({showNoGift: true});
+                 }
+                 that.setData({
+                   prizeObj: res.prize, showMask: true
+                 });
                } else {
-                 that.setData({showNoGift: true});
+                 Api.wxShowToast(res.msg, 'none', 2000);
                }
-               that.setData({
-                 prizeObj: res.prize, showMask: true
-               });
 
                fun.quest(rewardDataApi, 'GET', {activity_id: activityId}, (res)=>{
                  if (res) {
@@ -296,7 +300,7 @@ Page({
    },
    hideGetPrize () {
      let that = this;
-     that.setData({isSlideUp: false});
+     // that.setData({isSlideUp: false});
      setTimeout(()=>{
        that.setData({
          showNoGift: false, showMask: false, showYourPrize: false,
@@ -307,7 +311,7 @@ Page({
    },
    hideNoGift () {
      let that = this;
-     that.setData({isSlideUp: false});
+     // that.setData({isSlideUp: false});
      setTimeout(()=>{
        that.setData({
          showNoGift: false, showMask: false, showYourPrize: false,
@@ -317,7 +321,7 @@ Page({
      },300)
    },
    hideYourPrize () {
-     that.setData({
+     this.setData({
        showNoGift: false, showMask: false, showYourPrize: false,
        showGift: false, showNoGift: false, showClipboard: false,
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
