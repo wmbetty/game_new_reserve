@@ -84,7 +84,7 @@
         </view>
       </view>
       <view class="rank-dot-line"></view>
-      <view>
+      <view wx:if="{{prizeRecord.length}}">
         <swiper class="rank-swiper" circular="{{true}}" autoplay="{{autoplay}}" vertical="true" interval="{{3500}}">
           <block wx:for="{{prizeRecord}}" wx:key="index">
             <swiper-item class="">
@@ -139,7 +139,7 @@
         <view class="key-first-text"><text>首次参与活动，赠送</text><text class="give-key-num">{{activity.activity_extension_1_give_qualification}}</text><text>把钥匙</text></view>
         <view>快去开宝箱拿奖品吧</view>
       </view>
-      <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_i_konw_button.value}}" />
+      <image class="clipboard-btn" bindtap="FirstInHideDialog" src="{{elements.activity_extension_1_i_konw_button.value}}" />
     </view>
 
     <!-- 助力好友送钥匙提示 -->
@@ -148,7 +148,7 @@
         <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{activity.invite_reward_count}}</text><text>把钥匙</text></view>
         <view><text>同时平台赠送您</text><text class="give-key-num">{{activity.activity_extension_1_be_invite_get_qualification*1+activity.invite_reward_count*1}}</text><text>把钥匙</text></view>
       </view>
-      <image class="clipboard-btn" bindtap="hideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
+      <image class="clipboard-btn" bindtap="shareInHideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
     </view>
 
     <!-- 没有钥匙了 -->

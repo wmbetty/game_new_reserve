@@ -3,6 +3,9 @@ const backApi = require('../../utils/util');
 const Api = require('../../utils/wxApi');
 const fun = require('../../utils/functions');
 const app = getApp();
+// let box1_i = 0;
+// let box2_i = 0;
+// let box3_i = 0;
 
 Page({
   data: {
@@ -44,6 +47,7 @@ Page({
     prizeObj: {},
     rewards: [],
     isFirstIn: false
+    // isOpen: [0, 0, 0]
   },
   onLoad: function (options) {
     let that = this;
@@ -59,6 +63,7 @@ Page({
         let phoneReserveApi = backApi.phoneReserveApi + token;
         fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
+            console.log(res, 'resss')
             that.setData({activity: res});
             if (options.isShareIn) {
               // that.setData({isQrcodeIn: true});
@@ -204,6 +209,24 @@ Page({
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
      })
    },
+   shareInHideDialog () {
+     let that = this;
+     that.refreshTimes();
+     that.setData({
+       showNoGift: false, showMask: false, showYourPrize: false,
+       showGift: false, showNoGift: false, showClipboard: false,
+       showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
+     })
+   },
+   FirstInHideDialog () {
+     let that = this;
+     that.refreshTimes();
+     that.setData({
+       showNoGift: false, showMask: false, showYourPrize: false,
+       showGift: false, showNoGift: false, showClipboard: false,
+       showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
+     })
+   },
    cancelDialog () {
      this.setData({showDialog:false})
    },
@@ -257,9 +280,20 @@ Page({
      let rewardDataApi = backApi.rewardDataApi+that.data.token;
      let rewardCount = that.data.rewardCount*1;
      let userInfo = wx.getStorageSync('userInfo');
+     // let isOpen = that.data.isOpen;
+     // if (box*1===1) {
+     //   box1_i++
+     // }
+     // if (box*1===2) {
+     //   box2_i++
+     // }
+     // if (box*1===3) {
+     //   box3_i++
+     // }
      if (userInfo.id) {
        if (rewardCount>=1) {
          that.setData({boxIdx: box, showHandTip: false});
+         // that.setData({showHandTip: false, isOpen: isOpen});
          setTimeout(()=>{
            that.setData({showHandTip: true});
          },1200);
@@ -277,6 +311,10 @@ Page({
                    prizeObj: res.prize, showMask: true
                  });
                } else {
+               //   box1_i = 0; box2_i = 0; box3_i = 0;
+               //   isOpen[box-1] = 0;
+                 that.setData({boxIdx: 0, showHandTip: true});
+                 // that.setData({isOpen: isOpen, showHandTip: true});
                  Api.wxShowToast(res.msg, 'none', 2000);
                }
 

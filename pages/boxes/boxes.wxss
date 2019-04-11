@@ -23,19 +23,19 @@
 .slide-image{display: block;width: 500rpx;height: 300rpx;border-radius: 20rpx;margin: 30rpx auto;}
 .boxs-view{color: #7A70C8;font-size: 28rpx;padding: 60rpx 46rpx 0;position: relative;}
 .open-box-title{font-size: 52rpx;margin-bottom: 20rpx}
-.boxs-gift-square{width: 480rpx;height: 480rpx;margin: 320rpx auto 94rpx;position: relative;}
+.boxs-gift-square{width: 484rpx;height: 484rpx;margin: 320rpx auto 94rpx;position: relative;}
 .same-box{
-  width: 252rpx;height: 210rpx;
+  width: 348rpx;height: 308rpx;
 }
 .box-usual-img{display: block;width: 100%;height: 100%}
 .first-box{
-  position: absolute;left: 112rpx;bottom: 346rpx
+  position: absolute;left: 78rpx;bottom: 316rpx
 }
 .second-box{
-  position: absolute;left: -60rpx;bottom: 36rpx
+  position: absolute;left: -126rpx;bottom: 2rpx
 }
 .third-box{
-  position: absolute;right: -60rpx;bottom: 36rpx
+  position: absolute;right: -150rpx;bottom: 2rpx
 }
 .invite-view{width: 660rpx;min-height: 120rpx;margin: 0 auto;font-size: 32rpx;color: #C7C7CC}
 .invite-tips{display: flex;align-items: center;}
