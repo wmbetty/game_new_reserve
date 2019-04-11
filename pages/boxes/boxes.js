@@ -6,6 +6,7 @@ const app = getApp();
 // let box1_i = 0;
 // let box2_i = 0;
 // let box3_i = 0;
+let isSCroll = false;
 
 Page({
   data: {
@@ -63,11 +64,10 @@ Page({
         let phoneReserveApi = backApi.phoneReserveApi + token;
         fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
-            console.log(res, 'resss')
             that.setData({activity: res});
             if (options.isShareIn) {
               // that.setData({isQrcodeIn: true});
-              that.setData({encryptId: options.encryptId});
+              that.setData({encryptId: options.encryptId, isFirstIn: false});
             }
             if (res.activity_extension_1_give_qualification) {
               that.setData({isFirstIn: true})
@@ -80,7 +80,7 @@ Page({
               }
               fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
                 if (inviteRes.data.status*1===200) {
-                  that.setData({showShareJoin: true, showMask: true, showKeyDialog: true})
+                  that.setData({showShareJoin: true, showMask: true, showKeyDialog: true, isSlideUp: true})
                 } else {
                   console.log(inviteRes.data.msg)
                 }
@@ -175,12 +175,8 @@ Page({
     let that = this;
     let isFirstIn = that.data.isFirstIn;
     let scrollTop = e.scrollTop*1;
-    let isFirst = wx.getStorageSync('isFirstIn');
-    if (!isFirst) {
-      if (scrollTop>=600 && scrollTop<=800 &&isFirstIn) {
-        that.setData({showMask: true, showKeyDialog: true, showFirstJoin: true});
-        wx.setStorageSync('isFirstIn', 1);
-      }
+    if (scrollTop>=600 && scrollTop<=800 && isFirstIn && !isSCroll) {
+      that.setData({showMask: true, showKeyDialog: true, showFirstJoin: true, isSlideUp: true});
     }
   },
   // 点击下载游戏按钮
@@ -193,7 +189,7 @@ Page({
           data: gameUrl,
           success: function(res) {
             setTimeout(()=>{
-              that.setData({showClipboard: true, showMask: true})
+              that.setData({showClipboard: true, showMask: true,isSlideUp: true})
             }, 800)
           }
         })
@@ -204,25 +200,34 @@ Page({
    hideDialog () {
      let that = this;
      that.setData({
-       showNoGift: false, showMask: false, showYourPrize: false,
+       isSlideUp: false, showMask: false,
+       showNoGift: false, showYourPrize: false,
        showGift: false, showNoGift: false, showClipboard: false,
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
-     })
+     });
    },
    shareInHideDialog () {
      let that = this;
      that.refreshTimes();
+     let rewardInviteApi = backApi.rewardInviteApi+that.data.token;
+     fun.quest(rewardInviteApi, 'GET', {activity_id: that.data.activityId}, (res)=>{
+       if (res) {
+         let datas = res;
+         that.setData({inviteDatas: datas});
+       }
+     })
      that.setData({
-       showNoGift: false, showMask: false, showYourPrize: false,
+       showNoGift: false, showMask: false, showYourPrize: false, isSlideUp: false,
        showGift: false, showNoGift: false, showClipboard: false,
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
      })
    },
    FirstInHideDialog () {
      let that = this;
+     isSCroll = true;
      that.refreshTimes();
      that.setData({
-       showNoGift: false, showMask: false, showYourPrize: false,
+       showNoGift: false, showMask: false, showYourPrize: false, isSlideUp: false,
        showGift: false, showNoGift: false, showClipboard: false,
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
      })
@@ -305,7 +310,7 @@ Page({
                  if (res.prize.is_prize*1!==2) {
                    that.setData({showGift: true, isSlideUp: true});
                  } else {
-                   that.setData({showNoGift: true});
+                   that.setData({showNoGift: true, isSlideUp: true});
                  }
                  that.setData({
                    prizeObj: res.prize, showMask: true
@@ -330,7 +335,7 @@ Page({
            }
          })
        } else {
-         that.setData({showMask: true, showKeyDialog: true, showNomoreKeys: true})
+         that.setData({showMask: true, showKeyDialog: true, showNomoreKeys: true, isSlideUp: true})
        }
      } else {
        that.setData({showDialog: true})
@@ -341,7 +346,7 @@ Page({
      // that.setData({isSlideUp: false});
      setTimeout(()=>{
        that.setData({
-         showNoGift: false, showMask: false, showYourPrize: false,
+         showNoGift: false, showMask: false, showYourPrize: false, isSlideUp: false,
          showGift: false, showNoGift: false, showClipboard: false,
          showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
        })
@@ -352,7 +357,7 @@ Page({
      // that.setData({isSlideUp: false});
      setTimeout(()=>{
        that.setData({
-         showNoGift: false, showMask: false, showYourPrize: false,
+         showNoGift: false, showMask: false, showYourPrize: false, isSlideUp: false,
          showGift: false, showNoGift: false, showClipboard: false,
          showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
        })
@@ -360,7 +365,7 @@ Page({
    },
    hideYourPrize () {
      this.setData({
-       showNoGift: false, showMask: false, showYourPrize: false,
+       showNoGift: false, showMask: false, showYourPrize: false, isSlideUp: false,
        showGift: false, showNoGift: false, showClipboard: false,
        showKeyDialog: false, showShareJoin: false, showFirstJoin: false, showNomoreKeys: false
      })
@@ -368,7 +373,7 @@ Page({
    lookYourGiftRecord (e) {
      let that = this;
      let rname = e.currentTarget.dataset.rname;
-     that.setData({showMask: true, pname: rname, showYourPrize: true});
+     that.setData({showMask: true, pname: rname, showYourPrize: true, isSlideUp: true});
    },
    refreshTimes () {
      let that = this;

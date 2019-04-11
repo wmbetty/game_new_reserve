@@ -117,7 +117,7 @@
 
 <view class="box-mask" catchtouchmove="ture" wx:if="{{showMask}}">
   <!-- 复制链接提示 -->
-  <view class="clipboard-dialog" wx:if="{{showClipboard}}">
+  <view class="{{isSlideUp?'clipboard-dialog slide-up':'clipboard-dialog slide-down'}}" wx:if="{{showClipboard}}">
     <view class="clipboard-text">
       <view class="clipboard-first-text">已经复制下载地址至粘贴板 </view>
       <view class="clipboard-second-text">
@@ -130,7 +130,7 @@
   </view>
 
   <!-- 获得钥匙提示 -->
-  <view class="keys-dialog" wx:if="{{showKeyDialog}}">
+  <view class="{{isSlideUp?'keys-dialog slide-up':'keys-dialog slide-down'}}" wx:if="{{showKeyDialog}}">
     <image wx:if="{{showFirstJoin || showShareJoin}}" class="big-key" src="{{elements.activity_extension_1_bright_big_key_img.value}}" />
     <image wx:if="{{showNomoreKeys}}" class="big-key" src="{{elements.activity_extension_1_dark_big_key_img.value}}" />
     <!-- 第一次进入送钥匙提示 -->
@@ -146,7 +146,7 @@
     <view wx:if="{{showShareJoin}}">
       <view class="key-text">
         <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{activity.invite_reward_count}}</text><text>把钥匙</text></view>
-        <view><text>同时平台赠送您</text><text class="give-key-num">{{activity.activity_extension_1_be_invite_get_qualification*1+activity.invite_reward_count*1}}</text><text>把钥匙</text></view>
+        <view><text>同时平台赠送您</text><text class="give-key-num">{{activity.activity_extension_1_be_invite_get_qualification}}</text><text>把钥匙</text></view>
       </view>
       <image class="clipboard-btn" bindtap="shareInHideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
     </view>
@@ -180,7 +180,7 @@
     </button>
   </view>
   <!-- 查看自己奖品弹窗 -->
-  <view class="get-gift-dialog" wx:if="{{showYourPrize}}">
+  <view class="{{isSlideUp?'get-gift-dialog slide-up':'get-gift-dialog slide-down'}}" wx:if="{{showYourPrize}}">
     <image class="close-icon" src="/images/gray_close.png" bindtap="hideYourPrize" />
     <view class="gift-tips-cont">
       <image class="gift-img-tip" mode="aspectFill" src="/images/prize_tip_bg.png" />

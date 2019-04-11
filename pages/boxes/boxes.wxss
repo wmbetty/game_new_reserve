@@ -42,7 +42,7 @@
 .num-text{margin: 0 6rpx}
 .num-color{color: #F97956}
 .invite-tip-view{
-  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 20rpx
+  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 10rpx
 }
 .key-icon{
   width: 40rpx;height: 40rpx;margin-right: 20rpx;
