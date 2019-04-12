@@ -36,6 +36,7 @@ Page({
     authInfo: '微信授权才能操作哦',
     height: 0,
     winHeight: 0,
+    winWidth: 0,
     swipers: [],
     interval: 3000,
     autoplay: true,
@@ -47,7 +48,8 @@ Page({
     token: '',
     prizeObj: {},
     rewards: [],
-    isFirstIn: false
+    isFirstIn: false,
+    swiperIdx: 0
     // isOpen: [0, 0, 0]
   },
   onLoad: function (options) {
@@ -65,6 +67,7 @@ Page({
         fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
             that.setData({activity: res});
+            console.log(res.activity_extension_1_give_qualification, 'nnn')
             if (options.isShareIn) {
               // that.setData({isQrcodeIn: true});
               that.setData({encryptId: options.encryptId, isFirstIn: false});
@@ -143,7 +146,8 @@ Page({
     let that = this;
     let height = app.globalData.height;
     let winHeight = app.globalData.screenHeight;
-    that.setData({height: height, winHeight: winHeight});
+    let winWidth = app.globalData.screenWidth;
+    that.setData({height: height, winHeight: winHeight, winWidth: winWidth});
     let userInfo = wx.getStorageSync('userInfo');
     if (!userInfo.id) {
       that.setData({showDialog:true})
@@ -390,9 +394,21 @@ Page({
          } else {
            wx.hideLoading();
          }
+       });
+       let rewardInviteApi = backApi.rewardInviteApi+pageData.token;
+       fun.quest(rewardInviteApi, 'GET', {activity_id: pageData.activityId}, (res)=>{
+         if (res) {
+           let datas = res;
+           that.setData({inviteDatas: datas});
+         }
        })
      } else {
        that.setData({showDialog: true})
      }
+   },
+   swiperChange (e) {
+     this.setData({
+      swiperIdx: e.detail.current
+    })
    }
 })

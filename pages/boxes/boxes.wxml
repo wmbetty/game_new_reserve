@@ -11,12 +11,12 @@
       </view>
     </view>
   </view>
-  <view class="swiper-view" wx:if="{{swipers.length}}" style="background:url('{{elements.activity_game_features_bg.value}}') no-repeat;background-size:cover">
+  <view class="swiper-view" wx:if="{{swipers.length}}" style="background:{{elements.activity_extension_1_game_features_bg_color.value}}">
     <view class="r-reward-cont-view">
-      <swiper class="r-swiper" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
+      <swiper previous-margin='124rpx' class="r-swiper" next-margin='124rpx' bindchange="swiperChange" circular="{{true}}" autoplay="{{autoplay}}" interval="{{interval}}">
         <block wx:for="{{swipers}}" wx:key="index">
           <swiper-item class="r-swiper-item">
-            <image src="{{item.img_url}}" class="slide-image" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.6);" />
+            <image src="{{item.img_url}}" class="{{swiperIdx===index?'slide-image slide-image-active':'slide-image'}}" style="box-shadow:0px 28px 20px -20px rgba(0,0,0,0.6);" />
           </swiper-item>
         </block>
       </swiper>
@@ -55,7 +55,7 @@
         <image class="user-avatar" wx:for="{{inviteDatas.friend}}" wx:key="index" src="{{item.be_invite_member.avatar || '/images/avatarDefault.png'}}" />
       </view>
       <button class="invite-btn" open-type="share">
-        <image class="invite-btn-img" src="{{elements.activity_extension_1_get_key_button.value}}" />
+        <image class="invite-btn-img" mode="aspectFill" src="{{elements.activity_extension_1_get_key_button.value}}" />
       </button>
     </view>
     <view class="rewards-view">
@@ -86,8 +86,8 @@
       <view class="rank-dot-line"></view>
       <view wx:if="{{prizeRecord.length}}">
         <swiper class="rank-swiper" circular="{{true}}" autoplay="{{autoplay}}" vertical="true" interval="{{3500}}">
-          <block wx:for="{{prizeRecord}}" wx:key="index">
-            <swiper-item class="">
+          <block wx:for="{{prizeRecord}}">
+            <swiper-item class="" wx:key="index" catchtouchmove="true">
               <view class="rank-list" wx:for="{{item}}" wx:key="index" wx:for-item="records">
                 <image src="{{records.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
                 <view>恭喜“</view>
@@ -146,7 +146,7 @@
     <view wx:if="{{showShareJoin}}">
       <view class="key-text">
         <view class="key-first-text"><text>成功助力好友获得</text><text class="give-key-num">{{activity.invite_reward_count}}</text><text>把钥匙</text></view>
-        <view><text>同时平台赠送您</text><text class="give-key-num">{{activity.activity_extension_1_be_invite_get_qualification}}</text><text>把钥匙</text></view>
+        <view><text>同时平台赠送您</text><text class="give-key-num">{{(elements.activity_extension_1_be_invite_get_qualification.value*1+elements.activity_extension_1_give_qualification.value*1) || 0}}</text><text>把钥匙</text></view>
       </view>
       <image class="clipboard-btn" bindtap="shareInHideDialog" src="{{elements.activity_extension_1_go_open_treasure_chest_button.value}}" />
     </view>

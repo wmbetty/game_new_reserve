@@ -21,6 +21,7 @@ App({
        this.globalData.height = res.statusBarHeight;
        this.globalData.winHeight = res.windowHeight;
        this.globalData.screenHeight = res.screenHeight;
+       this.globalData.screenWidth = res.screenWidth;
      }
    });
   },
