@@ -46,19 +46,19 @@
 .num-text{margin: 0 6rpx}
 .num-color{color: #F97956}
 .invite-tip-view{
-  display: flex;align-items: center;margin-bottom: 30rpx;padding: 0 10rpx
+  display: flex;align-items: center;margin-bottom: 30rpx;justify-content: center;
 }
 .key-icon{
-  width: 40rpx;height: 40rpx;margin-right: 20rpx;
+  width: 33rpx;height: 38rpx;margin-right: 20rpx;
 }
-.refresh-icon{width: 40rpx;height: 40rpx;margin-left: 20rpx;}
+.refresh-icon{width: 40rpx;height: 36rpx;margin-left: 20rpx;}
 .user-avatar{display: inline-block;width: 52rpx;height: 52rpx;margin-right: 30rpx;border: 1rpx solid #eee;border-radius: 50%;margin-bottom: 10rpx}
 button[disabled]{background: none}
 button[disabled]:not([type]){background: none}
 button{padding: 0;margin: 0;background: none}
 button::after{border: none}
 .button-hover{background: none}
-.invite-btn{width: 340rpx;height: 100rpx;margin: 8rpx auto 30rpx;}
+.invite-btn{width: 388rpx;height: 130rpx;margin: 8rpx auto 30rpx;}
 .invite-btn-img{display: block;width: 100%;height: 100%}
 .rewards-view{width: 680rpx;min-height: 300rpx;margin: 0 auto 10rpx;}
 .rewards-head{display: flex;align-items: center;color: #7A70C8;font-size: 32rpx;margin-bottom: 40rpx}
