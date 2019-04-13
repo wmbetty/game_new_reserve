@@ -67,14 +67,15 @@ Page({
         fun.quest(activityViewApi, 'GET', {activity_id: actId}, (res)=>{
           if (res) {
             that.setData({activity: res});
-            console.log(res.activity_extension_1_give_qualification, 'nnn')
             if (options.isShareIn) {
               // that.setData({isQrcodeIn: true});
               that.setData({encryptId: options.encryptId, isFirstIn: false});
+            } else {
+              if (res.activity_extension_1_give_qualification) {
+                that.setData({ isFirstIn: true })
+              }
             }
-            if (res.activity_extension_1_give_qualification) {
-              that.setData({isFirstIn: true})
-            }
+            
             if (userInfo.id && options.isShareIn) {
               let pdata = {
                 activity_id: actId,
