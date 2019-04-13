@@ -92,7 +92,7 @@
                 <image src="{{records.member.avatar || '/images/avatarDefault.png'}}" class="rank-user-avatar"  />
                 <view>恭喜“</view>
                 <view class="my-name">{{records.member.nickname || '无名氏'}}</view>
-                <view>”抽取了</view>
+                <view>”开中了</view>
                 <view class="prize-text">{{records.reward_name}}</view>
               </view>
             </swiper-item>
@@ -171,7 +171,7 @@
     </view>
     <view class="get-prize-cont">
       <view class="get-prize-title">领取流程</view>
-      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">1. 点击“去领奖”按钮，进入客服对话窗口。</view>
       <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
       <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
     </view>
@@ -191,7 +191,7 @@
     </view>
     <view class="get-prize-cont">
       <view class="get-prize-title">领取流程</view>
-      <view class="get-prize-step">1. 点击“领取”按钮，进入客服对话窗口。</view>
+      <view class="get-prize-step">1. 点击“去领奖”按钮，进入客服对话窗口。</view>
       <view class="get-prize-step">2. 回复“{{rewardSendNumber}}”收到自动回复的公众号“二维码”后长按关注。</view>
       <view class="get-prize-step">3. 关注完成后根据引导领取奖品。</view>
     </view>

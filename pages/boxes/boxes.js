@@ -68,14 +68,14 @@ Page({
           if (res) {
             that.setData({activity: res});
             if (options.isShareIn) {
-              // that.setData({isQrcodeIn: true});
+              //
               that.setData({encryptId: options.encryptId, isFirstIn: false});
             } else {
               if (res.activity_extension_1_give_qualification) {
                 that.setData({ isFirstIn: true })
               }
             }
-            
+
             if (userInfo.id && options.isShareIn) {
               let pdata = {
                 activity_id: actId,
@@ -84,9 +84,10 @@ Page({
               }
               fun.taskMake(phoneReserveApi, 'POST', pdata, (inviteRes)=>{
                 if (inviteRes.data.status*1===200) {
+                  console.log(inviteRes, 'ssss')
                   that.setData({showShareJoin: true, showMask: true, showKeyDialog: true, isSlideUp: true})
                 } else {
-                  console.log(inviteRes.data.msg)
+                  Api.wxShowToast('已帮好友助力过喔~', 'none', 2000)
                 }
               })
             }
@@ -411,5 +412,5 @@ Page({
      this.setData({
       swiperIdx: e.detail.current
     })
-   }
+  }
 })

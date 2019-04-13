@@ -89,7 +89,7 @@ button::after{border: none}
 .prize-text{margin-left: 14rpx;max-width: 300rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .look-detail-text{color: #E5E7ED;font-size: 24rpx;margin: -6rpx 20rpx 0 0}
 .rank-dot-line{width: 640rpx;height: 2rpx;border-top: 2rpx dotted rgba(199, 199, 204, 0.35);margin: 0 auto 30rpx;}
-/* .rank-swiper{height: 100rpx;overflow-y: auto;} */
+/* .rank-swiper{padding: 10rpx 0} */
 .gift-botom-line{width: 670rpx;height: 2rpx;background: rgba(255, 255, 255, 0.2);margin: 0 auto 60rpx;}
 .rules-cont{overflow: hidden;}
 .rule-list-cont{
