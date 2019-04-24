@@ -322,13 +322,9 @@ Page({
                    prizeObj: res.prize, showMask: true
                  });
                } else {
-               //   box1_i = 0; box2_i = 0; box3_i = 0;
-               //   isOpen[box-1] = 0;
-                 that.setData({boxIdx: 0, showHandTip: true});
-                 // that.setData({isOpen: isOpen, showHandTip: true});
                  Api.wxShowToast(res.msg, 'none', 2000);
                }
-
+               that.setData({boxIdx: 0, showHandTip: true});
                fun.quest(rewardDataApi, 'GET', {activity_id: activityId}, (res)=>{
                  if (res) {
                    let datas = res;
